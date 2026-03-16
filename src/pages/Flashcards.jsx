@@ -11,7 +11,7 @@ function Flashcards() {
   const filteredTiles = tiles.filter(tile => {
     if (activeFilter === 'All') return true
     if (activeFilter === 'Winds') return tile.suit === 'wind'
-    if (activeFilter === 'Characters') return tile.suit === 'man'
+    if (activeFilter === 'Characters') return tile.suit === 'wan'
   })
 
   function toggleLearned(id) {

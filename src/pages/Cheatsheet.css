@@ -1,0 +1,245 @@
+.cs-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .cs-intro-box {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+    background: #FFFAF8;
+    border: 1.5px solid #20201E;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  .cs-intro-title {
+    font-family: 'PerfectlyNineties', serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 400;
+    color: #20201E;
+  }
+  
+  .cs-intro-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+  }
+  
+  .cs-pattern-wrap {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #FFFAF8;
+    background-repeat: repeat;
+    background-size: 120px 120px;
+    border-top: 5px solid#5EC19D;
+    border-bottom: 5px solid #5EC19D;
+    padding: 3.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .cs-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+    background: #FFFAF8;
+    border: 1.5px solid #20201E;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .cs-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .cs-section-title {
+    font-family: 'PerfectlyNineties', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #20201E;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .cs-optional {
+    font-size: 10px;
+    font-weight: 500;
+    background: #faeeda;
+    color: #854f0b;
+    border: 1px solid #D4A01750;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.03em;
+    text-transform: none;
+  }
+  
+  .cs-suit-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .cs-suit-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 4px;
+  }
+  
+  .cs-suit-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #20201E;
+  }
+  
+  .cs-suit-zh {
+    font-size: 11px;
+    color: #666;
+  }
+  
+  .cs-tile-row {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 4px;
+  }
+  
+  .cs-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  
+  .cs-tile-img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .cs-tile-img--large {
+    width: 60px;
+    height: auto;
+  }
+  
+  .cs-tile-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: #666;
+    text-align: center;
+  }
+  
+  .cs-number-row {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 4px;
+    margin-top: 2px;
+  }
+  
+  .cs-number-cell {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: #666;
+    text-align: center;
+  }
+  
+  .cs-named-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 70px;
+  }
+  
+  .cs-named-tile .cs-tile-img--large {
+    width: 60px;
+    height: auto;
+  }
+  
+  .cs-bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  
+  .cs-winds-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .cs-winds-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  
+  .cs-winds-middle {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .cs-winds-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  
+  .cs-wind-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: #666;
+    text-align: center;
+  }
+  
+  .cs-flowers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+  
+  .cs-flower-pair {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 3px;
+    flex-wrap: wrap;
+  }
+  
+  .cs-flower-pair .cs-tile-img {
+    width: 44px;
+  }
+  
+  @media (max-width: 600px) {
+    .cs-bottom-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .cs-tile-img--large {
+      width: 48px;
+    }
+  
+    .cs-flower-pair .cs-tile-img {
+      width: 38px;
+    }
+  }

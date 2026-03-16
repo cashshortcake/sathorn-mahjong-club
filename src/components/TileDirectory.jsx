@@ -3,14 +3,14 @@ import './TileDirectory.css'
 import tiles from '../data/tiles'
 
 const SUITS = [
-  { id: 'man',    label: 'Characters', labelZh: '萬', available: true,  optional: false },
-  { id: 'wind',   label: 'Winds',      labelZh: '風', available: true,  optional: false },
-  { id: 'honor',  label: 'Dragons',    labelZh: '龍', available: true,  optional: false },
-  { id: 'flower', label: 'Flowers',    labelZh: '花', available: true,  optional: true  },
-  { id: 'season', label: 'Seasons',    labelZh: '季', available: true,  optional: true  },
-  { id: 'pin',    label: 'Circles',    labelZh: '筒', available: false, optional: false },
-  { id: 'sou',    label: 'Bamboo',     labelZh: '索', available: false, optional: false },
-]
+    { id: 'wan',    label: 'Characters', labelZh: '萬', available: true,  optional: false },
+    { id: 'tiao',   label: 'Bamboo',     labelZh: '條', available: true,  optional: false },
+    { id: 'tong',   label: 'Circles',    labelZh: '筒', available: true,  optional: false },
+    { id: 'wind',   label: 'Winds',      labelZh: '風', available: true,  optional: false },
+    { id: 'honor',  label: 'Dragons',    labelZh: '龍', available: true,  optional: false },
+    { id: 'flower', label: 'Flowers',    labelZh: '花', available: true,  optional: true  },
+    { id: 'season', label: 'Seasons',    labelZh: '季', available: true,  optional: true  },
+  ]
 
 function TileDirectory() {
   return (

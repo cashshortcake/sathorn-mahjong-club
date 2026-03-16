@@ -1,0 +1,30 @@
+.site-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 3rem 1.5rem 2rem;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .footer-tiles {
+    width: 100px;
+    height: auto;
+  }
+  
+  .footer-title {
+    font-family: 'PerfectlyNineties', serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 400;
+    color: #20201E;
+    line-height: 1.2;
+    max-width: 500px;
+  }
+  
+  .footer-year {
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    color: #F5511C;
+    font-weight: 500;
+  }

@@ -1,0 +1,149 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    padding-top: 3rem;
+  }
+
+  .home-nav {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: -1rem;
+  }
+  
+  .home-nav-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #20201E;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  
+  .home-header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .home-logo {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+  }
+  
+  .home-hero {
+    width: 100%;
+    padding: 6px;
+    background: #4F8568;
+    border-radius: 4px;
+  }
+  
+  .hero-box {
+    background: #EFEEBD;
+    border: 2px solid #E02126;
+    border-radius: 2px;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .hero-title {
+    font-family: 'PerfectlyNineties', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    color: #20201E;
+    line-height: 1.15;
+  }
+  
+  .hero-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: #20201E;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  
+  .home-tools {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 140px;
+    max-width: 200px;
+  }
+  
+  .tool-icon {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+  }
+  
+  .tool-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #F5511C;
+    text-decoration: none;
+    background: #F8F8F8;
+    padding: 4px 20px;
+    border-radius: 20px;
+    border: 1.5px solid #F5511C;
+    transition: all 0.15s;
+  }
+  
+  .tool-label:hover {
+    background: #F5511C;
+    color: #F8F8F8;
+  }
+  
+  .tool-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #20201E;
+    text-align: center;
+  }
+  
+  .home-footer-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    padding-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .home-footer-tiles {
+    width: 120px;
+    height: auto;
+  }
+  
+  .home-footer-title {
+    font-family: 'PerfectlyNineties', serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 400;
+    color: #20201E;
+    line-height: 1.2;
+    max-width: 500px;
+  }
+  
+  .home-footer-year {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #F5511C;
+    font-weight: 500;
+  }

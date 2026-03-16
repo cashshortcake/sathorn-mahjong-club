@@ -8,15 +8,16 @@ import Score from './pages/Score'
 function App() {
   return (
     <BrowserRouter basename="/sathorn-mahjong-club">
-      <div style={{ padding: '2rem', maxWidth: '900px', margin: '0 auto' }}>
-        <Nav />
+      <div className="squiggle" />
+      <main style={{ maxWidth: '680px', margin: '0 auto', padding: '0 1.5rem 4rem' }}>
         <Routes>
           <Route path="/"           element={<Home />}       />
           <Route path="/flashcards" element={<Flashcards />} />
           <Route path="/cheatsheet" element={<Cheatsheet />} />
           <Route path="/score"      element={<Score />}      />
         </Routes>
-      </div>
+      </main>
+      <div className="squiggle" />
     </BrowserRouter>
   )
 }

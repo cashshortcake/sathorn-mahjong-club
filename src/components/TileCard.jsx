@@ -15,7 +15,6 @@ function TileCard({ tile, learned, onToggleLearned }) {
       onClick={() => setFlipped(!flipped)}
     >
       <div className="card-inner">
-
         <div className="card-face card-front">
           <div className="learned-dot" />
           <div className="tile-glyph">{tile.glyph}</div>
@@ -24,7 +23,6 @@ function TileCard({ tile, learned, onToggleLearned }) {
           )}
           <div className="suit-band">{tile.suitLabel}</div>
         </div>
-
         <div className="card-face card-back">
           <div className="learned-dot" />
           <div className="tile-chinese">{tile.chinese}</div>
@@ -38,7 +36,6 @@ function TileCard({ tile, learned, onToggleLearned }) {
             {learned ? 'Unmark' : 'Mark learned'}
           </button>
         </div>
-
       </div>
     </div>
   )

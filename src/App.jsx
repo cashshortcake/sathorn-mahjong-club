@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Nav from './components/Nav'
 import Home from './pages/Home'
 import Flashcards from './pages/Flashcards'
-import Tiles from './pages/Tiles'
+import Cheatsheet from './pages/Cheatsheet'
 import Score from './pages/Score'
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/"           element={<Home />}       />
           <Route path="/flashcards" element={<Flashcards />} />
-          <Route path="/tiles"      element={<Tiles />}      />
+          <Route path="/cheatsheet" element={<Cheatsheet />} />
           <Route path="/score"      element={<Score />}      />
         </Routes>
       </div>

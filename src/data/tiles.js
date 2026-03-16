@@ -1,5 +1,4 @@
 const tiles = [
-    // ── Winds ──────────────────────────────────────────────
     {
       id: 'east',
       suit: 'wind',
@@ -64,8 +63,6 @@ const tiles = [
       weight: 1,
       learned: false,
     },
-  
-    // ── Dragons ────────────────────────────────────────────
     {
       id: 'chun',
       suit: 'honor',
@@ -114,8 +111,6 @@ const tiles = [
       weight: 1,
       learned: false,
     },
-  
-    // ── Characters 萬 ──────────────────────────────────────
     {
       id: 'man1',
       suit: 'man',
@@ -260,8 +255,6 @@ const tiles = [
       weight: 1,
       learned: false,
     },
-  
-    // ── Flowers ────────────────────────────────────────────
     {
       id: 'flower1',
       suit: 'flower',
@@ -326,8 +319,6 @@ const tiles = [
       weight: 1,
       learned: false,
     },
-  
-    // ── Seasons ────────────────────────────────────────────
     {
       id: 'season1',
       suit: 'season',

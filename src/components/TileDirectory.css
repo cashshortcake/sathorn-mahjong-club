@@ -1,0 +1,94 @@
+.directory {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 2rem;
+  }
+  
+  .suit-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 16px;
+    border-bottom: 0.5px solid #4A7A6580;
+  }
+  
+  .suit-row:last-child {
+    border-bottom: none;
+  }
+  
+  .suit-row.unavailable {
+    opacity: 0.35;
+  }
+  
+  .suit-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .suit-header-en {
+    font-size: 13px;
+    font-weight: 500;
+    color: #F7F3E8;
+  }
+  
+  .suit-header-zh {
+    font-size: 13px;
+    color: #E0F2EE;
+  }
+  
+  .badge {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.03em;
+  }
+  
+  .badge.optional {
+    background: #D4A01730;
+    color: #D4A017;
+    border: 1px solid #D4A01750;
+  }
+  
+  .badge.coming {
+    background: #4A7A6550;
+    color: #E0F2EE;
+  }
+  
+  .tile-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .dir-tile {
+    width: 56px;
+    background: #F7F3E8;
+    border: 2px solid #C8B89A;
+    border-radius: 8px;
+    box-shadow: 3px 3px 0px #4A7A65;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 4px;
+    gap: 2px;
+  }
+  
+  .dir-tile.dim {
+    opacity: 0.4;
+    box-shadow: none;
+  }
+  
+  .dir-glyph {
+    font-size: 26px;
+    line-height: 1;
+  }
+  
+  .dir-label {
+    font-size: 10px;
+    color: #666;
+    font-weight: 500;
+  }

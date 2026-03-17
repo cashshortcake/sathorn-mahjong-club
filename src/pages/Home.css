@@ -36,17 +36,17 @@
   
   .home-hero {
     width: calc(100% + 3rem);
+    text-align: center;
     margin-left: -1.5rem;
     margin-right: -1.5rem;
-    padding: 6px;
-    background: #4F8568;
     box-sizing: border-box;
   }
   
   .hero-box {
     background: #EFEEBD;
-    border: 2px solid #E02126;
-    border-radius: 2px;
+    outline: 3px solid #20201E;
+    border: 10px solid #EFEEBD;
+    box-shadow: 0 0 0 13px #E02126;
     padding: 2.5rem 2rem;
     display: flex;
     flex-direction: column;
@@ -84,7 +84,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 16px;
     flex: 1;
     min-width: 140px;
     max-width: 200px;

@@ -3,26 +3,27 @@ import iconFlashcards from '../assets/icons/illustration-flashcards.svg'
 import iconCheatsheet from '../assets/icons/illustration-cheatsheet.svg'
 import iconScoring from '../assets/icons/illustration-scoring.svg'
 import { Link } from 'react-router-dom'
+import BorderBox from '../components/BorderBox'
 
 function Home() {
   return (
     <div className="home">
 
-      <section className="home-hero">
-        <div className="hero-box">
-          <h1 className="hero-title">
-            Learn Mahjong. Count Points. End Arguments.
-          </h1>
-          <p className="hero-body">
-            A small toolkit to help our table learn tiles faster, count points
-            correctly, and settle scoring disputes.
-          </p>
-          <p className="hero-body">
-            Built after one too many games that ended with:<br />
-            <em>"Wait… wait… wait… let me recount."</em>
-          </p>
-        </div>
-      </section>
+    <section className="home-hero">
+     <BorderBox>
+        <h1 className="hero-title">
+        Learn Mahjong. Count Points. End Arguments.
+        </h1>
+        <p className="hero-body">
+        A small toolkit to help our table learn tiles faster, count points
+        correctly, and settle scoring disputes.
+        </p>
+        <p className="hero-body">
+        Built after one too many games that ended with:<br />
+        <em>"Wait… wait… wait… let me recount."</em>
+        </p>
+     </BorderBox>
+    </section>
 
       <section className="home-tools">
         <div className="tool-card">

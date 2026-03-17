@@ -9,10 +9,54 @@
     margin: 0 auto;
     width: 100%;
     background: #FFFAF8;
-    border: 1.5px solid #20201E;
-    border-radius: 12px;
+    border-radius: 4px;
     padding: 1.5rem;
     text-align: center;
+    position: relative;
+  }
+  
+.cs-intro-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid #20201eb4;
+    border-radius: 4px;
+    filter: url(#rough);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .cs-intro-box > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cs-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+    background: #FFFAF8;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+  }
+
+  .cs-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid #20201E;
+    border-radius: 4px;
+    filter: url(#rough);
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  .cs-inner > * {
+    position: relative;
+    z-index: 1;
   }
   
   .cs-intro-title {
@@ -50,8 +94,8 @@
     margin: 0 auto;
     width: 100%;
     background: #FFFAF8;
-    border: 1.5px solid #20201E;
-    border-radius: 12px;
+    border: 2px solid #20201eb4;
+    border-radius: 2px;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;

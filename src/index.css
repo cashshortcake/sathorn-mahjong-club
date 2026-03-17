@@ -91,3 +91,7 @@ a {
   background-size: 20px 16px;
   margin: 12px 0;
 }
+
+.border-rough {
+  filter: url(#rough);
+}

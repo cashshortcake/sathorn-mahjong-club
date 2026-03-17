@@ -1,0 +1,27 @@
+.border-box-outer {
+    padding: 16px;          /* ← thickness of green band */
+    border: 2px solid #20201E;      /* ← black border thickness */
+    background: #4F8568;   /* ← green colour */
+    box-sizing: border-box;
+    position: relative;
+  }
+  
+  .border-box-outer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #4F8568;
+    filter: url(#rough);
+    z-index: 0;
+  }
+
+  .border-box-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    border: 2px solid #20201E;      /* ← black border thickness */
+    outline: 4px solid #E02126;     /* ← red border thickness */
+    outline-offset: -6px;           /* ← how far red sits inside black */
+    padding: 2.5rem 2rem;           /* ← inner breathing room */
+    background: #EFEEBD;            /* ← cream background */
+  }

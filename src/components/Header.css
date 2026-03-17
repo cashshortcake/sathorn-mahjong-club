@@ -31,11 +31,15 @@
   
   .site-nav-link:hover {
     color: #F5511C;
+    background: #4F8568;
+    border-radius: 8px;
+    padding: 12px 20px;
+    transition: all 0.15s;
   }
   
   .site-nav-link.active-link {
-    background: #4F8568;
-    color: #F8F8F8;
+    color: #F5511C;
+    background: #F8F8F8;
     border-radius: 8px;
     padding: 12px 20px;
   }

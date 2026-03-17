@@ -10,24 +10,24 @@ function Header() {
       </Link>
       <nav className="site-nav">
         <NavLink
-          to="/flashcards"
-          className={({ isActive }) => isActive ? 'site-nav-link active-link' : 'site-nav-link'}
+            to="/cheatsheet"
+            className={({ isActive }) => isActive ? 'site-nav-link active-link' : 'site-nav-link'}
         >
-          Flashcards
+            Cheatsheet
         </NavLink>
         <NavLink
-          to="/cheatsheet"
-          className={({ isActive }) => isActive ? 'site-nav-link active-link' : 'site-nav-link'}
+            to="/flashcards"
+            className={({ isActive }) => isActive ? 'site-nav-link active-link' : 'site-nav-link'}
         >
-          Cheatsheet
+            Flashcards
         </NavLink>
         <NavLink
-          to="/score"
-          className={({ isActive }) => isActive ? 'site-nav-link active-link' : 'site-nav-link'}
+            to="/score"
+            className={({ isActive }) => isActive ? 'site-nav-link active-link' : 'site-nav-link'}
         >
-          Score Assistant
-        </NavLink>
-      </nav>
+            Score Assistant
+            </NavLink>
+        </nav>
     </header>
   )
 }

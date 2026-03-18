@@ -5,6 +5,7 @@ import iconScoring    from '../assets/icons/illustration-scoring.svg'
 import { Link } from 'react-router-dom'
 import Accordion from '../components/Accordion'
 import BorderBox from '../components/BorderBox'
+import Ticker from '../components/Ticker'  
 
 const RULES = [
   {
@@ -155,13 +156,11 @@ function Home() {
         </div>
       </section>
 
-      <div className="squiggle" />
-
       <section className="home-tips">
         <h2 className="home-tips-title">Quick Tips</h2>
         <Accordion items={RULES} />
       </section>
-
+    
     </div>
   )
 }

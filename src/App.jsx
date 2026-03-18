@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import Flashcards from './pages/Flashcards'
 import Cheatsheet from './pages/Cheatsheet'
 import Score from './pages/Score'
+import Ticker from './components/Ticker'
 import { useFadeIn } from './hooks/useFadeIn'
 import './App.css'
 
@@ -31,6 +32,7 @@ function AppContent() {
       <div className="squiggle" />
       <Header />
       <AnimatedMain key={location.pathname} />
+      <Ticker />
       <Footer />
       <div className="squiggle" />
     </>

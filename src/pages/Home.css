@@ -42,6 +42,14 @@
     box-sizing: border-box;
   }
   
+  @media (max-width: 480px) {
+    .home-hero {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
   .hero-box {
     background: #EFEEBD;
     outline: 3px solid #20201E;
@@ -60,16 +68,17 @@
     font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 400;
     color: #20201E;
-    line-height: 1.15;
+    line-height: 1.1;
   }
   
   .hero-body {
     font-family: 'Inter', sans-serif;
     font-size: 15px;
     color: #20201E;
-    line-height: 1.7;
+    line-height: 1.2;
     max-width: 480px;
     margin: 0 auto;
+    margin-top: 1.5rem;
   }
   
   .home-tools {

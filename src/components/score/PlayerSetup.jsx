@@ -25,12 +25,13 @@ function PlayerNameInput({ player, value, onChange }) {
 
   return (
     <div className="ps-player-row">
-      <span className="ps-player-dot" style={{ background: player.color }} />
-      <img
-        src={player.icon}
-        alt=""
-        className="ps-player-icon"
-        style={{ filter: `drop-shadow(0 0 0 ${player.color})` }}
+      <span
+        className="ps-player-icon player-ticker-star"
+        style={{
+          '--player-color': player.color,
+          '--player-icon-url': `url(${player.icon})`,
+        }}
+        aria-hidden
       />
       <input
         type="text"

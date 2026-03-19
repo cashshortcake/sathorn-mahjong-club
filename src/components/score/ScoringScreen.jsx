@@ -17,9 +17,13 @@ function ScoringTopBar({ players, round, isEndGame, onEditPlayers }) {
             <span
               key={p.id}
               className="ss-player-chip"
-              style={{ borderColor: p.color }}
+              style={{
+                borderColor: p.color,
+                '--player-color': p.color,
+                '--player-icon-url': `url(${p.icon})`,
+              }}
             >
-              <span className="ss-chip-dot" style={{ background: p.color }} />
+              <span className="ss-player-chip-icon player-ticker-star" aria-hidden />
               {p.name}
             </span>
           ))}
@@ -30,7 +34,7 @@ function ScoringTopBar({ players, round, isEndGame, onEditPlayers }) {
         type="button"
         onClick={onEditPlayers}
       >
-        Edit players
+        Edit
       </button>
     </div>
   )

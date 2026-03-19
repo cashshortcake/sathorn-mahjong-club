@@ -139,9 +139,16 @@ export function StandingsList({ players, scores }) {
   return (
     <div className="rp-standings">
       {sorted.map((p, i) => (
-        <div key={p.id} className={`rp-standing-row ${i === 0 ? 'leading' : ''}`}>
+        <div
+          key={p.id}
+          className={`rp-standing-row ${i === 0 ? 'leading' : ''}`}
+          style={{
+            '--player-color': p.color,
+            '--player-icon-url': `url(${p.icon})`,
+          }}
+        >
           <span className="rp-standing-rank">{i + 1}</span>
-          <span className="rp-standing-dot" style={{ background: p.color }} />
+          <span className="rp-standing-icon player-ticker-star" aria-hidden />
           <span className="rp-standing-name">{p.name}</span>
           {i === 0 && <span className="rp-leading-badge">●</span>}
           <span className="rp-standing-score">{scores[p.id] || 0}</span>

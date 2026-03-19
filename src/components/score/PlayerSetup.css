@@ -1,3 +1,5 @@
+@import './playerTickerStar.css';
+
 /* ── Player Setup — Screen 1 ─────────────────────────────────────────────── */
 .ps-page {
   padding: 0 1.5rem 4rem;
@@ -91,18 +93,9 @@
   gap: 0.6rem;
 }
 
-.ps-player-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
 .ps-player-icon {
   width: 22px;
   height: 22px;
-  flex-shrink: 0;
-  opacity: 0.85;
 }
 
 .ps-name-input {

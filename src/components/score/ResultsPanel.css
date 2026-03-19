@@ -1,3 +1,5 @@
+@import './playerTickerStar.css';
+
 /* ── Results Panel — dark theme ──────────────────────────────────────────── */
 .rp-panel {
   background: #20201E;
@@ -286,11 +288,9 @@
   flex-shrink: 0;
 }
 
-.rp-standing-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
+.rp-standing-icon {
+  width: 12px;
+  height: 12px;
 }
 
 .rp-standing-name {

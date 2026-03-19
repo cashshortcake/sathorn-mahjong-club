@@ -210,6 +210,8 @@
   gap: 0;
   width: fit-content;
   border: 1.5px solid #c8b89a;
+  border-radius: 100px;
+  overflow: hidden;
 }
 
 .sf-counter-btn {

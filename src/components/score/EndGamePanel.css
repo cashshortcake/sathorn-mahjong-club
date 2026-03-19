@@ -39,7 +39,6 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: #4F8568;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,8 +46,8 @@
 }
 
 .egp-winner-icon {
-  width: 30px;
-  height: 30px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
 }
 
@@ -56,7 +55,7 @@
   font-family: 'PerfectlyNineties', serif;
   font-size: 1.5rem;
   font-weight: 400;
-  color: #4F8568;
+  color: #20201E;
   margin-top: 0.1rem;
   line-height: 1.1;
 }
@@ -64,7 +63,7 @@
 .egp-winner-score {
   font-family: 'Inter', sans-serif;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 400;
   color: #4F8568;
 }
 

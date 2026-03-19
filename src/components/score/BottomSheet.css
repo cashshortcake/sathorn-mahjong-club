@@ -26,7 +26,8 @@
     z-index: 70;
     background: #F5F0EB;
     max-height: 85vh;
-    border-top: 2px solid #20201E;
+    border-top: 1px solid #20201E;
+    border-radius: 12px 12px 0 0;
     animation: sheet-up 0.25s ease-out;
     transition: max-height 0.2s ease;
   }
@@ -67,21 +68,22 @@
 
   .bs-tab {
     flex: 1;
-    padding: 0.35rem 0.6rem;
+    padding: 0.65rem 0.6rem;
     background: none;
     border: none;
     font-family: 'Inter', sans-serif;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 0.03em;
     color: #6B6760;
+    background: #DCD1B8;
     cursor: pointer;
     border-radius: 100px;
     transition: background 0.15s, color 0.15s;
   }
 
   .bs-tab.active {
-    background: #20201E;
+    background: #4F8568;
     color: #F5F0EB;
   }
 

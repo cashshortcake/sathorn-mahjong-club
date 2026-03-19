@@ -9,7 +9,7 @@
   border-radius: 2px;
   border: 1px solid #20201E;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.85rem;
 }
 
 /* ── Fan section container (top card) ── */
@@ -30,7 +30,7 @@
 
 .rp-fan-section-round {
   font-family: 'Inter', sans-serif;
-  font-size: 10px;
+  font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -66,7 +66,7 @@
 .rp-breakdown {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.5rem;
 }
 
 .rp-breakdown-empty {
@@ -81,7 +81,7 @@
   justify-content: space-between;
   align-items: center;
   font-family: 'Inter', sans-serif;
-  font-size: 12.5px;
+  font-size: 0.8rem;
   color: #3D3B35;
 }
 
@@ -122,25 +122,26 @@
 /* ── Section label ── */
 .rp-section-label {
   font-family: 'Inter', sans-serif;
-  font-size: 10px;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.07em;
+  letter-spacing: 0em;
   text-transform: uppercase;
-  color: #8B897F;
+  color: #6B6760;
 }
 
 /* ── Fields (Winner, Win type) ── */
 .rp-field {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.4rem;
 }
 
 .rp-field-label {
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 0.8rem;
   font-weight: 600;
-  color: #6B6760;
+  color: #8B897F;
+  text-transform: uppercase;
 }
 
 .rp-select {
@@ -171,6 +172,7 @@
 .rp-toggle {
   display: flex;
   border: 1px solid #8B897F;
+  border-radius: 100px;
   overflow: hidden;
 }
 
@@ -211,23 +213,15 @@
 .rp-payout {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 .rp-payout-row {
   display: flex;
-  align-items: center;
-  gap: 0.4rem;
+  align-items: left;
   font-family: 'Inter', sans-serif;
   font-size: 12.5px;
   color: #3D3B35;
-}
-
-.rp-payout-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
 }
 
 .rp-payout-name {
@@ -235,7 +229,7 @@
 }
 
 .rp-payout-val {
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .rp-payout-val.pos { color: #4F8568; }
@@ -308,7 +302,7 @@
   align-items: center;
   gap: 0.4rem;
   font-family: 'Inter', sans-serif;
-  font-size: 12.5px;
+  font-size: 0.85rem;
   color: #3D3B35;
   padding: 0.2rem 0;
 }
@@ -343,9 +337,9 @@
 }
 
 .rp-standing-score {
-  font-weight: 600;
+  font-weight: 500;
   color: #4F8568;
-  font-size: 13px;
+  font-size: 0.9rem;
 }
 
 /* ── Round history ── */
@@ -364,13 +358,14 @@
   border: none;
   color: #6B6760;
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0em;
   text-transform: uppercase;
   cursor: pointer;
   padding: 0;
   width: 100%;
+  margin-bottom: 6px;
   text-align: left;
 }
 
@@ -381,7 +376,7 @@
 .rp-history-rows {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.55rem;
 }
 
 .rp-history-row {
@@ -389,7 +384,7 @@
   align-items: center;
   gap: 0.4rem;
   font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  font-size: 0.85rem;
   color: #6B6760;
 }
 
@@ -416,7 +411,7 @@
   border: none;
   color: #4F8568;
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 0.85rem;
   cursor: pointer;
   text-decoration: underline;
   padding: 0;

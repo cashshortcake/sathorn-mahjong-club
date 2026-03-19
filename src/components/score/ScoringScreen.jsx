@@ -23,13 +23,15 @@ function ScoringTopBar({ players, round, isEndGame, onEditPlayers }) {
             <span
               key={p.id}
               className="ss-player-chip"
-              style={{
-                borderColor: p.color,
-                '--player-color': p.color,
-                '--player-icon-url': `url(${p.icon})`,
-              }}
+              style={{ borderColor: p.color }}
             >
-              <span className="ss-player-chip-icon player-ticker-star" aria-hidden />
+              <img
+                className="ss-player-chip-icon"
+                src={p.icon}
+                style={{ filter: p.filter }}
+                alt=""
+                aria-hidden
+              />
               {p.name}
             </span>
           ))}

@@ -1,14 +1,2 @@
-/* Colored ticker star via mask (SVG fill is ignored; --player-color tints the shape) */
-.player-ticker-star {
-  display: inline-block;
-  flex-shrink: 0;
-  background-color: var(--player-color);
-  -webkit-mask-image: var(--player-icon-url);
-  mask-image: var(--player-icon-url);
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-}
+/* Player icon — rendered as <img> with CSS filter for colour tinting */
+/* Size is set by the parent class (ps-player-icon, ss-player-chip-icon, etc.) */

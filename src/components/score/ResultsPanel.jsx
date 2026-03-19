@@ -141,13 +141,15 @@ export function StandingsList({ players, scores }) {
         <div
           key={p.id}
           className={`rp-standing-row ${i === 0 ? 'leading' : ''}`}
-          style={{
-            '--player-color': p.color,
-            '--player-icon-url': `url(${p.icon})`,
-          }}
         >
           <span className="rp-standing-rank">{i + 1}</span>
-          <span className="rp-standing-icon player-ticker-star" aria-hidden />
+          <img
+            className="rp-standing-icon"
+            src={p.icon}
+            style={{ filter: p.filter }}
+            alt=""
+            aria-hidden
+          />
           <span className="rp-standing-name">{p.name}</span>
           {i === 0 && <span className="rp-leading-badge">●</span>}
           <span className="rp-standing-score">{scores[p.id] || 0}</span>

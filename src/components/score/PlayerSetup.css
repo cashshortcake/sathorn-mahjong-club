@@ -107,6 +107,8 @@
 .ps-player-icon {
   width: 22px;
   height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .ps-name-input {
@@ -137,7 +139,6 @@
   padding: 0.75rem;
   background: #4F8568;
   color: #F8F8F8;
-  border: 2px solid #20201E;
   font-family: 'Inter', sans-serif;
   font-size: 15px;
   font-weight: 600;

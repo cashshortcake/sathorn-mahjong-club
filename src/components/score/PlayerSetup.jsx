@@ -25,12 +25,11 @@ function PlayerNameInput({ player, value, onChange }) {
 
   return (
     <div className="ps-player-row">
-      <span
-        className="ps-player-icon player-ticker-star"
-        style={{
-          '--player-color': player.color,
-          '--player-icon-url': `url(${player.icon})`,
-        }}
+      <img
+        className="ps-player-icon"
+        src={player.icon}
+        style={{ filter: player.filter }}
+        alt=""
         aria-hidden
       />
       <span className="ps-player-prefix">P{player.id}</span>

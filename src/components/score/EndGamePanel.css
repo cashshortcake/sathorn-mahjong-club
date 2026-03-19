@@ -49,6 +49,7 @@
 .egp-winner-icon {
   width: 30px;
   height: 30px;
+  object-fit: contain;
 }
 
 .egp-winner-name {

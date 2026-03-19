@@ -19,11 +19,16 @@ import star4 from '../assets/icons/ticker-star-4.svg'
 import './Score.css'
 
 // ─── Player config ────────────────────────────────────────────────────────────
+// filter: converts the SVG's near-black fill (#20201E) to each player's colour
 const PLAYER_META = [
-  { id: 1, color: '#80CAAF', icon: star1, defaultName: 'Player 1' },
-  { id: 2, color: '#F5511C', icon: star2, defaultName: 'Player 2' },
-  { id: 3, color: '#E02126', icon: star3, defaultName: 'Player 3' },
-  { id: 4, color: '#4F8568', icon: star4, defaultName: 'Player 4' },
+  { id: 1, color: '#80CAAF', icon: star1, defaultName: 'Player 1',
+    filter: 'brightness(0) saturate(100%) invert(79%) sepia(21%) saturate(617%) hue-rotate(117deg) brightness(97%)' },
+  { id: 2, color: '#F5511C', icon: star2, defaultName: 'Player 2',
+    filter: 'brightness(0) saturate(100%) invert(41%) sepia(94%) saturate(1900%) hue-rotate(6deg) brightness(104%)' },
+  { id: 3, color: '#E02126', icon: star3, defaultName: 'Player 3',
+    filter: 'brightness(0) saturate(100%) invert(19%) sepia(100%) saturate(4800%) hue-rotate(347deg) brightness(97%)' },
+  { id: 4, color: '#4F8568', icon: star4, defaultName: 'Player 4',
+    filter: 'brightness(0) saturate(100%) invert(43%) sepia(20%) saturate(690%) hue-rotate(109deg) brightness(87%)' },
 ]
 
 export default function Score() {

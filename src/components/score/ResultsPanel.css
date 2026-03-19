@@ -327,6 +327,8 @@
 .rp-standing-icon {
   width: 12px;
   height: 12px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .rp-standing-name {

@@ -67,21 +67,13 @@
   color: #20201E;
 }
 
-/* Player chip icon — explicit mask properties to guarantee rendering */
+/* Player chip icon */
 .ss-player-chip-icon {
   width: 16px;
   height: 16px;
   display: inline-block;
   flex-shrink: 0;
-  background-color: var(--player-color);
-  -webkit-mask-image: var(--player-icon-url);
-  mask-image: var(--player-icon-url);
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
+  object-fit: contain;
 }
 
 .ss-edit-players {

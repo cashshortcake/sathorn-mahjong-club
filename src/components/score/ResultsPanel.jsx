@@ -108,9 +108,7 @@ function DiscarderSelector({ players, winnerId, discarderId, disabled, onChange 
 
 // ─── Payout Summary ───────────────────────────────────────────────────────────
 function PayoutSummary({ players, payouts }) {
-  if (!payouts) return (
-    <div className="rp-payout-empty">Score {MIN_FAN}+ fan to see payouts</div>
-  )
+  if (!payouts) return null
   return (
     <div className="rp-payout">
       {players.map(p => {
@@ -142,7 +140,6 @@ export function StandingsList({ players, scores }) {
           key={p.id}
           className={`rp-standing-row ${i === 0 ? 'leading' : ''}`}
         >
-          <span className="rp-standing-rank">{i + 1}</span>
           <img
             className="rp-standing-icon"
             src={p.icon}
@@ -213,9 +210,6 @@ export function ApplyButton({ canApply, disabledReason, round, onApply }) {
       >
         {label}
       </button>
-      {!canApply && disabledReason && (
-        <p className="rp-apply-hint">{disabledReason}</p>
-      )}
     </div>
   )
 }

@@ -21,8 +21,8 @@ import './Score.css'
 // ─── Player config ────────────────────────────────────────────────────────────
 // filter: converts the SVG's near-black fill (#20201E) to each player's colour
 const PLAYER_META = [
-  { id: 1, color: '#80CAAF', icon: star1, defaultName: 'Player 1',
-    filter: 'brightness(0) saturate(100%) invert(79%) sepia(21%) saturate(617%) hue-rotate(117deg) brightness(97%)' },
+  { id: 1, color: '#5EC19D', icon: star1, defaultName: 'Player 1',
+    filter: 'brightness(0) saturate(100%) invert(69%) sepia(38%) saturate(600%) hue-rotate(116deg) brightness(98%)' },
   { id: 2, color: '#F5511C', icon: star2, defaultName: 'Player 2',
     filter: 'brightness(0) saturate(100%) invert(41%) sepia(94%) saturate(1900%) hue-rotate(6deg) brightness(104%)' },
   { id: 3, color: '#E02126', icon: star3, defaultName: 'Player 3',

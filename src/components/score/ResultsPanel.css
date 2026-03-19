@@ -312,13 +312,6 @@
   font-weight: 500;
 }
 
-.rp-standing-rank {
-  font-size: 11px;
-  color: #8B897F;
-  width: 14px;
-  text-align: right;
-  flex-shrink: 0;
-}
 
 .rp-standing-icon {
   width: 12px;

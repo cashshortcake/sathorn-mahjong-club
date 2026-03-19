@@ -147,7 +147,7 @@ function BreakdownContent({
           </div>
         )
         : (
-          <div className="rp-payout-empty">Score {MIN_FAN}+ fan to see payouts</div>
+          null
         )
       }
 
@@ -169,9 +169,6 @@ function BreakdownContent({
           >
             {label}
           </button>
-          {!canApply && applyDisabledReason && (
-            <p className="rp-apply-hint">{applyDisabledReason}</p>
-          )}
         </div>
       )}
 

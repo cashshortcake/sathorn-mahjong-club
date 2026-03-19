@@ -13,11 +13,12 @@
     left: 0;
     right: 0;
     z-index: 50;
-    background: #F5F0EB;
-    padding: 0.6rem 1rem;
+    border-radius: 8px 8px 0 0;
+    background: #F7F3E8;
+    padding: 1rem 1rem;
     border-top: 1.5px solid #20201E;
     cursor: pointer;
-    gap: 0.5rem;
+    gap: 0.7rem;
     /* prevent text selection on tap */
     user-select: none;
     -webkit-user-select: none;

@@ -11,7 +11,7 @@ function ScoringTopBar({ players, round, isEndGame, onEditPlayers }) {
       <div className="ss-topbar-left">
         {/* Desktop: "Round N of 4" — hidden on mobile */}
         <span className={`ss-round-tag ss-round-tag--desktop ${isEndGame ? 'endgame' : ''}`}>
-          {isEndGame ? `Game Over · Round 4` : `Round ${round} of 4`}
+          {isEndGame ? `Game Over ` : `Round ${round}`}
         </span>
         {/* Mobile: "Round N · N Players" — hidden on desktop */}
         <span className={`ss-round-tag ss-round-tag--mobile ${isEndGame ? 'endgame' : ''}`}>

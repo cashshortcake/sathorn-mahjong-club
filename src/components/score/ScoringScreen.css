@@ -13,8 +13,6 @@
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.75rem 1.5rem;
-  background: #F7F3E8;
-  border: 1.5px solid #c8b89a;
   flex-wrap: wrap;
 }
 
@@ -57,10 +55,8 @@
 
 .ss-player-chip {
   font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   padding: 0.2rem 0.5rem;
-  border: 1.5px solid;
-  border-radius: 2px;
   display: flex;
   align-items: center;
   gap: 0.35rem;
@@ -82,7 +78,7 @@
   font-weight: 600;
   color: #20201E;
   background: none;
-  border: 1.5px solid #20201E;
+  border: 1px solid #20201E;
   border-radius: 100px;
   cursor: pointer;
   padding: 0.25rem 0.75rem;
@@ -116,7 +112,6 @@
   top: 0;
   /* no max-height / overflow — panel grows with its content, no internal scroll */
   align-self: flex-start;
-  border-left: 1.5px solid #20201E;
   padding-top: 1.25rem;
 }
 

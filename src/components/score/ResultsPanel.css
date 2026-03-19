@@ -2,10 +2,12 @@
 
 /* ── Results Panel — light card theme ───────────────────────────────────────── */
 .rp-panel {
-  background: #F5F0EB;
+  background: #F7F3E8;
   color: #20201E;
   padding: 1rem 0.875rem;
   display: flex;
+  border-radius: 2px;
+  border: 1px solid #20201E;
   flex-direction: column;
   gap: 0.6rem;
 }
@@ -144,10 +146,10 @@
 .rp-select {
   font-family: 'Inter', sans-serif;
   font-size: 13px;
-  padding: 0.4rem 0.5rem;
+  padding: 0.4rem 0.6rem;
   background: #E6E1D7;
   color: #20201E;
-  border: 1px solid #20201E;
+  border: 1px solid #8B897F;
   outline: none;
   cursor: pointer;
   width: 100%;
@@ -168,7 +170,7 @@
 /* ── Win type toggle ── */
 .rp-toggle {
   display: flex;
-  border: 1px solid #20201E;
+  border: 1px solid #8B897F;
   overflow: hidden;
 }
 
@@ -242,11 +244,11 @@
 /* ── Min fan banner ── */
 .rp-min-fan-banner {
   background: #EBB2B9;
-  border: 1px solid #C47A85;
+  border: 0;
   color: #8B1A22;
   font-family: 'Inter', sans-serif;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   padding: 0.55rem 0.75rem;
   text-align: center;
   letter-spacing: 0.01em;
@@ -264,8 +266,8 @@
   width: 100%;
   padding: 0.65rem;
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
   border: none;
   cursor: pointer;
   letter-spacing: 0.02em;
@@ -298,7 +300,7 @@
 .rp-standings {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.3rem;
 }
 
 .rp-standing-row {

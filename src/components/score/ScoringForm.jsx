@@ -101,7 +101,6 @@ function SectionCard({ dot, title, subtitle, disabled, children }) {
   return (
     <div className={`sf-section-card ${disabled ? 'sf-section-disabled' : ''}`}>
       <div className="sf-section-head">
-        <span className="sf-section-dot" style={{ background: dot }} />
         <div>
           <div className="sf-section-title">{title}</div>
           {subtitle && <div className="sf-section-sub">{subtitle}</div>}
@@ -248,7 +247,7 @@ export default function ScoringForm({ scoring, fanResult, isEndGame, onChange })
       <SectionCard
         dot="#F5511C"
         title="Basic Sets"
-        subtitle="Multi-select — each dragon counts separately"
+        subtitle="Each dragon counts separately"
         disabled={isEndGame || !basicSetsEnabled}
       >
         {BASIC_SETS.map(item => (

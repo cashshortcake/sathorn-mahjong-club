@@ -23,13 +23,12 @@
 
 .ps-sub {
   font-size: 14px;
-  color: #4F8568;
-  font-style: italic;
+  color: #20201E;
 }
 
 .ps-card {
   background: #F7F3E8;
-  border: 2px solid #20201E;
+  border: 1px solid #20201E;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -54,7 +53,7 @@
 /* ── Segmented toggle ── */
 .ps-toggle {
   display: flex;
-  border: 2px solid #20201E;
+  border: 1px solid #20201E;
   overflow: hidden;
   width: fit-content;
 }
@@ -119,6 +118,7 @@
   border: 1.5px solid #c8b89a;
   background: #E2DDD3;
   color: #20201E;
+  border-radius: 2px;
   outline: none;
   transition: border-color 0.15s;
 }

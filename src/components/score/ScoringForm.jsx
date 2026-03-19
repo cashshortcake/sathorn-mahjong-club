@@ -1,0 +1,316 @@
+import { useState } from 'react'
+import {
+  WHOLE_HAND,
+  BASIC_SETS,
+  WINNING_CONDITIONS,
+  SPECIAL_HANDS,
+} from '../../utils/scoring'
+import './ScoringForm.css'
+
+// ─── Fan pill ─────────────────────────────────────────────────────────────────
+function FanPill({ fan, strikethrough }) {
+  return (
+    <span className={`sf-fan-pill ${strikethrough ? 'struck' : ''}`}>
+      {fan >= 12 ? 'Max' : `+${fan}`}
+    </span>
+  )
+}
+
+// ─── Tooltip ──────────────────────────────────────────────────────────────────
+function InfoTooltip({ text }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <span className="sf-info-wrap">
+      <button
+        className="sf-info-btn"
+        type="button"
+        aria-label="More info"
+        onClick={() => setOpen(o => !o)}
+        onBlur={() => setOpen(false)}
+      >
+        ⓘ
+      </button>
+      {open && <span className="sf-tooltip">{text}</span>}
+    </span>
+  )
+}
+
+// ─── Radio option (Section A) ─────────────────────────────────────────────────
+function RadioOption({ item, selected, disabled, strikethrough, onChange }) {
+  return (
+    <label className={`sf-option ${disabled ? 'disabled' : ''} ${strikethrough ? 'struck' : ''}`}>
+      <input
+        type="radio"
+        className="sf-radio"
+        checked={selected}
+        disabled={disabled}
+        onChange={() => onChange(selected ? null : item.id)}
+        onClick={() => selected && onChange(null)}
+      />
+      <span className="sf-option-label">{item.label}</span>
+      <InfoTooltip text={item.info} />
+      <FanPill fan={item.fan} strikethrough={strikethrough} />
+    </label>
+  )
+}
+
+// ─── Checkbox option (Sections B, C, E) ───────────────────────────────────────
+function CheckboxOption({ item, checked, disabled, strikethrough, onChange }) {
+  return (
+    <label className={`sf-option ${disabled ? 'disabled' : ''} ${strikethrough ? 'struck' : ''}`}>
+      <input
+        type="checkbox"
+        className="sf-checkbox"
+        checked={checked}
+        disabled={disabled}
+        onChange={e => onChange(item.id, e.target.checked)}
+      />
+      <span className="sf-option-label">{item.label}</span>
+      <InfoTooltip text={item.info} />
+      <FanPill fan={item.fan} strikethrough={strikethrough} />
+    </label>
+  )
+}
+
+// ─── Section Card ─────────────────────────────────────────────────────────────
+function SectionCard({ dot, title, subtitle, disabled, children }) {
+  return (
+    <div className={`sf-section-card ${disabled ? 'sf-section-disabled' : ''}`}>
+      <div className="sf-section-head">
+        <span className="sf-section-dot" style={{ background: dot }} />
+        <div>
+          <div className="sf-section-title">{title}</div>
+          {subtitle && <div className="sf-section-sub">{subtitle}</div>}
+        </div>
+      </div>
+      <div className="sf-section-body">{children}</div>
+    </div>
+  )
+}
+
+// ─── Collapse Section (Section E) ─────────────────────────────────────────────
+function CollapseSection({ dot, title, badge, disabled, children }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className={`sf-section-card sf-collapse ${disabled ? 'sf-section-disabled' : ''}`}>
+      <button
+        className="sf-collapse-head"
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+      >
+        <span className="sf-section-dot" style={{ background: dot }} />
+        <span className="sf-section-title">{title}</span>
+        {badge && <span className="sf-badge">{badge}</span>}
+        <span className={`sf-chevron ${open ? 'open' : ''}`}>▾</span>
+      </button>
+      {open && <div className="sf-section-body">{children}</div>}
+    </div>
+  )
+}
+
+// ─── Flower Counter (Section D) ───────────────────────────────────────────────
+function FlowerCounter({ flowers, seatFlower, onChange }) {
+  const isNoFlowers = flowers === 0
+  const isAllFlowers = flowers === 8
+  const showSeatFlower = flowers >= 1 && flowers <= 7
+
+  return (
+    <div className="sf-flower-wrap">
+      <div className="sf-flower-counter">
+        <button
+          className="sf-counter-btn"
+          type="button"
+          disabled={flowers === 0}
+          onClick={() => onChange({ flowers: flowers - 1, seatFlower: false })}
+          aria-label="Decrease flowers"
+        >−</button>
+        <span className="sf-counter-val">{flowers}</span>
+        <button
+          className="sf-counter-btn"
+          type="button"
+          disabled={flowers === 8}
+          onClick={() => onChange({ flowers: flowers + 1, seatFlower: false })}
+          aria-label="Increase flowers"
+        >+</button>
+      </div>
+
+      {isNoFlowers && (
+        <span className="sf-flower-auto">
+          No Flowers <FanPill fan={1} />
+        </span>
+      )}
+      {isAllFlowers && (
+        <span className="sf-flower-auto">
+          All Flowers <FanPill fan={2} />
+        </span>
+      )}
+      {showSeatFlower && (
+        <label className="sf-option sf-seat-flower">
+          <input
+            type="checkbox"
+            className="sf-checkbox"
+            checked={seatFlower}
+            onChange={e => onChange({ seatFlower: e.target.checked })}
+          />
+          <span className="sf-option-label">Includes seat flower</span>
+          <FanPill fan={1} />
+        </label>
+      )}
+    </div>
+  )
+}
+
+// ─── Main ScoringForm ─────────────────────────────────────────────────────────
+export default function ScoringForm({ scoring, fanResult, isEndGame, onChange }) {
+  const { items: fanItems, cappedAt } = fanResult
+
+  // Determine which items are struck through for visual reference
+  // (we match by section+label to find struckthrough items)
+  const struckSections = new Set()
+  if (cappedAt !== null) {
+    fanItems.slice(cappedAt).forEach(item => struckSections.add(item.section))
+  }
+
+  // Helpers
+  function isItemStruck(section) {
+    if (cappedAt === null) return false
+    return fanItems
+      .slice(cappedAt)
+      .some(fi => fi.section === section)
+  }
+
+  // Section A helpers
+  const specialDef = scoring.specialHand
+    ? SPECIAL_HANDS.find(s => s.id === scoring.specialHand)
+    : null
+  const basicSetsEnabled =
+    scoring.wholeHand !== 'sevenPairs' &&
+    (!specialDef || specialDef.allowBasicSets)
+
+  // Section C disabled states
+  const selfDrawDisabled = scoring.specialHand === 'nineGates'
+
+  return (
+    <div className={`sf-form ${isEndGame ? 'sf-form-disabled' : ''}`}>
+
+      {/* ── Section A: Whole Hand Pattern ── */}
+      <SectionCard
+        dot="#4F8568"
+        title="Whole Hand Pattern"
+        subtitle="Select one — clears if a special hand is chosen"
+        disabled={isEndGame || !!scoring.specialHand}
+      >
+        {WHOLE_HAND.map(item => (
+          <RadioOption
+            key={item.id}
+            item={item}
+            selected={scoring.wholeHand === item.id}
+            disabled={isEndGame || !!scoring.specialHand}
+            strikethrough={isItemStruck('wholeHand')}
+            onChange={val => onChange({ wholeHand: val, specialHand: null })}
+          />
+        ))}
+      </SectionCard>
+
+      {/* ── Section B: Basic Sets ── */}
+      <SectionCard
+        dot="#F5511C"
+        title="Basic Sets"
+        subtitle="Multi-select — each dragon counts separately"
+        disabled={isEndGame || !basicSetsEnabled}
+      >
+        {BASIC_SETS.map(item => (
+          <CheckboxOption
+            key={item.id}
+            item={item}
+            checked={scoring.basicSets.includes(item.id)}
+            disabled={isEndGame || !basicSetsEnabled}
+            strikethrough={isItemStruck('basicSets')}
+            onChange={(id, checked) => {
+              const next = checked
+                ? [...scoring.basicSets, id]
+                : scoring.basicSets.filter(x => x !== id)
+              onChange({ basicSets: next })
+            }}
+          />
+        ))}
+        {!basicSetsEnabled && (
+          <p className="sf-section-note">
+            {scoring.wholeHand === 'sevenPairs'
+              ? 'Disabled — Seven Pairs cannot combine with Basic Sets.'
+              : 'Disabled — selected special hand does not stack with Basic Sets.'}
+          </p>
+        )}
+      </SectionCard>
+
+      {/* ── Section C: Winning Conditions ── */}
+      <SectionCard
+        dot="#E02126"
+        title="Winning Conditions"
+        subtitle="Select all that apply"
+        disabled={isEndGame}
+      >
+        {WINNING_CONDITIONS.map(item => {
+          const isDisabled = isEndGame || (item.id === 'selfDraw' && selfDrawDisabled)
+          return (
+            <CheckboxOption
+              key={item.id}
+              item={item}
+              checked={scoring.winningConditions.includes(item.id)}
+              disabled={isDisabled}
+              strikethrough={isItemStruck('winConditions')}
+              onChange={(id, checked) => {
+                const next = checked
+                  ? [...scoring.winningConditions, id]
+                  : scoring.winningConditions.filter(x => x !== id)
+                onChange({ winningConditions: next })
+              }}
+            />
+          )
+        })}
+      </SectionCard>
+
+      {/* ── Section D: Flowers & Seasons ── */}
+      <SectionCard
+        dot="#80CAAF"
+        title="Flowers & Seasons"
+        subtitle="Count of flower tiles held"
+        disabled={isEndGame}
+      >
+        <FlowerCounter
+          flowers={scoring.flowers}
+          seatFlower={scoring.seatFlower}
+          onChange={updates => onChange(updates)}
+        />
+      </SectionCard>
+
+      {/* ── Section E: Special Hands ── */}
+      <CollapseSection
+        dot="#C8B89A"
+        title="Special Hands"
+        badge="Rare"
+        disabled={isEndGame}
+      >
+        {SPECIAL_HANDS.map(item => (
+          <CheckboxOption
+            key={item.id}
+            item={item}
+            checked={scoring.specialHand === item.id}
+            disabled={isEndGame}
+            strikethrough={isItemStruck('special')}
+            onChange={(_id, checked) => {
+              if (checked) {
+                onChange({ specialHand: item.id, wholeHand: null })
+              } else {
+                onChange({ specialHand: null })
+              }
+
+            }}
+          />
+        ))}
+      </CollapseSection>
+
+    </div>
+  )
+}

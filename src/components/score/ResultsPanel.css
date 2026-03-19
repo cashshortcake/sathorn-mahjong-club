@@ -1,0 +1,388 @@
+/* ── Results Panel — dark theme ──────────────────────────────────────────── */
+.rp-panel {
+  background: #20201E;
+  color: #F8F8F8;
+  padding: 1rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-height: 100%;
+}
+
+/* ── Fan total ── */
+.rp-total-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.rp-total-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9a978f;
+}
+
+.rp-total-val {
+  font-family: 'PerfectlyNineties', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: #F8F8F8;
+  line-height: 1;
+}
+
+.rp-total-val.capped {
+  color: #F5511C;
+}
+
+/* ── Breakdown ── */
+.rp-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.rp-breakdown-empty {
+  font-size: 12px;
+  color: #6a6860;
+  font-style: italic;
+  padding: 0.25rem 0;
+}
+
+.rp-breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  color: #d8d5ce;
+}
+
+.rp-breakdown-row.struck {
+  text-decoration: line-through;
+  opacity: 0.4;
+}
+
+.rp-breakdown-fan {
+  font-weight: 600;
+  color: #80CAAF;
+  white-space: nowrap;
+  margin-left: 0.5rem;
+}
+
+/* ── Max fan banner ── */
+.rp-max-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  background: #442C24;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #F5511C;
+  border-radius: 2px;
+  margin: 0.2rem 0;
+}
+
+/* ── Divider ── */
+.rp-divider {
+  height: 1px;
+  background: #333330;
+  margin: 0.2rem 0;
+}
+
+/* ── Section label ── */
+.rp-section-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #6a6860;
+}
+
+/* ── Fields (Winner, Win type) ── */
+.rp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.rp-field-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #9a978f;
+}
+
+.rp-select {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  padding: 0.4rem 0.5rem;
+  background: #4B4A4A;
+  color: #F8F8F8;
+  border: 1px solid #555450;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.rp-select:disabled {
+  background: #2D2D2B;
+  color: #6a6860;
+  cursor: not-allowed;
+}
+
+.rp-select option {
+  background: #4B4A4A;
+}
+
+/* ── Win type toggle ── */
+.rp-toggle {
+  display: flex;
+  border: 1px solid #555450;
+  overflow: hidden;
+}
+
+.rp-toggle-btn {
+  flex: 1;
+  padding: 0.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  background: #4B4A4A;
+  color: #d8d5ce;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.rp-toggle-btn + .rp-toggle-btn {
+  border-left: 1px solid #555450;
+}
+
+.rp-toggle-btn.active {
+  background: #4F8568;
+  color: #F8F8F8;
+}
+
+.rp-toggle-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Payout ── */
+.rp-payout-empty {
+  font-size: 12px;
+  color: #6a6860;
+  font-style: italic;
+}
+
+.rp-payout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.rp-payout-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  color: #d8d5ce;
+}
+
+.rp-payout-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.rp-payout-name {
+  flex: 1;
+}
+
+.rp-payout-val {
+  font-weight: 600;
+}
+
+.rp-payout-val.pos { color: #80CAAF; }
+.rp-payout-val.neg { color: #F5511C; }
+
+/* ── Apply button ── */
+.rp-apply-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.2rem;
+}
+
+.rp-apply-btn {
+  width: 100%;
+  padding: 0.65rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background 0.15s;
+}
+
+.rp-apply-btn.active {
+  background: #4F8568;
+  color: #F8F8F8;
+}
+
+.rp-apply-btn.active:hover {
+  background: #5EC19D;
+}
+
+.rp-apply-btn.disabled {
+  background: #2E3E34;
+  color: #6a6860;
+  cursor: not-allowed;
+}
+
+.rp-apply-hint {
+  font-size: 11px;
+  color: #6a6860;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ── Standings ── */
+.rp-standings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.rp-standing-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  color: #d8d5ce;
+  padding: 0.2rem 0;
+}
+
+.rp-standing-row.leading {
+  color: #F8F8F8;
+  font-weight: 500;
+}
+
+.rp-standing-rank {
+  font-size: 11px;
+  color: #6a6860;
+  width: 14px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.rp-standing-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.rp-standing-name {
+  flex: 1;
+}
+
+.rp-leading-badge {
+  font-size: 9px;
+  color: #F5511C;
+}
+
+.rp-standing-score {
+  font-weight: 600;
+  color: #80CAAF;
+  font-size: 13px;
+}
+
+/* ── Round history ── */
+.rp-history {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.rp-history-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  color: #9a978f;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+}
+
+.rp-history-toggle:hover {
+  color: #d8d5ce;
+}
+
+.rp-history-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.rp-history-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #9a978f;
+}
+
+.rp-history-round {
+  font-weight: 600;
+  color: #6a6860;
+  width: 18px;
+}
+
+.rp-history-fan {
+  width: 40px;
+  flex-shrink: 0;
+}
+
+.rp-history-winner {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rp-history-edit {
+  background: none;
+  border: none;
+  color: #4F8568;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.rp-history-edit:hover {
+  color: #5EC19D;
+}

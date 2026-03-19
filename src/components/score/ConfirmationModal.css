@@ -1,0 +1,83 @@
+/* ── Confirmation Modal ───────────────────────────────────────────────────── */
+.cm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(32, 32, 30, 0.75);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.cm-box {
+  background: #F7F3E8;
+  border: 2px solid #20201E;
+  padding: 1.75rem 1.5rem;
+  max-width: 380px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cm-title {
+  font-family: 'PerfectlyNineties', serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: #20201E;
+}
+
+.cm-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #4a4840;
+  line-height: 1.6;
+}
+
+.cm-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.cm-cancel {
+  flex: 1;
+  padding: 0.6rem;
+  background: transparent;
+  border: 1.5px solid #c8b89a;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  color: #20201E;
+  transition: background 0.15s;
+}
+
+.cm-cancel:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+.cm-confirm {
+  flex: 1;
+  padding: 0.6rem;
+  background: #4F8568;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #F8F8F8;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cm-confirm:hover {
+  background: #5EC19D;
+}
+
+.cm-confirm.danger {
+  background: #E02126;
+}
+
+.cm-confirm.danger:hover {
+  background: #c41a1e;
+}

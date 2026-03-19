@@ -1,0 +1,107 @@
+/* ── Bottom Sheet — mobile only ──────────────────────────────────────────── */
+.bs-backdrop {
+  display: none;
+}
+
+.bs-sheet {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .bs-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(32, 32, 30, 0.6);
+    z-index: 60;
+  }
+
+  .bs-sheet {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 70;
+    background: #20201E;
+    max-height: 90vh;
+    border-top: 2px solid #4F8568;
+    animation: sheet-up 0.25s ease-out;
+  }
+
+  @keyframes sheet-up {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0);    }
+  }
+
+  .bs-handle-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1rem 0.4rem;
+    position: relative;
+  }
+
+  .bs-handle {
+    width: 36px;
+    height: 4px;
+    background: #555450;
+    border-radius: 2px;
+  }
+
+  .bs-close {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #9a978f;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  /* ── Tabs ── */
+  .bs-tabs {
+    display: flex;
+    border-bottom: 1px solid #333330;
+    flex-shrink: 0;
+  }
+
+  .bs-tab {
+    flex: 1;
+    padding: 0.6rem;
+    background: none;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #9a978f;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .bs-tab.active {
+    color: #F8F8F8;
+    border-bottom-color: #4F8568;
+  }
+
+  /* ── Content ── */
+  .bs-content {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Inside ResultsPanel the rp-panel already has padding */
+  .bs-scoreboard {
+    padding: 1rem 0.875rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

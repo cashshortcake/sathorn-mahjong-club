@@ -1,0 +1,71 @@
+/* ── Sticky Bottom Bar — mobile only ─────────────────────────────────────── */
+.sbb-bar {
+  display: none; /* shown only on mobile via media query */
+}
+
+@media (max-width: 639px) {
+  .sbb-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: #20201E;
+    padding: 0.75rem 1rem;
+    border-top: 2px solid #4F8568;
+    cursor: pointer;
+    gap: 0.5rem;
+    /* prevent text selection on tap */
+    user-select: none;
+    -webkit-user-select: none;
+    /* safe area for phones with home bar */
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .sbb-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .sbb-fan-total {
+    font-family: 'PerfectlyNineties', serif;
+    font-size: 1.25rem;
+    color: #F8F8F8;
+    line-height: 1;
+  }
+
+  .sbb-summary {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #9a978f;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sbb-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .sbb-max-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    background: #442C24;
+    color: #F5511C;
+    border-radius: 2px;
+  }
+
+  .sbb-expand {
+    font-size: 18px;
+    color: #4F8568;
+  }
+}

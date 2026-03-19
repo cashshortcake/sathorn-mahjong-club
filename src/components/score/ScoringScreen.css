@@ -1,0 +1,126 @@
+/* ── ScoringScreen ───────────────────────────────────────────────────────── */
+.ss-page {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Top bar ── */
+.ss-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  background: #F7F3E8;
+  border-bottom: 1.5px solid #c8b89a;
+  flex-wrap: wrap;
+}
+
+.ss-topbar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ss-round-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  background: #4F8568;
+  color: #F8F8F8;
+  border-radius: 2px;
+  width: fit-content;
+}
+
+.ss-round-tag.endgame {
+  background: #E02126;
+}
+
+.ss-player-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.ss-player-chip {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  padding: 0.2rem 0.5rem;
+  border: 1.5px solid;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #20201E;
+}
+
+.ss-chip-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ss-edit-players {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #4F8568;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  white-space: nowrap;
+  align-self: center;
+}
+
+.ss-edit-players:hover {
+  color: #F5511C;
+}
+
+/* ── Two-column layout ── */
+.ss-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.ss-form-col {
+  flex: 1;
+  min-width: 0;
+  padding: 1.25rem 1rem 6rem 1.5rem;
+}
+
+.ss-results-col {
+  width: 260px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 56px;
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #4F8568 #2d2d2b;
+}
+
+/* On mobile, hide the right panel — shown via BottomSheet instead */
+@media (max-width: 639px) {
+  .ss-results-col {
+    display: none;
+  }
+
+  .ss-form-col {
+    padding: 1rem 1rem 100px; /* space for sticky bottom bar */
+  }
+}
+
+@media (max-width: 480px) {
+  .ss-topbar {
+    padding: 0.6rem 1rem;
+  }
+  .ss-form-col {
+    padding: 0.75rem 0.75rem 100px;
+  }
+}

@@ -1,49 +1,15 @@
+/* ── Score page root ────────────────────────────────────────────────────────── */
 .score-page {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  /* Escape site-main horizontal padding so the scoring layout can use full width */
+  margin-left:  -1.5rem;
+  margin-right: -1.5rem;
+  /* Restore top/bottom spacing */
+  padding-top: 0;
+}
+
+@media (max-width: 480px) {
+  .score-page {
+    margin-left:  -1rem;
+    margin-right: -1rem;
   }
-  
-  .score-title {
-    font-family: 'PerfectlyNineties', serif;
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
-    font-weight: 400;
-    color: #20201E;
-    text-align: center;
-  }
-  
-  .score-coming {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    padding: 3rem 2rem;
-    text-align: center;
-  }
-  
-  .score-emoji {
-    font-size: 48px;
-    line-height: 1;
-  }
-  
-  .score-subtitle {
-    font-family: 'PerfectlyNineties', serif;
-    font-size: 1.8rem;
-    font-weight: 400;
-    color: #20201E;
-  }
-  
-  .score-body {
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    color: #20201E;
-    line-height: 1.7;
-    max-width: 400px;
-  }
-  
-  .score-note {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    color: #4F8568;
-    font-style: italic;
-  }
+}

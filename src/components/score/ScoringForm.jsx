@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import {
   WHOLE_HAND,
   BASIC_SETS,
@@ -18,15 +18,39 @@ function FanPill({ fan, strikethrough }) {
 
 // ─── Tooltip ──────────────────────────────────────────────────────────────────
 function InfoTooltip({ text }) {
-  const [open, setOpen] = useState(false)
+  const [hovered, setHovered] = useState(false)
+  const [clicked, setClicked] = useState(false)
+  const timerRef = useRef(null)
+  const open = hovered || clicked
+
+  function handleMouseEnter() { setHovered(true) }
+  function handleMouseLeave() { setHovered(false) }
+
+  function handleClick() {
+    // On desktop the hover already shows/hides the tooltip — clicking does nothing extra
+    if (hovered) return
+    // On touch (no hover), toggle with a 3-second auto-dismiss
+    if (!clicked) {
+      setClicked(true)
+      clearTimeout(timerRef.current)
+      timerRef.current = setTimeout(() => setClicked(false), 3000)
+    } else {
+      clearTimeout(timerRef.current)
+      setClicked(false)
+    }
+  }
+
+  useEffect(() => () => clearTimeout(timerRef.current), [])
+
   return (
     <span className="sf-info-wrap">
       <button
         className="sf-info-btn"
         type="button"
         aria-label="More info"
-        onClick={() => setOpen(o => !o)}
-        onBlur={() => setOpen(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
       >
         ⓘ
       </button>
@@ -110,7 +134,7 @@ function CollapseSection({ dot, title, badge, disabled, children }) {
 }
 
 // ─── Flower Counter (Section D) ───────────────────────────────────────────────
-function FlowerCounter({ flowers, seatFlower, onChange }) {
+function FlowerCounter({ flowers, seatFlower, noFlowersConfirmed, onChange }) {
   const isNoFlowers = flowers === 0
   const isAllFlowers = flowers === 8
   const showSeatFlower = flowers >= 1 && flowers <= 7
@@ -122,7 +146,7 @@ function FlowerCounter({ flowers, seatFlower, onChange }) {
           className="sf-counter-btn"
           type="button"
           disabled={flowers === 0}
-          onClick={() => onChange({ flowers: flowers - 1, seatFlower: false })}
+          onClick={() => onChange({ flowers: flowers - 1, seatFlower: false, noFlowersConfirmed: false })}
           aria-label="Decrease flowers"
         >−</button>
         <span className="sf-counter-val">{flowers}</span>
@@ -130,15 +154,22 @@ function FlowerCounter({ flowers, seatFlower, onChange }) {
           className="sf-counter-btn"
           type="button"
           disabled={flowers === 8}
-          onClick={() => onChange({ flowers: flowers + 1, seatFlower: false })}
+          onClick={() => onChange({ flowers: flowers + 1, seatFlower: false, noFlowersConfirmed: false })}
           aria-label="Increase flowers"
         >+</button>
       </div>
 
       {isNoFlowers && (
-        <span className="sf-flower-auto">
-          No Flowers <FanPill fan={1} />
-        </span>
+        <label className="sf-option sf-seat-flower">
+          <input
+            type="checkbox"
+            className="sf-checkbox"
+            checked={noFlowersConfirmed}
+            onChange={e => onChange({ noFlowersConfirmed: e.target.checked })}
+          />
+          <span className="sf-option-label">No Flowers</span>
+          <FanPill fan={1} />
+        </label>
       )}
       {isAllFlowers && (
         <span className="sf-flower-auto">
@@ -207,7 +238,7 @@ export default function ScoringForm({ scoring, fanResult, isEndGame, onChange })
             item={item}
             selected={scoring.wholeHand === item.id}
             disabled={isEndGame || !!scoring.specialHand}
-            strikethrough={isItemStruck('wholeHand')}
+            strikethrough={false}
             onChange={val => onChange({ wholeHand: val, specialHand: null })}
           />
         ))}
@@ -226,7 +257,7 @@ export default function ScoringForm({ scoring, fanResult, isEndGame, onChange })
             item={item}
             checked={scoring.basicSets.includes(item.id)}
             disabled={isEndGame || !basicSetsEnabled}
-            strikethrough={isItemStruck('basicSets')}
+            strikethrough={false}
             onChange={(id, checked) => {
               const next = checked
                 ? [...scoring.basicSets, id]
@@ -259,7 +290,7 @@ export default function ScoringForm({ scoring, fanResult, isEndGame, onChange })
               item={item}
               checked={scoring.winningConditions.includes(item.id)}
               disabled={isDisabled}
-              strikethrough={isItemStruck('winConditions')}
+              strikethrough={false}
               onChange={(id, checked) => {
                 const next = checked
                   ? [...scoring.winningConditions, id]
@@ -281,6 +312,7 @@ export default function ScoringForm({ scoring, fanResult, isEndGame, onChange })
         <FlowerCounter
           flowers={scoring.flowers}
           seatFlower={scoring.seatFlower}
+          noFlowersConfirmed={scoring.noFlowersConfirmed}
           onChange={updates => onChange(updates)}
         />
       </SectionCard>
@@ -293,19 +325,18 @@ export default function ScoringForm({ scoring, fanResult, isEndGame, onChange })
         disabled={isEndGame}
       >
         {SPECIAL_HANDS.map(item => (
-          <CheckboxOption
+          <RadioOption
             key={item.id}
             item={item}
-            checked={scoring.specialHand === item.id}
+            selected={scoring.specialHand === item.id}
             disabled={isEndGame}
-            strikethrough={isItemStruck('special')}
-            onChange={(_id, checked) => {
-              if (checked) {
-                onChange({ specialHand: item.id, wholeHand: null })
-              } else {
+            strikethrough={false}
+            onChange={val => {
+              if (val === null) {
                 onChange({ specialHand: null })
+              } else {
+                onChange({ specialHand: item.id, wholeHand: null })
               }
-
             }}
           />
         ))}

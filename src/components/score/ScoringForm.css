@@ -168,8 +168,10 @@
 .sf-tooltip {
   position: absolute;
   bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
+  /* Anchor right edge to button, tooltip extends leftward — avoids right-edge overflow */
+  right: 0;
+  left: auto;
+  transform: none;
   background: #20201E;
   color: #F8F8F8;
   font-size: 12px;
@@ -177,6 +179,7 @@
   padding: 0.5rem 0.6rem;
   border-radius: 4px;
   width: 200px;
+  max-width: 80vw;
   z-index: 200;
   white-space: normal;
   pointer-events: none;
@@ -190,7 +193,7 @@
   padding: 0.15rem 0.4rem;
   background: #4F8568;
   color: #F8F8F8;
-  border-radius: 2px;
+  border-radius: 100px;
   white-space: nowrap;
   margin-left: auto;
   flex-shrink: 0;

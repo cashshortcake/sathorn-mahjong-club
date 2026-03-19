@@ -18,14 +18,18 @@ export default function EndGamePanel({
     <div className={`egp-panel ${compact ? 'compact' : ''}`}>
       {/* Winner highlight */}
       <div className="egp-winner-block">
-        <div className="egp-winner-crown">🏆</div>
         <div className="egp-winner-label">Winner</div>
         <div
-          className="egp-winner-name"
-          style={{ color: winner.color }}
+          className="egp-winner-icon-circle"
+          style={{ '--player-icon-url': `url(${winner.icon})` }}
         >
-          {winner.name}
+          <span
+            className="egp-winner-icon player-ticker-star"
+            style={{ '--player-color': '#F5F0EB' }}
+            aria-hidden
+          />
         </div>
+        <div className="egp-winner-name">{winner.name}</div>
         <div className="egp-winner-score">{scores[winner.id] || 0} pts</div>
       </div>
 

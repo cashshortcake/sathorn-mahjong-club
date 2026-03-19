@@ -33,6 +33,7 @@ function PlayerNameInput({ player, value, onChange }) {
         }}
         aria-hidden
       />
+      <span className="ps-player-prefix">P{player.id}</span>
       <input
         type="text"
         className="ps-name-input"
@@ -40,6 +41,7 @@ function PlayerNameInput({ player, value, onChange }) {
         placeholder={player.defaultName}
         onChange={e => onChange(e.target.value)}
         onBlur={handleBlur}
+        onFocus={e => e.target.select()}
         maxLength={24}
       />
     </div>

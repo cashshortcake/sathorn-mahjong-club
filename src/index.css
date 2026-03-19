@@ -46,7 +46,10 @@
   .fade-up.visible,
   .fade-down.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
+    /* Use 'none' rather than translateY(0) — a non-none transform creates a
+       new containing block for position:fixed children, which prevents modals
+       and sticky bars from covering the full viewport. */
   }
 
   .fade-up:not(.visible),
@@ -84,8 +87,10 @@
   padding: 0;
 }
 
-html, body {
+html {
   overflow-x: hidden;
+  /* Note: overflow-x must NOT be set on body — doing so turns body into a
+     scroll container and breaks position:sticky on descendants. */
 }
 
 html {

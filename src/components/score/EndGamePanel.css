@@ -1,7 +1,7 @@
 /* ── End Game Panel ───────────────────────────────────────────────────────── */
 .egp-panel {
-  background: #20201E;
-  color: #F8F8F8;
+  background: #F5F0EB;
+  color: #20201E;
   padding: 1.25rem 0.875rem;
   display: flex;
   flex-direction: column;
@@ -16,13 +16,12 @@
 /* ── Winner block ── */
 .egp-winner-block {
   text-align: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid #333330;
-}
-
-.egp-winner-crown {
-  font-size: 2rem;
-  margin-bottom: 0.25rem;
+  background: #E6E1D7;
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .egp-winner-label {
@@ -31,22 +30,41 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #6a6860;
-  margin-bottom: 0.25rem;
+  color: #8B897F;
+  margin-bottom: 0.1rem;
+}
+
+/* Icon in a #4F8568 circle */
+.egp-winner-icon-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #4F8568;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.15rem 0;
+}
+
+.egp-winner-icon {
+  width: 30px;
+  height: 30px;
 }
 
 .egp-winner-name {
   font-family: 'PerfectlyNineties', serif;
   font-size: 1.5rem;
   font-weight: 400;
-  margin-bottom: 0.2rem;
+  color: #4F8568;
+  margin-top: 0.1rem;
+  line-height: 1.1;
 }
 
 .egp-winner-score {
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  color: #80CAAF;
+  color: #4F8568;
 }
 
 /* ── Section label ── */
@@ -56,14 +74,14 @@
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #6a6860;
+  color: #8B897F;
 }
 
 /* ── Start new game button ── */
 .egp-new-game-btn {
   width: 100%;
   padding: 0.75rem;
-  background: #4F8568;
+  background: #F5511C;
   color: #F8F8F8;
   border: none;
   font-family: 'Inter', sans-serif;
@@ -76,5 +94,5 @@
 }
 
 .egp-new-game-btn:hover {
-  background: #5EC19D;
+  background: #D94410;
 }

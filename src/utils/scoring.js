@@ -54,8 +54,9 @@ export const INITIAL_SCORING = {
   winningConditions: [],
   flowers: 0,
   seatFlower: false,
-  winnerId: null,
-  winType: null,       // 'selfDraw' | 'discardWin'
+  noFlowersConfirmed: false,  // user must check a box to claim the No Flowers bonus
+  winnerId: 1,                // default to Player 1
+  winType: 'selfDraw',        // default to Self Draw
   discarderId: null,
 }
 
@@ -118,7 +119,8 @@ export function calculateFan(scoring) {
   }
 
   // ── 4. Flowers & Seasons ──────────────────────────────────────────────────
-  if (scoring.flowers === 0) {
+  // No Flowers bonus only applies when the user has explicitly confirmed via checkbox.
+  if (scoring.flowers === 0 && scoring.noFlowersConfirmed) {
     addItem('No Flowers', 1, 'flowers')
   } else if (scoring.flowers === 8) {
     addItem('All Flowers', 2, 'flowers')

@@ -1,41 +1,62 @@
 @import './playerTickerStar.css';
 
-/* ── Results Panel — dark theme ──────────────────────────────────────────── */
+/* ── Results Panel — light card theme ───────────────────────────────────────── */
 .rp-panel {
-  background: #20201E;
-  color: #F8F8F8;
+  background: #F5F0EB;
+  color: #20201E;
   padding: 1rem 0.875rem;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  min-height: 100%;
 }
 
-/* ── Fan total ── */
-.rp-total-row {
+/* ── Fan section container (top card) ── */
+.rp-fan-section {
+  background: #E6E1D7;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.rp-fan-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.15rem;
+}
+
+.rp-fan-section-round {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #8B897F;
+}
+
+.rp-fan-total-row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  padding-top: 0.1rem;
 }
 
-.rp-total-label {
+.rp-fan-total-label {
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #9a978f;
+  font-size: 13px;
+  font-weight: 500;
+  color: #3D3B35;
 }
 
-.rp-total-val {
-  font-family: 'PerfectlyNineties', serif;
-  font-size: 2rem;
-  font-weight: 400;
-  color: #F8F8F8;
-  line-height: 1;
+.rp-fan-total-val {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #4F8568;
 }
 
-.rp-total-val.capped {
+.rp-fan-total-val.capped {
   color: #F5511C;
 }
 
@@ -48,7 +69,7 @@
 
 .rp-breakdown-empty {
   font-size: 12px;
-  color: #6a6860;
+  color: #8B897F;
   font-style: italic;
   padding: 0.25rem 0;
 }
@@ -59,7 +80,7 @@
   align-items: center;
   font-family: 'Inter', sans-serif;
   font-size: 12.5px;
-  color: #d8d5ce;
+  color: #3D3B35;
 }
 
 .rp-breakdown-row.struck {
@@ -69,7 +90,7 @@
 
 .rp-breakdown-fan {
   font-weight: 600;
-  color: #80CAAF;
+  color: #4F8568;
   white-space: nowrap;
   margin-left: 0.5rem;
 }
@@ -80,11 +101,11 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.4rem 0.6rem;
-  background: #442C24;
+  background: #F8D5C8;
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #F5511C;
+  color: #C4420F;
   border-radius: 2px;
   margin: 0.2rem 0;
 }
@@ -92,7 +113,7 @@
 /* ── Divider ── */
 .rp-divider {
   height: 1px;
-  background: #333330;
+  background: #DCD1B8;
   margin: 0.2rem 0;
 }
 
@@ -103,7 +124,7 @@
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #6a6860;
+  color: #8B897F;
 }
 
 /* ── Fields (Winner, Win type) ── */
@@ -117,35 +138,37 @@
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #9a978f;
+  color: #6B6760;
 }
 
 .rp-select {
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   padding: 0.4rem 0.5rem;
-  background: #4B4A4A;
-  color: #F8F8F8;
-  border: 1px solid #555450;
+  background: #E6E1D7;
+  color: #20201E;
+  border: 1px solid #20201E;
   outline: none;
   cursor: pointer;
   width: 100%;
 }
 
 .rp-select:disabled {
-  background: #2D2D2B;
-  color: #6a6860;
+  background: #D5CFC7;
+  color: #8B897F;
   cursor: not-allowed;
+  border-color: #C0BAB0;
 }
 
 .rp-select option {
-  background: #4B4A4A;
+  background: #E6E1D7;
+  color: #20201E;
 }
 
 /* ── Win type toggle ── */
 .rp-toggle {
   display: flex;
-  border: 1px solid #555450;
+  border: 1px solid #20201E;
   overflow: hidden;
 }
 
@@ -155,15 +178,15 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 500;
-  background: #4B4A4A;
-  color: #d8d5ce;
+  background: #E6E1D7;
+  color: #20201E;
   border: none;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
 
 .rp-toggle-btn + .rp-toggle-btn {
-  border-left: 1px solid #555450;
+  border-left: 1px solid #20201E;
 }
 
 .rp-toggle-btn.active {
@@ -172,14 +195,14 @@
 }
 
 .rp-toggle-btn:disabled {
-  opacity: 0.4;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
 /* ── Payout ── */
 .rp-payout-empty {
   font-size: 12px;
-  color: #6a6860;
+  color: #8B897F;
   font-style: italic;
 }
 
@@ -195,7 +218,7 @@
   gap: 0.4rem;
   font-family: 'Inter', sans-serif;
   font-size: 12.5px;
-  color: #d8d5ce;
+  color: #3D3B35;
 }
 
 .rp-payout-dot {
@@ -213,8 +236,21 @@
   font-weight: 600;
 }
 
-.rp-payout-val.pos { color: #80CAAF; }
+.rp-payout-val.pos { color: #4F8568; }
 .rp-payout-val.neg { color: #F5511C; }
+
+/* ── Min fan banner ── */
+.rp-min-fan-banner {
+  background: #EBB2B9;
+  border: 1px solid #C47A85;
+  color: #8B1A22;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0.55rem 0.75rem;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
 
 /* ── Apply button ── */
 .rp-apply-wrap {
@@ -242,18 +278,18 @@
 }
 
 .rp-apply-btn.active:hover {
-  background: #5EC19D;
+  background: #3D7057;
 }
 
 .rp-apply-btn.disabled {
-  background: #2E3E34;
-  color: #6a6860;
+  background: #D5CFC7;
+  color: #8B897F;
   cursor: not-allowed;
 }
 
 .rp-apply-hint {
   font-size: 11px;
-  color: #6a6860;
+  color: #8B897F;
   text-align: center;
   font-style: italic;
 }
@@ -271,18 +307,18 @@
   gap: 0.4rem;
   font-family: 'Inter', sans-serif;
   font-size: 12.5px;
-  color: #d8d5ce;
+  color: #3D3B35;
   padding: 0.2rem 0;
 }
 
 .rp-standing-row.leading {
-  color: #F8F8F8;
+  color: #20201E;
   font-weight: 500;
 }
 
 .rp-standing-rank {
   font-size: 11px;
-  color: #6a6860;
+  color: #8B897F;
   width: 14px;
   text-align: right;
   flex-shrink: 0;
@@ -304,7 +340,7 @@
 
 .rp-standing-score {
   font-weight: 600;
-  color: #80CAAF;
+  color: #4F8568;
   font-size: 13px;
 }
 
@@ -322,7 +358,7 @@
   justify-content: space-between;
   background: none;
   border: none;
-  color: #9a978f;
+  color: #6B6760;
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
@@ -335,7 +371,7 @@
 }
 
 .rp-history-toggle:hover {
-  color: #d8d5ce;
+  color: #20201E;
 }
 
 .rp-history-rows {
@@ -350,12 +386,12 @@
   gap: 0.4rem;
   font-family: 'Inter', sans-serif;
   font-size: 12px;
-  color: #9a978f;
+  color: #6B6760;
 }
 
 .rp-history-round {
   font-weight: 600;
-  color: #6a6860;
+  color: #8B897F;
   width: 18px;
 }
 
@@ -384,5 +420,5 @@
 }
 
 .rp-history-edit:hover {
-  color: #5EC19D;
+  color: #3D7057;
 }

@@ -51,11 +51,10 @@ function WinnerSelector({ players, winnerId, disabled, onChange }) {
       <label className="rp-field-label">Winner</label>
       <select
         className="rp-select"
-        value={winnerId || ''}
+        value={winnerId ?? players[0]?.id ?? ''}
         disabled={disabled}
         onChange={e => onChange(e.target.value ? Number(e.target.value) : null)}
       >
-        <option value="">Select winner…</option>
         {players.map(p => (
           <option key={p.id} value={p.id}>{p.name}</option>
         ))}
@@ -110,7 +109,7 @@ function DiscarderSelector({ players, winnerId, discarderId, disabled, onChange 
 // ─── Payout Summary ───────────────────────────────────────────────────────────
 function PayoutSummary({ players, payouts }) {
   if (!payouts) return (
-    <div className="rp-payout-empty">Set winner &amp; win type to see payouts</div>
+    <div className="rp-payout-empty">Score {MIN_FAN}+ fan to see payouts</div>
   )
   return (
     <div className="rp-payout">
@@ -179,10 +178,10 @@ export function RoundHistory({ history, players, expanded, onToggle, onEdit }) {
             return (
               <div key={idx} className="rp-history-row">
                 <span className="rp-history-round">R{entry.round}</span>
-                <span className="rp-history-fan">{entry.fan} fan</span>
                 <span className="rp-history-winner">
                   {winner ? winner.name : '—'}
                 </span>
+                <span className="rp-history-fan">{entry.fan} fan</span>
                 <button
                   className="rp-history-edit"
                   type="button"
@@ -241,30 +240,34 @@ export default function ResultsPanel({
 
   return (
     <aside className="rp-panel">
-      {/* ── Fan total ── */}
-      <div className="rp-total-row">
-        <span className="rp-total-label">Fan total</span>
-        <span className={`rp-total-val ${fanResult.total >= MAX_FAN ? 'capped' : ''}`}>
-          {fanResult.total}
-        </span>
+
+      {/* ── Fan breakdown — #E6E1D7 contained card at top ── */}
+      <div className="rp-fan-section">
+        <div className="rp-fan-section-header">
+          <span className="rp-section-label">Fan Breakdown</span>
+          <span className="rp-fan-section-round">Round {round}</span>
+        </div>
+        <FanBreakdownPanel fanResult={fanResult} />
+        <div className="rp-divider" />
+        <div className="rp-fan-total-row">
+          <span className="rp-fan-total-label">Total</span>
+          <span className={`rp-fan-total-val ${fanResult.total >= MAX_FAN ? 'capped' : ''}`}>
+            {fanResult.total} Fan
+          </span>
+        </div>
       </div>
 
-      {/* ── Fan breakdown ── */}
-      <FanBreakdownPanel fanResult={fanResult} />
-
       {/* ── Winner & Win Type ── */}
-      <div className="rp-divider" />
-
       <WinnerSelector
         players={players}
         winnerId={scoring.winnerId}
-        disabled={isEndGame}
+        disabled={isEndGame || fanResult.total < MIN_FAN}
         onChange={val => onChange({ winnerId: val, discarderId: null })}
       />
 
       <WinTypeToggle
         winType={scoring.winType}
-        disabled={isEndGame}
+        disabled={isEndGame || fanResult.total < MIN_FAN}
         onChange={val => onChange({ winType: val, discarderId: null })}
       />
 
@@ -282,6 +285,13 @@ export default function ResultsPanel({
       <div className="rp-divider" />
       <div className="rp-section-label">Payout</div>
       <PayoutSummary players={players} payouts={currentPayouts} />
+
+      {/* ── Min fan banner — shown whenever total is below minimum ── */}
+      {!isEndGame && fanResult.total < MIN_FAN && (
+        <div className="rp-min-fan-banner">
+          ⚠️ Minimum {MIN_FAN} fan required to win
+        </div>
+      )}
 
       {/* ── Apply button ── */}
       {!isEndGame && (
@@ -307,6 +317,7 @@ export default function ResultsPanel({
         onEdit={onEditRound}
         isEndGame={isEndGame}
       />
+
     </aside>
   )
 }

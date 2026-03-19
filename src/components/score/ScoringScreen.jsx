@@ -9,9 +9,15 @@ function ScoringTopBar({ players, round, isEndGame, onEditPlayers }) {
   return (
     <div className="ss-topbar">
       <div className="ss-topbar-left">
-        <span className={`ss-round-tag ${isEndGame ? 'endgame' : ''}`}>
+        {/* Desktop: "Round N of 4" — hidden on mobile */}
+        <span className={`ss-round-tag ss-round-tag--desktop ${isEndGame ? 'endgame' : ''}`}>
           {isEndGame ? `Game Over · Round 4` : `Round ${round} of 4`}
         </span>
+        {/* Mobile: "Round N · N Players" — hidden on desktop */}
+        <span className={`ss-round-tag ss-round-tag--mobile ${isEndGame ? 'endgame' : ''}`}>
+          {isEndGame ? `Game Over` : `Round ${round} · ${players.length} Players`}
+        </span>
+        {/* Player chips — hidden on mobile */}
         <div className="ss-player-chips">
           {players.map(p => (
             <span
@@ -34,7 +40,7 @@ function ScoringTopBar({ players, round, isEndGame, onEditPlayers }) {
         type="button"
         onClick={onEditPlayers}
       >
-        Edit
+        ✏ Edit
       </button>
     </div>
   )
@@ -125,6 +131,7 @@ export default function ScoringScreen({
       {/* Mobile: sticky bottom bar + sheet */}
       <StickyBottomBar
         fanResult={fanResult}
+        round={round}
         isEndGame={isEndGame}
         onExpand={onSheetOpen}
       />

@@ -9,19 +9,21 @@
 /* ── Top bar ── */
 .ss-topbar {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.75rem 1.5rem;
   background: #F7F3E8;
-  border-bottom: 1.5px solid #c8b89a;
+  border: 1.5px solid #c8b89a;
   flex-wrap: wrap;
 }
 
 .ss-topbar-left {
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .ss-round-tag {
@@ -30,21 +32,27 @@
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  padding: 0.25rem 0.6rem;
+  padding: 0.25rem 0.75rem;
   background: #4F8568;
   color: #F8F8F8;
   border-radius: 100px;
-  width: fit-content;
+  white-space: nowrap;
 }
 
 .ss-round-tag.endgame {
   background: #E02126;
 }
 
+/* Mobile round tag (Round N · N Players) — hidden on desktop */
+.ss-round-tag--mobile {
+  display: none;
+}
+
 .ss-player-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.3rem;
+  align-items: center;
 }
 
 .ss-player-chip {
@@ -55,30 +63,45 @@
   border-radius: 2px;
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.35rem;
   color: #20201E;
 }
 
+/* Player chip icon — explicit mask properties to guarantee rendering */
 .ss-player-chip-icon {
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  flex-shrink: 0;
+  background-color: var(--player-color);
+  -webkit-mask-image: var(--player-icon-url);
+  mask-image: var(--player-icon-url);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
 
 .ss-edit-players {
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: #4F8568;
+  font-size: 12px;
+  font-weight: 600;
+  color: #20201E;
   background: none;
-  border: none;
+  border: 1.5px solid #20201E;
+  border-radius: 100px;
   cursor: pointer;
-  text-decoration: underline;
-  padding: 0;
+  padding: 0.25rem 0.75rem;
   white-space: nowrap;
   align-self: center;
+  transition: background 0.15s, color 0.15s;
 }
 
 .ss-edit-players:hover {
-  color: #F5511C;
+  background: #20201E;
+  color: #F5F0EB;
 }
 
 /* ── Two-column layout ── */
@@ -98,11 +121,11 @@
   width: 260px;
   flex-shrink: 0;
   position: sticky;
-  top: 56px;
-  max-height: calc(100vh - 60px);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #4F8568 #2d2d2b;
+  top: 0;
+  /* no max-height / overflow — panel grows with its content, no internal scroll */
+  align-self: flex-start;
+  border-left: 1.5px solid #20201E;
+  padding-top: 1.25rem;
 }
 
 /* On mobile, hide the right panel — shown via BottomSheet instead */
@@ -113,6 +136,23 @@
 
   .ss-form-col {
     padding: 1rem 1rem 100px; /* space for sticky bottom bar */
+  }
+
+  /* Topbar: hide player chips, switch to compact "Round N · N Players" pill */
+  .ss-player-chips {
+    display: none;
+  }
+
+  .ss-round-tag--desktop {
+    display: none;
+  }
+
+  .ss-round-tag--mobile {
+    display: inline-flex;
+  }
+
+  .ss-topbar {
+    padding: 0.65rem 1rem;
   }
 }
 

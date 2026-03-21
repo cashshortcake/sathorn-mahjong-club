@@ -1,11 +1,11 @@
 .site-main {
     max-width: 720px;
     margin: 0 auto;
-    padding: 2rem 1.5rem 4rem;
+    padding: 2rem 1.5rem 3rem;
   }
   
   @media (max-width: 480px) {
     .site-main {
-      padding: 1.5rem 1rem 3rem;
+      padding: 1rem 1rem 3rem;
     }
   }

@@ -6,9 +6,9 @@
   }
   
   .accordion-item {
-    background: #FFFAF8;
-    border: 1.5px solid #20201E;
-    border-radius: 8px;
+    background: #F7F3E8;
+    border: 1px solid #20201E;
+    border-radius: 2px;
     overflow: hidden;
   }
   
@@ -26,14 +26,14 @@
   }
   
   .accordion-header:hover {
-    background: #f5f0ec;
+    background: rgba(0,0,0,0.03);
   }
   
   .accordion-title {
     font-family: 'PerfectlyNineties', serif;
-    font-size: 1.1rem;
+    font-size: clamp(1.3rem, 2vw, 2rem);
     color: #20201E;
-    font-weight: 400;
+    font-weight: 200;
   }
   
   .accordion-chevron {
@@ -55,7 +55,7 @@
   }
   
   .accordion-body {
-    background: #F0EDEA;
+    background: #F7F3E8;
     padding: 1.25rem;
     border-top: 1px solid #20201E;
     font-family: 'Inter', sans-serif;

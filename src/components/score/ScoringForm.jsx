@@ -27,9 +27,7 @@ function InfoTooltip({ text }) {
   function handleMouseLeave() { setHovered(false) }
 
   function handleClick() {
-    // On desktop the hover already shows/hides the tooltip — clicking does nothing extra
     if (hovered) return
-    // On touch (no hover), toggle with a 3-second auto-dismiss
     if (!clicked) {
       setClicked(true)
       clearTimeout(timerRef.current)
@@ -114,6 +112,17 @@ function SectionCard({ dot, title, subtitle, disabled, children }) {
 // ─── Collapse Section (Section E) ─────────────────────────────────────────────
 function CollapseSection({ dot, title, badge, disabled, children }) {
   const [open, setOpen] = useState(false)
+  const bodyRef = useRef(null)
+  const [height, setHeight] = useState(0)
+
+  useEffect(() => {
+    if (open) {
+      setHeight(bodyRef.current.scrollHeight)
+    } else {
+      setHeight(0)
+    }
+  }, [open])
+
   return (
     <div className={`sf-section-card sf-collapse ${disabled ? 'sf-section-disabled' : ''}`}>
       <button
@@ -125,9 +134,19 @@ function CollapseSection({ dot, title, badge, disabled, children }) {
         <span className="sf-section-dot" style={{ background: dot }} />
         <span className="sf-section-title">{title}</span>
         {badge && <span className="sf-badge">{badge}</span>}
-        <span className={`sf-chevron ${open ? 'open' : ''}`}>▾</span>
+        <span className={`sf-chevron ${open ? 'open' : ''}`}>∨</span>
       </button>
-      {open && <div className="sf-section-body">{children}</div>}
+      <div
+        style={{
+          maxHeight: height,
+          overflow: 'hidden',
+          transition: 'max-height 0.35s ease',
+        }}
+      >
+        <div ref={bodyRef} className="sf-section-body">
+          {children}
+        </div>
+      </div>
     </div>
   )
 }
@@ -195,14 +214,6 @@ function FlowerCounter({ flowers, seatFlower, noFlowersConfirmed, onChange }) {
 export default function ScoringForm({ scoring, fanResult, isEndGame, onChange }) {
   const { items: fanItems, cappedAt } = fanResult
 
-  // Determine which items are struck through for visual reference
-  // (we match by section+label to find struckthrough items)
-  const struckSections = new Set()
-  if (cappedAt !== null) {
-    fanItems.slice(cappedAt).forEach(item => struckSections.add(item.section))
-  }
-
-  // Helpers
   function isItemStruck(section) {
     if (cappedAt === null) return false
     return fanItems
@@ -210,7 +221,6 @@ export default function ScoringForm({ scoring, fanResult, isEndGame, onChange })
       .some(fi => fi.section === section)
   }
 
-  // Section A helpers
   const specialDef = scoring.specialHand
     ? SPECIAL_HANDS.find(s => s.id === scoring.specialHand)
     : null
@@ -218,7 +228,6 @@ export default function ScoringForm({ scoring, fanResult, isEndGame, onChange })
     scoring.wholeHand !== 'sevenPairs' &&
     (!specialDef || specialDef.allowBasicSets)
 
-  // Section C disabled states
   const selfDrawDisabled = scoring.specialHand === 'nineGates'
 
   return (

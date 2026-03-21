@@ -1,289 +1,358 @@
 .cs-page {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cs-intro-box {
+  max-width: 720px;
+  margin: 0 auto;
+  width: 100%;
+  background: #FFFAF8;
+  border-radius: 4px;
+  padding: 1.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.cs-intro-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid #20201eb4;
+  border-radius: 4px;
+  filter: url(#rough);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cs-intro-box > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cs-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  width: 100%;
+  background: #FFFAF8;
+  border: 2px solid #20201eb4;
+  border-radius: 2px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+}
+
+.cs-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid #20201E;
+  border-radius: 4px;
+  filter: url(#rough);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cs-inner > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cs-intro-title {
+  font-family: 'PerfectlyNineties', serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 400;
+  color: #20201E;
+}
+
+.cs-intro-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.cs-pattern-wrap {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #FFFAF8;
+  background-repeat: repeat;
+  background-size: 120px 120px;
+  border-top: 5px solid #5EC19D;
+  border-bottom: 5px solid #5EC19D;
+  padding: 3.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cs-section-title {
+  font-family: 'PerfectlyNineties', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #20201E;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cs-optional {
+  font-family: 'Inter', sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  color: #20201E;
+  background: #c8b89a;
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.cs-suit-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cs-suit-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.cs-suit-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 500;
+  color: #666;
+}
+
+.cs-suit-zh {
+  font-size: 11px;
+  color: #666;
+}
+
+.cs-tile-row {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: clamp(1px, 0.8vw, 4px);
+}
+
+.cs-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.cs-tile-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Single source of truth for named tile image size.
+   Applied to both dragons and winds so they always match. */
+.cs-tile-img--large {
+  width: 60px;
+  height: auto;
+  display: block;
+}
+
+.cs-tile-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: #666;
+  text-align: center;
+}
+
+.cs-number-row {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: clamp(1px, 0.8vw, 4px);
+  margin-top: 2px;
+}
+
+.cs-number-cell {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: #666;
+  text-align: center;
+}
+
+/* Named tile wrapper — constrains the tile+label column.
+   Fixed width = same as cs-tile-img--large so Ruby can't
+   grow wider than Jade or Pearl. */
+.cs-named-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 60px;        /* matches cs-tile-img--large exactly */
+  flex-shrink: 0;
+}
+
+/* Dragons row: flex so tiles sit side by side at natural size */
+.cs-tile-row--named {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.cs-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ── Winds — desktop compass ── */
+.cs-winds-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.cs-winds-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.cs-winds-middle {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.cs-winds-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.cs-wind-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: #666;
+  text-align: center;
+}
+
+/* ── Flowers ── */
+.cs-flowers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.cs-flower-pair {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.cs-flower-pair .cs-tile-img {
+  width: 44px;
+}
+
+/* ────────────────────────────────────────
+   MOBILE ≤ 600px
+──────────────────────────────────────── */
+@media (max-width: 600px) {
+
   .cs-intro-box {
     max-width: 720px;
     margin: 0 auto;
-    width: 100%;
-    background: #FFFAF8;
-    border-radius: 4px;
-    padding: 1.5rem;
+    padding: 1rem;
     text-align: center;
     position: relative;
   }
-  
-.cs-intro-box::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 2px solid #20201eb4;
-    border-radius: 4px;
-    filter: url(#rough);
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  .cs-intro-box > * {
-    position: relative;
-    z-index: 1;
-  }
 
   .cs-inner {
-    max-width: 720px;
-    margin: 0 auto;
-    width: 100%;
-    background: #FFFAF8;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    position: relative;
+    gap: 0.75rem;
+    padding: 0.75rem;
   }
 
-  .cs-inner::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 2px solid #20201E;
-    border-radius: 4px;
-    filter: url(#rough);
-    z-index: 0;
-    pointer-events: none;
-  }
-  
-  .cs-inner > * {
-    position: relative;
-    z-index: 1;
-  }
-  
-  .cs-intro-title {
-    font-family: 'PerfectlyNineties', serif;
-    font-size: clamp(1.4rem, 3vw, 2rem);
-    font-weight: 400;
-    color: #20201E;
-  }
-  
-  .cs-intro-sub {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    color: #666;
-    margin-top: 4px;
-  }
-  
   .cs-pattern-wrap {
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #FFFAF8;
-    background-repeat: repeat;
-    background-size: 120px 120px;
-    border-top: 5px solid#5EC19D;
-    border-bottom: 5px solid #5EC19D;
-    padding: 3.5rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .cs-inner {
-    max-width: 720px;
-    margin: 0 auto;
-    width: 100%;
-    background: #FFFAF8;
-    border: 2px solid #20201eb4;
-    border-radius: 2px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  
-  .cs-section {
-    display: flex;
-    flex-direction: column;
+    padding: 1.5rem 0.75rem;
     gap: 0.75rem;
   }
-  
-  .cs-section-title {
-    font-family: 'PerfectlyNineties', serif;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #20201E;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .cs-optional {
-    font-family: 'Inter', sans-serif;
-    font-size: 8px;
-    font-weight: 600;
-    color: #20201E;
-    background: #c8b89a;
-    padding: 0.15rem 0.4rem;
-    border-radius: 2px;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-  }
-  
-  .cs-suit-row {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  
-  .cs-suit-header {
-    display: flex;
-    justify-content: flex-end;
-    align-items: baseline;
-    gap: 4px;
-  }
-  
-  .cs-suit-name {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.55rem;
-    font-weight: 500;
-    color: #666;
-  }
-  
-  .cs-suit-zh {
-    font-size: 11px;
-    color: #666;
-  }
-  
-  .cs-tile-row {
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    gap: 4px;
-  }
-  
-  .cs-tile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-  }
-  
-  .cs-tile-img {
-    width: 100%;
-    height: auto;
-  }
-  
-  .cs-tile-img--large {
-    width: 60px;
-    height: auto;
-  }
-  
-  .cs-tile-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    color: #666;
-    text-align: center;
-  }
-  
-  .cs-number-row {
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    gap: 4px;
-    margin-top: 2px;
-  }
-  
-  .cs-number-cell {
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    color: #666;
-    text-align: center;
-  }
-  
-  .cs-named-tile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    width: 70px;
-  }
-  
-  .cs-named-tile .cs-tile-img--large {
-    width: 60px;
-    height: auto;
-  }
-  
+
+  /* Dragons + Winds side by side; Flowers full-width below */
   .cs-bottom-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1.5rem;
-    align-items: start;
-  }
-  
-  .cs-winds-grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  .cs-winds-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-  }
-  
-  .cs-winds-middle {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-  
-  .cs-winds-side {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-  }
-  
-  .cs-wind-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    color: #666;
-    text-align: center;
-  }
-  
-  .cs-flowers-grid {
-    display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .cs-bottom-grid > .cs-section:last-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Scale named tiles down together — one value rules both */
+  .cs-tile-img--large {
+    width: clamp(32px, 9vw, 44px);
+  }
+
+  /* Keep named-tile wrapper in sync with the image width */
+  .cs-named-tile {
+    width: clamp(32px, 9vw, 44px);
+  }
+
+  /* ── Winds: single horizontal row ── */
+  .cs-winds-grid {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+
+  .cs-winds-middle {
+    display: contents;
+  }
+
+  .cs-winds-center,
+  .cs-winds-side {
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex: 0 0 auto;
+  }
+
+  /* ── Flowers: 4 columns, tiles stacked per pair ── */
+  .cs-flowers-grid {
+    grid-template-columns: repeat(4, 1fr);
     gap: 4px;
   }
-  
+
   .cs-flower-pair {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 3px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
   }
-  
+
   .cs-flower-pair .cs-tile-img {
-    width: 44px;
+    width: 100%;
+    max-width: 40px;
   }
-  
-  @media (max-width: 600px) {
-    .cs-bottom-grid {
-      grid-template-columns: 1fr;
-    }
-  
-    .cs-tile-img--large {
-      width: 48px;
-    }
-  
-    .cs-flower-pair .cs-tile-img {
-      width: 38px;
-    }
-  }
+}

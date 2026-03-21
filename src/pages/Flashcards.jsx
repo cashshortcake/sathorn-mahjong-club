@@ -28,12 +28,23 @@ const TILE_SVGS = {
   
 const FILTERS = ['All', 'Winds', 'Characters']
 
+function shuffleDeck(deck) {
+  const arr = [...deck]
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}
+
 function Flashcards() {
   const [activeFilter, setActiveFilter] = useState('All')
   const [currentIndex, setCurrentIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
+  const [isShuffled, setIsShuffled] = useState(false)
+  const [shuffledDeck, setShuffledDeck] = useState([])
 
-  const filteredTiles = useMemo(() => {
+  const originalDeck = useMemo(() => {
     return tiles.filter(tile => {
       if (activeFilter === 'All') return tile.suit === 'wind' || tile.suit === 'wan'
       if (activeFilter === 'Winds') return tile.suit === 'wind'
@@ -41,8 +52,27 @@ function Flashcards() {
     })
   }, [activeFilter])
 
+  const filteredTiles = isShuffled ? shuffledDeck : originalDeck
+
   function handleFilter(filter) {
     setActiveFilter(filter)
+    setCurrentIndex(0)
+    setFlipped(false)
+    setIsShuffled(false)
+    setShuffledDeck([])
+  }
+
+  function handleShuffle() {
+    const newDeck = shuffleDeck(originalDeck)
+    setShuffledDeck(newDeck)
+    setIsShuffled(true)
+    setCurrentIndex(0)
+    setFlipped(false)
+  }
+
+  function handleResetOrder() {
+    setIsShuffled(false)
+    setShuffledDeck([])
     setCurrentIndex(0)
     setFlipped(false)
   }
@@ -130,6 +160,17 @@ function Flashcards() {
             >
               Next →
             </button>
+          </div>
+
+          <div className="fc-shuffle-controls">
+            <button className="fc-shuffle-btn" onClick={handleShuffle}>
+              Shuffle
+            </button>
+            {isShuffled && (
+              <button className="fc-reset-link" onClick={handleResetOrder}>
+                Reset order
+              </button>
+            )}
           </div>
 
         </div>

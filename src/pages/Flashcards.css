@@ -101,7 +101,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     z-index: 1;
     padding: 2rem;
   }
@@ -139,6 +139,7 @@
     flex-direction: column;
     align-items: center;
     gap: 2px;
+    margin-top: 0.5rem;
   }
   
   .fc-chinese {
@@ -182,6 +183,47 @@
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
   }
+
+   /* ── Shuffle controls ──────────────────────────────────── */
+   .fc-shuffle-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .fc-shuffle-btn {
+    padding: 6px 16px;
+    border-radius: 4px;
+    color: #fff;
+    background: #4F8568;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .fc-shuffle-btn:hover {
+    background: #5EC19D;
+  }
+
+  .fc-reset-link {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #E02126;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .fc-reset-link:hover {
+    opacity: 0.75;
+  }
+
   
   /* ── Pagination ────────────────────────────────────────── */
   .fc-pagination {

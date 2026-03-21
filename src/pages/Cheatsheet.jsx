@@ -128,9 +128,9 @@ function Cheatsheet() {
 
           <section className="cs-section">
             <h2 className="cs-section-title">Suits</h2>
-            <SuitRow label="Characters" labelZh="萬, wàn"  tiles={WAN}  showNumbers={false} />
-            <SuitRow label="Bamboo"     labelZh="條, tiáo" tiles={TIAO} showNumbers={false} />
-            <SuitRow label="Circles"    labelZh="筒, tǒng" tiles={TONG} showNumbers={true}  />
+            <SuitRow label="CHARACTERS" labelZh="萬, wàn"  tiles={WAN}  showNumbers={false} />
+            <SuitRow label="BAMBOO"     labelZh="條, tiáo" tiles={TIAO} showNumbers={false} />
+            <SuitRow label="DOTS"    labelZh="筒, tǒng" tiles={TONG} showNumbers={true}  />
           </section>
 
           <div className="cs-bottom-grid">

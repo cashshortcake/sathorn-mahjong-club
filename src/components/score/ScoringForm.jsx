@@ -139,7 +139,7 @@ function CollapseSection({ dot, title, badge, disabled, children }) {
       <div
         style={{
           maxHeight: height,
-          overflow: 'hidden',
+          overflow: open && height > 0 ? 'visible' : 'hidden',
           transition: 'max-height 0.35s ease',
         }}
       >

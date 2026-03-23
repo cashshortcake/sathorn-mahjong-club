@@ -129,6 +129,14 @@ const RULES = [
             <p>2 Dots x 2 <span className="ac-win">✔</span></p>
           </ul>
         </div>
+
+        <p className="ac-label">Action Priority (Who takes the Tile)</p>
+        <p className="ac-p">If a player discards a tile, the following priority rules apply for claiming it:</p>
+        <ul className="ac-bullets">
+          <li className="ac-bullet"><strong>Wu (Win/Mahjong)</strong>: The highest priority. A player declaring a win (Completing a winning hand) takes the tile regardless of who else wants it.</li>
+          <li className="ac-bullet"><strong>Kong/Pung (4-of-a-kind/Triplet)</strong>: If no one wins, a Pung (3 identical tiles) or Kong (4 identical tiles) takes precedence over a Chow.</li>
+          <li className="ac-bullet"><strong>Chow (Sequence)</strong>: The lowest priority. The lowest priority. Only the player immediately to the right of the discarder can call a Chow. </li>
+          </ul>
       </>
     ),
   },

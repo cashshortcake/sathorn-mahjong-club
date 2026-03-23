@@ -5,45 +5,45 @@ export const TOTAL_ROUNDS = 4
 
 // ─── Fan Data ─────────────────────────────────────────────────────────────────
 export const WHOLE_HAND = [
-  { id: 'allChow',    label: 'All Chow Hand',             fan: 1,  info: 'A winning hand made entirely of chows (sequences).' },
-  { id: 'allPung',    label: 'All Pung Hand',             fan: 3,  info: 'A winning hand made entirely of pungs and kongs.' },
-  { id: 'halfFlush',  label: 'One Suit + Honours',        fan: 3,  info: 'Hand uses only one suit, but can include wind/dragon tiles.' },
-  { id: 'sevenPairs', label: 'Seven Pairs',               fan: 4,  info: 'Seven identical pairs. Cannot combine with Basic Sets.' },
-  { id: 'pureHand',   label: 'Pure Hand (One Suit Only)', fan: 7,  info: 'Hand uses only one suit — no honour tiles at all.' },
-  { id: 'allHonours', label: 'All Honours',               fan: 10, info: 'Hand made entirely of wind and dragon tiles.' },
+  { id: 'allChow',    label: 'All Chow Hand',             fan: 1,  info: 'Your entire hand is built from runs (e.g. 3-4-5 Bamboo). No triplets.' },
+  { id: 'allPung',    label: 'All Pung Hand',             fan: 3,  info: 'Your entire hand is built from triplets and a pair. No runs.' },
+  { id: 'halfFlush',  label: 'One Suit + Honours',        fan: 3,  info: 'All your tiles are from one suit (e.g. only Bamboo), plus any wind or dragon tiles.' },
+  { id: 'sevenPairs', label: 'Seven Pairs',               fan: 4,  info: 'Instead of the usual 4 sets + 1 pair, your hand is seven different pairs.' },
+  { id: 'pureHand',   label: 'Pure Hand (One Suit Only)', fan: 7,  info: 'All your tiles are from one suit only — no winds or dragons at all.' },
+  { id: 'allHonours', label: 'All Honours',               fan: 10, info: 'Your entire hand is made of wind and dragon tiles only — no numbered suits.' },
 ]
 
 export const BASIC_SETS = [
-  { id: 'dragonPung',     label: 'Dragon Pung / Kong',          fan: 1, info: 'A pung or kong of any dragon tile. Can select multiple.' },
-  { id: 'seatWind',       label: 'Seat Wind Pung / Kong',       fan: 1, info: "A pung or kong of your own seat wind." },
-  { id: 'prevailingWind', label: 'Prevailing Wind Pung / Kong', fan: 1, info: 'A pung or kong of the current round wind.' },
+  { id: 'dragonPung',     label: 'Dragon Pung / Kong',          fan: 1, info: 'You have three (or four) of the same dragon tile. Select once per dragon triplet you have.' },
+  { id: 'seatWind',       label: 'Seat Wind Pung / Kong',       fan: 1, info: 'You have three (or four) of your own seat wind — the wind assigned to your position at the table.' },
+  { id: 'prevailingWind', label: 'Prevailing Wind Pung / Kong', fan: 1, info: 'You have three (or four) of the current round wind — the wind that applies to everyone this round.' },
 ]
 
 export const WINNING_CONDITIONS = [
-  { id: 'selfDraw',     label: 'Self Draw',              fan: 1, info: 'Drew the winning tile yourself from the wall.' },
-  { id: 'allConcealed', label: 'All Concealed Hand',     fan: 1, info: 'Entire hand was concealed — no exposed melds.' },
-  { id: 'lastTile',     label: 'Win on Last Tile',       fan: 1, info: 'Won on the very last tile drawn from the wall.' },
-  { id: 'byKong',       label: 'Win by Kong',            fan: 1, info: 'Drew the winning tile after declaring a kong.' },
-  { id: 'stealKong',    label: 'Win by Stealing a Kong', fan: 1, info: "Claimed a winning tile from another player's kong declaration." },
-  { id: 'doubleKong',   label: 'Win by Double Kong',     fan: 8, info: 'Drew a winning tile after a second consecutive kong.' },
+  { id: 'selfDraw',     label: 'Self Draw',              fan: 1, info: 'You drew the winning tile yourself from the wall, rather than taking it from another player\'s discard.' },
+  { id: 'allConcealed', label: 'All Concealed Hand',     fan: 1, info: 'You never picked up a tile from another player\'s discard — your entire hand was drawn from the wall.' },
+  { id: 'lastTile',     label: 'Win on Last Tile',       fan: 1, info: 'You won on the very last tile drawn from the wall before the game would have been a draw.' },
+  { id: 'byKong',       label: 'Win by Kong',            fan: 1, info: 'After adding a fourth tile to make a kong, you drew an extra tile from the wall — and that tile won the game.' },
+  { id: 'stealKong',    label: 'Win by Stealing a Kong', fan: 1, info: 'Another player tried to upgrade a triplet to a kong by adding a fourth tile — and that tile completed your hand.' },
+  { id: 'doubleKong',   label: 'Win by Double Kong',     fan: 8, info: 'You declared two kongs in a row, drew the extra tile after the second one, and that tile won the game.' },
 ]
 
 export const SPECIAL_HANDS = [
-  { id: 'mixedOrphans',    label: 'Mixed Orphans',      fan: 1,  allowBasicSets: true,  info: 'Ones and nines of any suit, plus any set of honour tiles.' },
-  { id: 'smallDragons',    label: 'Small Dragons',      fan: 5,  allowBasicSets: false, info: 'Two dragon pungs/kongs and a pair of the third dragon.' },
-  { id: 'greatDragons',    label: 'Great Dragons',      fan: 8,  allowBasicSets: false, info: 'Three dragon pungs or kongs.' },
-  { id: 'hiddenGold',      label: 'Hidden Gold',        fan: 8,  allowBasicSets: false, info: 'Four pungs, all concealed, won by self-draw.' },
-  { id: 'rubyDragon',      label: 'Ruby Dragon',        fan: 10, allowBasicSets: false, info: 'Pung/Kong of Characters (萬) plus pung of the Ruby Dragon.' },
-  { id: 'jadeDragon',      label: 'Jade Dragon',        fan: 10, allowBasicSets: false, info: 'Pung/Kong of Bamboos (條) plus pung of the Jade Dragon.' },
-  { id: 'pearlDragon',     label: 'Pearl Dragon',       fan: 10, allowBasicSets: false, info: 'Pung/Kong of Circles (筒) plus pung of the Pearl Dragon.' },
-  { id: 'orphans',         label: 'Orphans',            fan: 10, allowBasicSets: false, info: 'Pungs/Kongs of only ones and nines across all suits.' },
-  { id: 'nineGates',       label: 'Nine Gates',         fan: 10, allowBasicSets: false, info: 'Fully concealed 1-1-2-3-4-5-6-7-8-9-9 of one suit plus one extra. No Self Draw or Pure Hand bonus.' },
-  { id: 'smallWinds',      label: 'Small Winds',        fan: 10, allowBasicSets: true,  info: 'Three wind pungs/kongs and a pair of the fourth wind.' },
-  { id: 'allKongs',        label: 'All Kongs',          fan: 12, allowBasicSets: false, info: 'Four kongs plus any pair.' },
-  { id: 'greatWinds',      label: 'Great Winds',        fan: 12, allowBasicSets: false, info: 'Pungs or kongs of all four wind tiles.' },
-  { id: 'thirteenOrphans', label: 'Thirteen Orphans',   fan: 12, allowBasicSets: false, info: 'One of each terminal and honour tile, plus a duplicate.' },
-  { id: 'earthlyHand',     label: 'Earthly Hand',       fan: 12, allowBasicSets: false, info: "Non-East player wins on East's very first discard." },
-  { id: 'heavenlyHand',    label: 'Heavenly Hand',      fan: 12, allowBasicSets: false, info: 'East player wins with the dealt hand before discarding.' },
+  { id: 'mixedOrphans',    label: 'Mixed Orphans',      fan: 1,  allowBasicSets: true,  info: 'Your hand uses only 1s and 9s from any suit, plus a set of wind or dragon tiles.' },
+  { id: 'smallDragons',    label: 'Small Dragons',      fan: 5,  allowBasicSets: false, info: 'You have triplets of two different dragons, and a pair of the third.' },
+  { id: 'greatDragons',    label: 'Great Dragons',      fan: 8,  allowBasicSets: false, info: 'You have triplets of all three dragons — Ruby, Jade, and Pearl.' },
+  { id: 'hiddenGold',      label: 'Hidden Gold',        fan: 8,  allowBasicSets: false, info: 'Four triplets, all kept hidden (no exposed melds), won by drawing the final tile yourself.' },
+  { id: 'rubyDragon',      label: 'Ruby Dragon',        fan: 10, allowBasicSets: false, info: 'A triplet of Characters (萬) tiles, plus a triplet of the Ruby Dragon (中).' },
+  { id: 'jadeDragon',      label: 'Jade Dragon',        fan: 10, allowBasicSets: false, info: 'A triplet of Bamboo (條) tiles, plus a triplet of the Jade Dragon (發).' },
+  { id: 'pearlDragon',     label: 'Pearl Dragon',       fan: 10, allowBasicSets: false, info: 'A triplet of Dots (筒) tiles, plus a triplet of the Pearl Dragon (白).' },
+  { id: 'orphans',         label: 'Orphans',            fan: 10, allowBasicSets: false, info: 'Your entire hand is made of triplets of 1s and 9s only — from any combination of suits.' },
+  { id: 'nineGates',       label: 'Nine Gates',         fan: 10, allowBasicSets: false, info: 'A fully hidden hand: 1-1-2-3-4-5-6-7-8-9-9 of one suit, plus one extra tile from the same suit. Self Draw and Pure Hand bonuses don\'t apply.' },
+  { id: 'smallWinds',      label: 'Small Winds',        fan: 10, allowBasicSets: true,  info: 'Triplets of three different winds, plus a pair of the fourth wind.' },
+  { id: 'allKongs',        label: 'All Kongs',          fan: 12, allowBasicSets: false, info: 'All four of your sets are kongs (four identical tiles). Any pair completes the hand.' },
+  { id: 'greatWinds',      label: 'Great Winds',        fan: 12, allowBasicSets: false, info: 'Triplets of all four winds — East, South, West, and North.' },
+  { id: 'thirteenOrphans', label: 'Thirteen Orphans',   fan: 12, allowBasicSets: false, info: 'One of every terminal and honour tile (1 and 9 of each suit, plus all winds and dragons), plus one duplicate.' },
+  { id: 'earthlyHand',     label: 'Earthly Hand',       fan: 12, allowBasicSets: false, info: 'You win on the very first tile East discards at the start of the round — before anyone else has taken a turn.' },
+  { id: 'heavenlyHand',    label: 'Heavenly Hand',      fan: 12, allowBasicSets: false, info: 'You are East, and you win with the tiles you were originally dealt — before discarding anything.' },
 ]
 
 // ─── Initial Scoring State ────────────────────────────────────────────────────

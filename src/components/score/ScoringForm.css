@@ -15,6 +15,7 @@
   background: #F7F3E8;
   border: 1px solid #20201E;
   border-radius: 2px;
+  overflow: visible;
 }
 
 .sf-section-disabled {
@@ -146,6 +147,11 @@
   position: relative;
   display: inline-flex;
   align-items: center;
+  z-index: 10;
+}
+
+.sf-info-wrap:hover {
+  z-index: 300;
 }
 
 .sf-info-btn {

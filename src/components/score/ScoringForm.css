@@ -88,16 +88,20 @@
   margin-right: 0.25rem;
 }
 
+/* ── Replace the existing .sf-chevron rules in ScoringForm.css with these ── */
+ 
 .sf-chevron {
   font-size: 14px;
   color: #7a7060;
-  transition: transform 0.2s;
+  flex-shrink: 0;
   display: inline-block;
+  transition: transform 0.35s ease;   /* matches Accordion.css */
 }
-
+ 
 .sf-chevron.open {
   transform: rotate(180deg);
 }
+ 
 
 /* ── Options ── */
 .sf-option {

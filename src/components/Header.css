@@ -26,7 +26,7 @@
     color: #20201E;
     text-decoration: none;
     padding: 12px 20px;
-    border-radius: 8px;
+    border-radius: 2px;
     transition: all 0.15s;
     text-transform: uppercase;
     letter-spacing: -0.02em; 
@@ -34,9 +34,9 @@
   }
   
   .site-nav-link:hover {
-    color: #F5511C;
+    color: #fff;
     background: #C8979D;
-    border-radius: 8px;
+    border-radius: 2px;
     padding: 12px 20px;
     transition: all 0.15s;
   }
@@ -44,7 +44,7 @@
   .site-nav-link.active-link {
     color: #F5511C;
     background: #F8F8F8;
-    border-radius: 8px;
+    border-radius: 2px;
     padding: 12px 20px;
   }
 

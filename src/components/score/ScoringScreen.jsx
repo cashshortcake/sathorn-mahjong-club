@@ -5,17 +5,23 @@ import BottomSheet    from './BottomSheet'
 import EndGamePanel   from './EndGamePanel'
 import './ScoringScreen.css'
 
-function ScoringTopBar({ players, round, isEndGame, onEditPlayers }) {
+function ScoringTopBar({ players, round, currentWind, isEndGame, onEditPlayers }) {
+  const windRoundLabel = isEndGame
+    ? `GAME OVER · ${currentWind} · Round ${round}`
+    : `${currentWind} Wind · Round ${round}`
+
   return (
     <div className="ss-topbar">
       <div className="ss-topbar-left">
-        {/* Desktop: "Round N of 4" — hidden on mobile */}
+        {/* Desktop label */}
         <span className={`ss-round-tag ss-round-tag--desktop ${isEndGame ? 'endgame' : ''}`}>
-          {isEndGame ? `Game Over ` : `Round ${round}`}
+          {windRoundLabel}
         </span>
-        {/* Mobile: "Round N · N Players" — hidden on desktop */}
+        {/* Mobile label */}
         <span className={`ss-round-tag ss-round-tag--mobile ${isEndGame ? 'endgame' : ''}`}>
-          {isEndGame ? `Game Over` : `Round ${round} · ${players.length} Players`}
+          {isEndGame
+            ? 'GAME OVER'
+            : `${currentWind} · R${round} · ${players.length} Players`}
         </span>
         {/* Player chips — hidden on mobile */}
         <div className="ss-player-chips">
@@ -25,10 +31,10 @@ function ScoringTopBar({ players, round, isEndGame, onEditPlayers }) {
               className="ss-player-chip"
               style={{ borderColor: p.color }}
             >
+              {/* Wind player icons have baked-in colour — no filter */}
               <img
                 className="ss-player-chip-icon"
                 src={p.icon}
-                style={{ filter: p.filter }}
                 alt=""
                 aria-hidden
               />
@@ -51,6 +57,7 @@ function ScoringTopBar({ players, round, isEndGame, onEditPlayers }) {
 export default function ScoringScreen({
   players,
   round,
+  currentWind,
   history,
   scores,
   scoring,
@@ -60,6 +67,7 @@ export default function ScoringScreen({
   isEndGame,
   canApply,
   applyDisabledReason,
+  gameSettings,
   sheetOpen,
   sheetTab,
   historyExpanded,
@@ -81,10 +89,12 @@ export default function ScoringScreen({
     currentPayouts,
     resolvedDiscarderId,
     round,
+    currentWind,
     history,
     isEndGame,
     canApply,
     applyDisabledReason,
+    gameSettings,
     historyExpanded,
     onChange,
     onApply,
@@ -97,6 +107,7 @@ export default function ScoringScreen({
       <ScoringTopBar
         players={players}
         round={round}
+        currentWind={currentWind}
         isEndGame={isEndGame}
         onEditPlayers={onEditPlayers}
       />
@@ -106,7 +117,6 @@ export default function ScoringScreen({
         <div className="ss-form-col">
           <ScoringForm
             scoring={scoring}
-            fanResult={fanResult}
             isEndGame={isEndGame}
             onChange={onChange}
           />
@@ -120,6 +130,7 @@ export default function ScoringScreen({
               scores={scores}
               history={history}
               historyExpanded={historyExpanded}
+              gameSettings={gameSettings}
               onEditRound={onEditRound}
               onHistoryToggle={onHistoryToggle}
               onStartNewGame={onStartNewGame}
@@ -134,7 +145,9 @@ export default function ScoringScreen({
       <StickyBottomBar
         fanResult={fanResult}
         round={round}
+        currentWind={currentWind}
         isEndGame={isEndGame}
+        minimumFan={gameSettings?.minimumFan ?? 3}
         onExpand={onSheetOpen}
       />
 
@@ -149,6 +162,7 @@ export default function ScoringScreen({
           scores={scores}
           history={history}
           historyExpanded={historyExpanded}
+          gameSettings={gameSettings}
           onEditRound={onEditRound}
           onHistoryToggle={onHistoryToggle}
           onStartNewGame={onStartNewGame}

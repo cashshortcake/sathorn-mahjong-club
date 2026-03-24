@@ -96,3 +96,74 @@
 .egp-new-game-btn:hover {
   background: #D94410;
 }
+
+/* ── Scores section header ── */
+.egp-scores-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.egp-settlement-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #8B897F;
+  letter-spacing: 0.04em;
+}
+
+/* ── Per-player final standings ── */
+.egp-standings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.egp-standing-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #20201E;
+  padding: 0.4rem 0.5rem;
+  background: #EDE9DF;
+}
+
+.egp-standing-row.leading {
+  background: #E0D9CC;
+}
+
+.egp-standing-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.egp-standing-name {
+  flex: 1;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.egp-chips {
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 60px;
+  text-align: right;
+}
+
+.egp-settlement {
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 60px;
+  text-align: right;
+}
+
+.egp-chips.pos,
+.egp-settlement.pos { color: #3D7057; }
+
+.egp-chips.neg,
+.egp-settlement.neg { color: #C0392B; }

@@ -1,13 +1,13 @@
 import './Ticker.css'
-import star1 from '../assets/icons/ticker-star-1.svg'
-import star2 from '../assets/icons/ticker-star-2.svg'
+import eastIcon  from '../assets/icons/wind-east-player.svg'
+import southIcon from '../assets/icons/wind-south-player.svg'
 
 function Ticker() {
   const items = [
     { type: 'text', content: 'COUNTING TILES...' },
-    { type: 'icon', src: star1 },
+    { type: 'icon', src: eastIcon  },
     { type: 'text', content: 'HOPEFULLY CORRECTLY' },
-    { type: 'icon', src: star2 },
+    { type: 'icon', src: southIcon },
   ];
 
   const repeated = [...items, ...items, ...items, ...items];

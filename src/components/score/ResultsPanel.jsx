@@ -1,5 +1,5 @@
 import './ResultsPanel.css'
-import { MIN_FAN, MAX_FAN, TOTAL_ROUNDS } from '../../utils/scoring'
+import { MAX_FAN } from '../../utils/scoring'
 
 // ─── Fan Breakdown Panel ──────────────────────────────────────────────────────
 function FanBreakdownPanel({ fanResult }) {
@@ -40,6 +40,24 @@ function MaxFanBanner() {
     <div className="rp-max-banner">
       <span>🀄</span>
       <span>Max 12 Fan limit</span>
+    </div>
+  )
+}
+
+// ─── Draw Toggle ──────────────────────────────────────────────────────────────
+function DrawToggle({ isDraw, disabled, onChange }) {
+  return (
+    <div className="rp-draw-row">
+      <label className="rp-draw-label">
+        <input
+          type="checkbox"
+          className="rp-draw-check"
+          checked={isDraw}
+          disabled={disabled}
+          onChange={e => onChange(e.target.checked)}
+        />
+        Draw / No winner
+      </label>
     </div>
   )
 }
@@ -140,10 +158,10 @@ export function StandingsList({ players, scores }) {
           key={p.id}
           className={`rp-standing-row ${i === 0 ? 'leading' : ''}`}
         >
+          {/* Wind player icons have baked-in colour — no filter */}
           <img
             className="rp-standing-icon"
             src={p.icon}
-            style={{ filter: p.filter }}
             alt=""
             aria-hidden
           />
@@ -173,14 +191,26 @@ export function RoundHistory({ history, players, expanded, onToggle, onEdit }) {
       {expanded && (
         <div className="rp-history-rows">
           {history.map((entry, idx) => {
-            const winner = players.find(p => p.id === entry.selections?.winnerId)
+            const winner = entry.isDraw
+              ? null
+              : players.find(p => p.id === entry.selections?.winnerId)
+            const windLabel = entry.wind ? entry.wind[0] : 'E'  // first letter
             return (
               <div key={idx} className="rp-history-row">
-                <span className="rp-history-round">R{entry.round}</span>
-                <span className="rp-history-winner">
-                  {winner ? winner.name : '—'}
+                <span className="rp-history-wind-round">
+                  <span className="rp-history-wind-badge">{windLabel}</span>
+                  R{entry.round}
                 </span>
-                <span className="rp-history-fan">{entry.fan} fan</span>
+                <span className="rp-history-winner">
+                  {entry.isDraw ? (
+                    <span className="rp-history-draw-label">Draw</span>
+                  ) : (
+                    winner ? winner.name : '—'
+                  )}
+                </span>
+                {!entry.isDraw && (
+                  <span className="rp-history-fan">{entry.fan} fan</span>
+                )}
                 <button
                   className="rp-history-edit"
                   type="button"
@@ -198,8 +228,13 @@ export function RoundHistory({ history, players, expanded, onToggle, onEdit }) {
 }
 
 // ─── Apply Button ─────────────────────────────────────────────────────────────
-export function ApplyButton({ canApply, disabledReason, round, onApply }) {
-  const label = round === TOTAL_ROUNDS ? 'Apply Final Round' : `Apply Round ${round}`
+export function ApplyButton({ canApply, disabledReason, round, isDraw, onApply }) {
+  let label
+  if (isDraw) {
+    label = `Record Draw (R${round})`
+  } else {
+    label = `Apply Round ${round}`
+  }
   return (
     <div className="rp-apply-wrap">
       <button
@@ -210,6 +245,9 @@ export function ApplyButton({ canApply, disabledReason, round, onApply }) {
       >
         {label}
       </button>
+      {!canApply && disabledReason && (
+        <p className="rp-apply-reason">{disabledReason}</p>
+      )}
     </div>
   )
 }
@@ -223,25 +261,30 @@ export default function ResultsPanel({
   currentPayouts,
   resolvedDiscarderId,
   round,
+  currentWind,
   history,
   isEndGame,
   canApply,
   applyDisabledReason,
+  gameSettings,
   historyExpanded,
   onChange,
   onApply,
   onEditRound,
   onHistoryToggle,
 }) {
+  const minimumFan = gameSettings?.minimumFan ?? 3
+  const isBelowMin = minimumFan > 0 && fanResult.total < minimumFan
+  const isDraw     = scoring.isDraw ?? false
 
   return (
     <aside className="rp-panel">
 
       {/* ── Fan breakdown — #E6E1D7 contained card at top ── */}
-      <div className="rp-fan-section">
+      <div className={`rp-fan-section ${isDraw ? 'rp-fan-section--dimmed' : ''}`}>
         <div className="rp-fan-section-header">
           <span className="rp-section-label">Fan Breakdown</span>
-          <span className="rp-fan-section-round">Round {round}</span>
+          <span className="rp-fan-section-round">{currentWind} · R{round}</span>
         </div>
         <FanBreakdownPanel fanResult={fanResult} />
         <div className="rp-divider" />
@@ -253,39 +296,54 @@ export default function ResultsPanel({
         </div>
       </div>
 
-      {/* ── Winner & Win Type ── */}
-      <WinnerSelector
-        players={players}
-        winnerId={scoring.winnerId}
-        disabled={isEndGame || fanResult.total < MIN_FAN}
-        onChange={val => onChange({ winnerId: val, discarderId: null })}
+      {/* ── Draw toggle ── */}
+      <DrawToggle
+        isDraw={isDraw}
+        disabled={isEndGame}
+        onChange={checked => onChange({ isDraw: checked })}
       />
 
-      <WinTypeToggle
-        winType={scoring.winType}
-        disabled={isEndGame || fanResult.total < MIN_FAN}
-        onChange={val => onChange({ winType: val, discarderId: null })}
-      />
+      {/* ── Winner & Win Type (hidden when draw) ── */}
+      {!isDraw && (
+        <>
+          <WinnerSelector
+            players={players}
+            winnerId={scoring.winnerId}
+            disabled={isEndGame || isBelowMin}
+            onChange={val => onChange({ winnerId: val, discarderId: null })}
+          />
 
-      {scoring.winType === 'discardWin' && scoring.winnerId && (
-        <DiscarderSelector
-          players={players}
-          winnerId={scoring.winnerId}
-          discarderId={resolvedDiscarderId}
-          disabled={isEndGame}
-          onChange={val => onChange({ discarderId: val })}
-        />
+          <WinTypeToggle
+            winType={scoring.winType}
+            disabled={isEndGame || isBelowMin}
+            onChange={val => onChange({ winType: val, discarderId: null })}
+          />
+
+          {scoring.winType === 'discardWin' && scoring.winnerId && (
+            <DiscarderSelector
+              players={players}
+              winnerId={scoring.winnerId}
+              discarderId={resolvedDiscarderId}
+              disabled={isEndGame}
+              onChange={val => onChange({ discarderId: val })}
+            />
+          )}
+        </>
       )}
 
       {/* ── Payout summary ── */}
-      <div className="rp-divider" />
-      <div className="rp-section-label">Payout</div>
-      <PayoutSummary players={players} payouts={currentPayouts} />
+      {!isDraw && (
+        <>
+          <div className="rp-divider" />
+          <div className="rp-section-label">Payout</div>
+          <PayoutSummary players={players} payouts={currentPayouts} />
+        </>
+      )}
 
-      {/* ── Min fan banner — shown whenever total is below minimum ── */}
-      {!isEndGame && fanResult.total < MIN_FAN && (
+      {/* ── Min fan banner — dynamic, hidden when minimumFan === 0 ── */}
+      {!isEndGame && !isDraw && minimumFan > 0 && isBelowMin && (
         <div className="rp-min-fan-banner">
-          ⚠️ Minimum {MIN_FAN} fan required to win
+          ⚠️ Minimum {minimumFan} fan required to win
         </div>
       )}
 
@@ -295,6 +353,7 @@ export default function ResultsPanel({
           canApply={canApply}
           disabledReason={applyDisabledReason}
           round={round}
+          isDraw={isDraw}
           onApply={onApply}
         />
       )}

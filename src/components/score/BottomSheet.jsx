@@ -1,5 +1,5 @@
 import { useRef, useEffect, useCallback } from 'react'
-import { MIN_FAN, MAX_FAN, TOTAL_ROUNDS } from '../../utils/scoring'
+import { MAX_FAN } from '../../utils/scoring'
 import EndGamePanel from './EndGamePanel'
 import { StandingsList, RoundHistory } from './ResultsPanel'
 import './BottomSheet.css'
@@ -21,13 +21,18 @@ function BreakdownContent({
   currentPayouts,
   resolvedDiscarderId,
   round,
+  currentWind,
   isEndGame,
   canApply,
   applyDisabledReason,
+  gameSettings,
   onChange,
   onApply,
 }) {
   const { items, cappedAt, total } = fanResult
+  const minimumFan  = gameSettings?.minimumFan ?? 3
+  const isBelowMin  = minimumFan > 0 && total < minimumFan
+  const isDraw      = scoring.isDraw ?? false
 
   // Fan breakdown rows
   const breakdownRows = []
@@ -48,18 +53,17 @@ function BreakdownContent({
     breakdownRows.push(<MaxFanBanner key="banner-end" />)
   }
 
-  const winTypeDisabled   = isEndGame || total < MIN_FAN
-  const winnerDisabled    = isEndGame || total < MIN_FAN
-  const label = round === TOTAL_ROUNDS ? 'Apply Final Round' : `Apply Round ${round}`
+  const windRound = `${currentWind ?? 'East'} · R${round}`
+  const applyLabel = isDraw ? `Record Draw (R${round})` : `Apply Round ${round}`
 
   return (
     <div className="bs-breakdown-content">
 
-      {/* ── Fan breakdown — #E6E1D7 contained card at top ── */}
-      <div className="rp-fan-section">
+      {/* ── Fan breakdown ── */}
+      <div className={`rp-fan-section ${isDraw ? 'rp-fan-section--dimmed' : ''}`}>
         <div className="rp-fan-section-header">
           <span className="rp-section-label">Fan Breakdown</span>
-          <span className="rp-fan-section-round">Round {round}</span>
+          <span className="rp-fan-section-round">{windRound}</span>
         </div>
         {items.length === 0
           ? <div className="rp-breakdown-empty"><span>Select scoring options</span></div>
@@ -74,88 +78,104 @@ function BreakdownContent({
         </div>
       </div>
 
-      {/* Winner */}
-      <div className="rp-field">
-        <label className="rp-field-label">Winner</label>
-        <select
-          className="rp-select"
-          value={scoring.winnerId ?? players[0]?.id ?? ''}
-          disabled={winnerDisabled}
-          onChange={e => onChange({ winnerId: e.target.value ? Number(e.target.value) : null, discarderId: null })}
-        >
-          {players.map(p => (
-            <option key={p.id} value={p.id}>{p.name}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* Win type */}
-      <div className="rp-field">
-        <label className="rp-field-label">Win type</label>
-        <div className="rp-toggle">
-          <button
-            type="button"
-            className={`rp-toggle-btn ${scoring.winType === 'selfDraw' ? 'active' : ''}`}
-            disabled={winTypeDisabled}
-            onClick={() => onChange({ winType: 'selfDraw', discarderId: null })}
-          >Self Draw</button>
-          <button
-            type="button"
-            className={`rp-toggle-btn ${scoring.winType === 'discardWin' ? 'active' : ''}`}
-            disabled={winTypeDisabled}
-            onClick={() => onChange({ winType: 'discardWin', discarderId: null })}
-          >Discard Win</button>
-        </div>
-      </div>
-
-      {/* Discarder selector (only when discard win) */}
-      {scoring.winType === 'discardWin' && scoring.winnerId && (
-        <div className="rp-field">
-          <label className="rp-field-label">Who discarded?</label>
-          <select
-            className="rp-select"
-            value={resolvedDiscarderId || ''}
+      {/* Draw toggle */}
+      <div className="rp-draw-row">
+        <label className="rp-draw-label">
+          <input
+            type="checkbox"
+            className="rp-draw-check"
+            checked={isDraw}
             disabled={isEndGame}
-            onChange={e => onChange({ discarderId: e.target.value ? Number(e.target.value) : null })}
-          >
-            {players.filter(p => p.id !== scoring.winnerId).map(p => (
-              <option key={p.id} value={p.id}>{p.name}</option>
-            ))}
-          </select>
-        </div>
+            onChange={e => onChange({ isDraw: e.target.checked })}
+          />
+          Draw / No winner
+        </label>
+      </div>
+
+      {/* Winner, win type, discarder (hidden on draw) */}
+      {!isDraw && (
+        <>
+          <div className="rp-field">
+            <label className="rp-field-label">Winner</label>
+            <select
+              className="rp-select"
+              value={scoring.winnerId ?? players[0]?.id ?? ''}
+              disabled={isEndGame || isBelowMin}
+              onChange={e => onChange({ winnerId: e.target.value ? Number(e.target.value) : null, discarderId: null })}
+            >
+              {players.map(p => (
+                <option key={p.id} value={p.id}>{p.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="rp-field">
+            <label className="rp-field-label">Win type</label>
+            <div className="rp-toggle">
+              <button
+                type="button"
+                className={`rp-toggle-btn ${scoring.winType === 'selfDraw' ? 'active' : ''}`}
+                disabled={isEndGame || isBelowMin}
+                onClick={() => onChange({ winType: 'selfDraw', discarderId: null })}
+              >Self Draw</button>
+              <button
+                type="button"
+                className={`rp-toggle-btn ${scoring.winType === 'discardWin' ? 'active' : ''}`}
+                disabled={isEndGame || isBelowMin}
+                onClick={() => onChange({ winType: 'discardWin', discarderId: null })}
+              >Discard Win</button>
+            </div>
+          </div>
+
+          {scoring.winType === 'discardWin' && scoring.winnerId && (
+            <div className="rp-field">
+              <label className="rp-field-label">Who discarded?</label>
+              <select
+                className="rp-select"
+                value={resolvedDiscarderId || ''}
+                disabled={isEndGame}
+                onChange={e => onChange({ discarderId: e.target.value ? Number(e.target.value) : null })}
+              >
+                {players.filter(p => p.id !== scoring.winnerId).map(p => (
+                  <option key={p.id} value={p.id}>{p.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+        </>
       )}
 
-      <div className="rp-divider" />
+      {!isDraw && (
+        <>
+          <div className="rp-divider" />
+          <div className="rp-section-label">Payout</div>
+          {currentPayouts
+            ? (
+              <div className="rp-payout">
+                {players.map(p => {
+                  const delta = currentPayouts[p.id] || 0
+                  return (
+                    <div key={p.id} className="rp-payout-row">
+                      <span className="rp-payout-dot" style={{ background: p.color }} />
+                      <span className="rp-payout-name">{p.name}</span>
+                      <span className={`rp-payout-val ${delta > 0 ? 'pos' : delta < 0 ? 'neg' : ''}`}>
+                        {delta > 0 ? `+${delta}` : delta}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            )
+            : null
+          }
 
-      {/* Payout */}
-      <div className="rp-section-label">Payout</div>
-      {currentPayouts
-        ? (
-          <div className="rp-payout">
-            {players.map(p => {
-              const delta = currentPayouts[p.id] || 0
-              return (
-                <div key={p.id} className="rp-payout-row">
-                  <span className="rp-payout-dot" style={{ background: p.color }} />
-                  <span className="rp-payout-name">{p.name}</span>
-                  <span className={`rp-payout-val ${delta > 0 ? 'pos' : delta < 0 ? 'neg' : ''}`}>
-                    {delta > 0 ? `+${delta}` : delta}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
-        )
-        : (
-          null
-        )
-      }
-
-      {/* Min fan banner — shown whenever total is below minimum */}
-      {!isEndGame && total < MIN_FAN && (
-        <div className="rp-min-fan-banner">
-          ⚠️ Minimum {MIN_FAN} fan required to win
-        </div>
+          {/* Min fan banner */}
+          {!isEndGame && minimumFan > 0 && isBelowMin && (
+            <div className="rp-min-fan-banner">
+              ⚠️ Minimum {minimumFan} fan required to win
+            </div>
+          )}
+        </>
       )}
 
       {/* Apply button */}
@@ -167,8 +187,11 @@ function BreakdownContent({
             disabled={!canApply}
             onClick={onApply}
           >
-            {label}
+            {applyLabel}
           </button>
+          {!canApply && applyDisabledReason && (
+            <p className="rp-apply-reason">{applyDisabledReason}</p>
+          )}
         </div>
       )}
 
@@ -205,18 +228,48 @@ export default function BottomSheet({
   scores,
   history,
   historyExpanded,
+  gameSettings,
   onEditRound,
   onHistoryToggle,
   onStartNewGame,
 }) {
   const sheetRef  = useRef(null)
-  const dragState = useRef(null) // { startY, startHeight, dragging }
+  const dragState = useRef(null)
 
-  // Expand to 85vh on mount via CSS animation; store current height for drag
   const getSheetHeight = useCallback(() => {
     if (!sheetRef.current) return 0
     return sheetRef.current.getBoundingClientRect().height
   }, [])
+
+  const handlePointerMove = useCallback((e) => {
+    const state = dragState.current
+    const sheet = sheetRef.current
+    if (!state || !sheet) return
+    const delta = state.startY - e.clientY
+    const newH  = Math.min(
+      Math.max(state.startHeight + delta, 80),
+      window.innerHeight * 0.92
+    )
+    sheet.style.maxHeight = `${newH}px`
+  }, [])
+
+  const handlePointerUp = useCallback((e) => {
+    const state = dragState.current
+    const sheet = sheetRef.current
+    window.removeEventListener('pointermove', handlePointerMove)
+    // eslint-disable-next-line react-hooks/immutability
+    window.removeEventListener('pointerup',   handlePointerUp)
+    if (!state || !sheet) return
+    sheet.style.transition = ''
+    const delta = state.startY - e.clientY
+    const vh    = window.innerHeight
+    if (delta < -80) {
+      onClose()
+      return
+    }
+    sheet.style.maxHeight = delta > 0 ? `${vh * 0.85}px` : `${vh * 0.45}px`
+    dragState.current = null
+  }, [handlePointerMove, onClose])
 
   const handlePointerDown = useCallback((e) => {
     const sheet = sheetRef.current
@@ -229,42 +282,8 @@ export default function BottomSheet({
     window.addEventListener('pointermove', handlePointerMove)
     window.addEventListener('pointerup',   handlePointerUp)
     e.preventDefault()
-  }, [getSheetHeight])
+  }, [getSheetHeight, handlePointerMove, handlePointerUp])
 
-  const handlePointerMove = useCallback((e) => {
-    const state = dragState.current
-    const sheet = sheetRef.current
-    if (!state || !sheet) return
-    const delta = state.startY - e.clientY   // positive = dragged up
-    const newH  = Math.min(
-      Math.max(state.startHeight + delta, 80),
-      window.innerHeight * 0.92
-    )
-    sheet.style.maxHeight = `${newH}px`
-  }, [])
-
-  const handlePointerUp = useCallback((e) => {
-    const state = dragState.current
-    const sheet = sheetRef.current
-    window.removeEventListener('pointermove', handlePointerMove)
-    window.removeEventListener('pointerup',   handlePointerUp)
-    if (!state || !sheet) return
-    sheet.style.transition = ''
-
-    const delta = state.startY - e.clientY
-    const vh    = window.innerHeight
-
-    // Snap: if dragged down more than 80px from start, close
-    if (delta < -80) {
-      onClose()
-      return
-    }
-    // Snap to expanded (85vh) or collapsed (45vh) based on drag direction
-    sheet.style.maxHeight = delta > 0 ? `${vh * 0.85}px` : `${vh * 0.45}px`
-    dragState.current = null
-  }, [handlePointerMove, onClose])
-
-  // Cleanup listeners on unmount
   useEffect(() => {
     return () => {
       window.removeEventListener('pointermove', handlePointerMove)
@@ -274,12 +293,8 @@ export default function BottomSheet({
 
   return (
     <>
-      {/* Backdrop */}
       <div className="bs-backdrop" onClick={onClose} aria-hidden="true" />
-
-      {/* Sheet */}
       <div className="bs-sheet" ref={sheetRef} role="dialog" aria-modal="true">
-        {/* Drag handle row — no close button */}
         <div
           className="bs-handle-row"
           onPointerDown={handlePointerDown}
@@ -295,6 +310,7 @@ export default function BottomSheet({
               scores={scores}
               history={history}
               historyExpanded={historyExpanded}
+              gameSettings={gameSettings}
               onEditRound={onEditRound}
               onHistoryToggle={onHistoryToggle}
               onStartNewGame={onStartNewGame}
@@ -313,9 +329,11 @@ export default function BottomSheet({
                   currentPayouts={sharedResultsProps.currentPayouts}
                   resolvedDiscarderId={sharedResultsProps.resolvedDiscarderId}
                   round={sharedResultsProps.round}
+                  currentWind={sharedResultsProps.currentWind}
                   isEndGame={sharedResultsProps.isEndGame}
                   canApply={sharedResultsProps.canApply}
                   applyDisabledReason={sharedResultsProps.applyDisabledReason}
+                  gameSettings={sharedResultsProps.gameSettings}
                   onChange={sharedResultsProps.onChange}
                   onApply={sharedResultsProps.onApply}
                 />

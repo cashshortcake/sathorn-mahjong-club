@@ -5,6 +5,7 @@ import {
   WINNING_CONDITIONS,
   SPECIAL_HANDS,
 } from '../../utils/scoring'
+import Tooltip from '../Tooltip'
 import './ScoringForm.css'
 
 // ─── Fan pill ─────────────────────────────────────────────────────────────────
@@ -16,46 +17,8 @@ function FanPill({ fan, strikethrough }) {
   )
 }
 
-// ─── Tooltip ──────────────────────────────────────────────────────────────────
-function InfoTooltip({ text }) {
-  const [hovered, setHovered] = useState(false)
-  const [clicked, setClicked] = useState(false)
-  const timerRef = useRef(null)
-  const open = hovered || clicked
-
-  function handleMouseEnter() { setHovered(true) }
-  function handleMouseLeave() { setHovered(false) }
-
-  function handleClick() {
-    if (hovered) return
-    if (!clicked) {
-      setClicked(true)
-      clearTimeout(timerRef.current)
-      timerRef.current = setTimeout(() => setClicked(false), 3000)
-    } else {
-      clearTimeout(timerRef.current)
-      setClicked(false)
-    }
-  }
-
-  useEffect(() => () => clearTimeout(timerRef.current), [])
-
-  return (
-    <span className="sf-info-wrap">
-      <button
-        className="sf-info-btn"
-        type="button"
-        aria-label="More info"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
-      >
-        ⓘ
-      </button>
-      {open && <span className="sf-tooltip">{text}</span>}
-    </span>
-  )
-}
+// InfoTooltip is now the shared Tooltip component — aliased for local use
+const InfoTooltip = ({ text }) => <Tooltip text={text} />
 
 // ─── Radio option (Section A) ─────────────────────────────────────────────────
 function RadioOption({ item, selected, disabled, strikethrough, onChange }) {
@@ -95,7 +58,7 @@ function CheckboxOption({ item, checked, disabled, strikethrough, onChange }) {
 }
 
 // ─── Section Card ─────────────────────────────────────────────────────────────
-function SectionCard({ dot, title, subtitle, disabled, children }) {
+function SectionCard({ title, subtitle, disabled, children }) {
   return (
     <div className={`sf-section-card ${disabled ? 'sf-section-disabled' : ''}`}>
       <div className="sf-section-head">
@@ -211,16 +174,7 @@ function FlowerCounter({ flowers, seatFlower, noFlowersConfirmed, onChange }) {
 }
 
 // ─── Main ScoringForm ─────────────────────────────────────────────────────────
-export default function ScoringForm({ scoring, fanResult, isEndGame, onChange }) {
-  const { items: fanItems, cappedAt } = fanResult
-
-  function isItemStruck(section) {
-    if (cappedAt === null) return false
-    return fanItems
-      .slice(cappedAt)
-      .some(fi => fi.section === section)
-  }
-
+export default function ScoringForm({ scoring, isEndGame, onChange }) {
   const specialDef = scoring.specialHand
     ? SPECIAL_HANDS.find(s => s.id === scoring.specialHand)
     : null

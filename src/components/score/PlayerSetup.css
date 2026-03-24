@@ -93,16 +93,6 @@
   gap: 0.6rem;
 }
 
-.ps-player-prefix {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: #7a7060;
-  width: 18px;
-  flex-shrink: 0;
-  text-align: right;
-}
 
 .ps-player-icon {
   width: 22px;
@@ -166,4 +156,55 @@
 
 .ps-back-btn:hover {
   background: rgba(79, 133, 104, 0.1);
+}
+
+/* ── Section label row (label + info icon) ── */
+.ps-section-label-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+
+/* ── Multiplier row ── */
+.ps-multiplier-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ps-currency-select {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: 0.45rem 0.5rem;
+  border: 1.5px solid #c8b89a;
+  background: #E2DDD3;
+  color: #20201E;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  width: 60px;
+}
+
+.ps-multiplier-input {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: 0.45rem 0.7rem;
+  border: 1.5px solid #c8b89a;
+  background: #E2DDD3;
+  color: #20201E;
+  border-radius: 2px;
+  outline: none;
+  width: 80px;
+  transition: border-color 0.15s;
+}
+
+.ps-multiplier-input:focus {
+  border-color: #4F8568;
+}
+
+.ps-multiplier-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #7a7060;
 }

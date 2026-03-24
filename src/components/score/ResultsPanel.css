@@ -414,3 +414,66 @@
 .rp-history-edit:hover {
   color: #3D7057;
 }
+
+/* ── Draw toggle ── */
+.rp-draw-row {
+  display: flex;
+  align-items: center;
+}
+
+.rp-draw-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #20201E;
+  cursor: pointer;
+  user-select: none;
+}
+
+.rp-draw-check {
+  width: 16px;
+  height: 16px;
+  accent-color: #4F8568;
+  cursor: pointer;
+}
+
+/* ── Apply reason ── */
+.rp-apply-reason {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #8B897F;
+  text-align: center;
+  margin-top: 0.3rem;
+  margin-bottom: 0;
+}
+
+/* ── Fan section dimmed (draw active) ── */
+.rp-fan-section--dimmed {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ── Wind badge in history row ── */
+.rp-history-wind-round {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+  color: #8B897F;
+  flex-shrink: 0;
+  width: 32px;
+}
+
+.rp-history-wind-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #8B897F;
+}
+
+.rp-history-draw-label {
+  font-style: italic;
+  color: #8B897F;
+}

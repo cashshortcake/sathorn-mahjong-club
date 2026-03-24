@@ -1,7 +1,13 @@
 // ─── Constants ────────────────────────────────────────────────────────────────
 export const MAX_FAN = 12
-export const MIN_FAN = 3
-export const TOTAL_ROUNDS = 4
+export const MIN_FAN = 3          // kept for legacy imports; prefer gameSettings.minimumFan at runtime
+export const DEFAULT_MIN_FAN = 3
+
+// Wind names in order (index = windsCompleted)
+export const WIND_NAMES = ['East', 'South', 'West', 'North']
+
+// Wind seat labels (for display)
+export const WIND_SEATS = ['East', 'South', 'West', 'North']
 
 // ─── Fan Data ─────────────────────────────────────────────────────────────────
 export const WHOLE_HAND = [
@@ -55,9 +61,19 @@ export const INITIAL_SCORING = {
   flowers: 0,
   seatFlower: false,
   noFlowersConfirmed: false,  // user must check a box to claim the No Flowers bonus
-  winnerId: 1,                // default to Player 1
+  winnerId: 1,                // default to Player 1 (East)
   winType: 'selfDraw',        // default to Self Draw
   discarderId: null,
+  isDraw: false,              // draw / no winner round
+}
+
+// ─── Default Game Settings ────────────────────────────────────────────────────
+export const DEFAULT_GAME_SETTINGS = {
+  totalWinds: 1,                   // 1 | 2 | 4
+  payoutMode: 'discarderPaysMore', // 'discarderPaysMore' | 'discarderPaysAll'
+  minimumFan: 3,                   // 0 | 1 | 3 | 5
+  multiplier: 1,
+  currency: '฿',
 }
 
 // ─── Fan Calculation ──────────────────────────────────────────────────────────
@@ -186,6 +202,7 @@ export function validateCompatibility(next) {
 }
 
 // ─── Payout Tables ────────────────────────────────────────────────────────────
+// DISCARDER PAYS MORE (default)
 // Each row: [selfDrawEach, discardNonDiscarder, discardDiscarder]
 const PAYOUT_4P = {
   3:  [2,   1,  2  ],
@@ -212,6 +229,22 @@ const PAYOUT_3P = {
   12: [192, 64, 192],
 }
 
+// DISCARDER PAYS ALL
+// Same total for 3P and 4P — discarder pays full winner amount, others pay 0
+// Row: discard win total (winner receives, discarder pays)
+const PAYOUT_DISCARD_ALL = {
+  3:  4,
+  4:  8,
+  5:  16,
+  6:  32,
+  7:  48,
+  8:  64,
+  9:  96,
+  10: 128,
+  11: 192,
+  12: 256,
+}
+
 /**
  * Returns the default discarder — the next player after the winner in sequence.
  */
@@ -225,13 +258,27 @@ export function getDefaultDiscarder(players, winnerId) {
  * Calculate payouts for all players.
  * Returns { [playerId]: delta } (positive = received, negative = paid)
  * or null if zero-sum check fails.
+ *
+ * @param {number[]} playerIds
+ * @param {number}   winnerId
+ * @param {string}   winType        'selfDraw' | 'discardWin'
+ * @param {number}   discarderId
+ * @param {number}   fan
+ * @param {string}   payoutMode     'discarderPaysMore' | 'discarderPaysAll'
+ * @param {number}   minimumFan     dynamic minimum fan threshold
  */
-export function calculatePayouts(playerIds, winnerId, winType, discarderId, fan) {
-  const clampedFan = Math.min(Math.max(fan, MIN_FAN), MAX_FAN)
+export function calculatePayouts(
+  playerIds,
+  winnerId,
+  winType,
+  discarderId,
+  fan,
+  payoutMode = 'discarderPaysMore',
+  minimumFan = DEFAULT_MIN_FAN,
+) {
+  const effectiveMin = minimumFan > 0 ? minimumFan : 1
+  const clampedFan = Math.min(Math.max(fan, effectiveMin), MAX_FAN)
   const count = playerIds.length
-  const table = count === 4 ? PAYOUT_4P : PAYOUT_3P
-  const row = table[clampedFan] || table[MAX_FAN]
-  const [selfDrawEach, discardNonDiscarder, discardDiscarder] = row
 
   const payouts = {}
   playerIds.forEach(id => { payouts[id] = 0 })
@@ -239,10 +286,25 @@ export function calculatePayouts(playerIds, winnerId, winType, discarderId, fan)
   const losers = playerIds.filter(id => id !== winnerId)
 
   if (winType === 'selfDraw') {
+    // Self Draw is always Equal Pay regardless of mode
+    const table = count === 4 ? PAYOUT_4P : PAYOUT_3P
+    const row = table[clampedFan] || table[MAX_FAN]
+    const [selfDrawEach] = row
     payouts[winnerId] = selfDrawEach * losers.length
     losers.forEach(id => { payouts[id] = -selfDrawEach })
+
+  } else if (payoutMode === 'discarderPaysAll') {
+    // Discarder pays full amount; all other losers pay 0
+    const amount = PAYOUT_DISCARD_ALL[clampedFan] || PAYOUT_DISCARD_ALL[MAX_FAN]
+    payouts[winnerId] = amount
+    payouts[discarderId] = -amount
+    // non-discarder losers remain 0
+
   } else {
-    // Discard win
+    // Discarder Pays More (default)
+    const table = count === 4 ? PAYOUT_4P : PAYOUT_3P
+    const row = table[clampedFan] || table[MAX_FAN]
+    const [, discardNonDiscarder, discardDiscarder] = row
     const nonDiscarders = losers.filter(id => id !== discarderId)
     payouts[winnerId] = discardDiscarder + discardNonDiscarder * nonDiscarders.length
     payouts[discarderId] = -discardDiscarder
@@ -263,9 +325,12 @@ export function calculatePayouts(playerIds, winnerId, winType, discarderId, fan)
  * Re-apply a sequence of round selections to rebuild cumulative scores.
  * Returns the new history array with recalculated payouts.
  */
-export function replayHistory(rounds, players) {
+export function replayHistory(rounds, players, payoutMode = 'discarderPaysMore', minimumFan = DEFAULT_MIN_FAN) {
   return rounds.map(entry => {
     const { selections } = entry
+    if (selections?.isDraw) {
+      return { ...entry, fan: 0, cappedAt: null, breakdown: [], payouts: null, discarderId: null }
+    }
     const { items, total, cappedAt } = calculateFan(selections)
     const playerIds = players.map(p => p.id)
     const discarderId = selections.winType === 'discardWin'
@@ -276,7 +341,9 @@ export function replayHistory(rounds, players) {
       selections.winnerId,
       selections.winType,
       discarderId,
-      total
+      total,
+      payoutMode,
+      minimumFan,
     )
     return { ...entry, fan: total, cappedAt, breakdown: items, payouts, discarderId }
   })

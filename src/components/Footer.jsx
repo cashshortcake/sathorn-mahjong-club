@@ -1,5 +1,6 @@
 import footerTiles from '../assets/icons/Footer.svg'
-import star1 from '../assets/icons/ticker-star-1.svg'
+import eastIcon  from '../assets/icons/wind-east-player.svg'
+import northIcon from '../assets/icons/wind-north-player.svg'
 import { useFadeInOnScroll } from '../hooks/useFadeIn'
 import './Footer.css'
 
@@ -14,9 +15,9 @@ function Footer() {
         Designed to end Mahjong arguments… or start new ones.
       </h2>
       <p className="footer-copy">
-        <img src={star1} alt="" className="footer-star" />
+        <img src={eastIcon}  alt="" className="footer-star" />
         Made with love (and mild frustration)
-        <img src={star1} alt="" className="footer-star" />
+        <img src={northIcon} alt="" className="footer-star" />
       </p>
       <p className="footer-year">© 2026 Sathorn Mahjong Club</p>
     </footer>

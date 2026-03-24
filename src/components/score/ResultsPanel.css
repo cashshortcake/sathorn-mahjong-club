@@ -418,11 +418,12 @@
 /* ── Draw toggle ── */
 .rp-draw-row {
   display: flex;
-  align-items: center;
+  align-items: justify-content;
 }
 
 .rp-draw-label {
   display: flex;
+  flex: 1;
   align-items: center;
   gap: 0.5rem;
   font-family: 'Inter', sans-serif;

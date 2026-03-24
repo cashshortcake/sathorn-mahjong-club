@@ -1,3 +1,4 @@
+import Tooltip from '../Tooltip'
 import './ResultsPanel.css'
 import { MAX_FAN } from '../../utils/scoring'
 
@@ -58,6 +59,7 @@ function DrawToggle({ isDraw, disabled, onChange }) {
         />
         Draw / No winner
       </label>
+      <Tooltip text="No winner this round. Seats rotate as normal — the next player in sequence becomes East." />
     </div>
   )
 }

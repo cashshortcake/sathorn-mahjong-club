@@ -227,8 +227,9 @@ export default function Score() {
 
   function handleApply() {
     if (!canApply) return
-    // Show final wind confirmation only on the last round of the last wind (and not a draw)
-    if (!scoring.isDraw && isFinalWindRound) {
+    // Show final wind confirmation on the last round of the last wind.
+    // Draws now rotate seats, so they can also end the game — include them.
+    if (isFinalWindRound) {
       setModal({ type: 'finalRound' })
       return
     }
@@ -237,10 +238,12 @@ export default function Score() {
 
   function doApplyRound() {
     const playerIds = players.map(p => p.id)
+    const isDraw = scoring.isDraw
 
-    // ── Draw round ──────────────────────────────────────────────────────────
-    if (scoring.isDraw) {
-      const roundEntry = {
+    // ── Build round entry ────────────────────────────────────────────────────
+    let roundEntry
+    if (isDraw) {
+      roundEntry = {
         round,
         wind: currentWind,
         selections: { ...scoring },
@@ -251,51 +254,41 @@ export default function Score() {
         discarderId: null,
         isDraw: true,
       }
-      setHistory(prev => [...prev, roundEntry])
-      setModal(null)
-      setRound(r => r + 1)
-      setScoring({ ...INITIAL_SCORING, winnerId: seatOrder[0] })
-      setSheetOpen(false)
-      setTimeout(() => setSheetTab('scoreboard'), 100)
-      setTimeout(() => setSheetTab('breakdown'),  200)
-      return
-    }
-
-    // ── Regular round ────────────────────────────────────────────────────────
-    const payoutsResult = calculatePayouts(
-      playerIds,
-      scoring.winnerId,
-      scoring.winType,
-      resolvedDiscarderId,
-      fanResult.total,
-      gameSettings.payoutMode,
-      gameSettings.minimumFan,
-    )
-
-    if (!payoutsResult) {
-      showToast('Score calculation error — please try again.')
-      return
-    }
-
-    const roundEntry = {
-      round,
-      wind: currentWind,
-      selections: { ...scoring },
-      fan: fanResult.total,
-      cappedAt: fanResult.cappedAt,
-      breakdown: fanResult.items,
-      payouts: payoutsResult,
-      discarderId: resolvedDiscarderId,
-      isDraw: false,
+    } else {
+      const payoutsResult = calculatePayouts(
+        playerIds,
+        scoring.winnerId,
+        scoring.winType,
+        resolvedDiscarderId,
+        fanResult.total,
+        gameSettings.payoutMode,
+        gameSettings.minimumFan,
+      )
+      if (!payoutsResult) {
+        showToast('Score calculation error — please try again.')
+        return
+      }
+      roundEntry = {
+        round,
+        wind: currentWind,
+        selections: { ...scoring },
+        fan: fanResult.total,
+        cappedAt: fanResult.cappedAt,
+        breakdown: fanResult.items,
+        payouts: payoutsResult,
+        discarderId: resolvedDiscarderId,
+        isDraw: false,
+      }
     }
 
     setHistory(prev => [...prev, roundEntry])
     setModal(null)
 
-    // ── Wind / linjang logic ─────────────────────────────────────────────────
+    // ── Wind / linjang / rotation logic ──────────────────────────────────────
+    // Draws never trigger linjang — they always rotate (same as East losing).
     const currentEastId   = seatOrder[0]
     const originalNorthId = originalSeatOrder[playerCount - 1]
-    const winnerIsEast    = scoring.winnerId === currentEastId
+    const winnerIsEast    = !isDraw && scoring.winnerId === currentEastId
 
     if (winnerIsEast) {
       // Linjang: East wins — stays as East, just increment round
@@ -305,7 +298,7 @@ export default function Score() {
       setTimeout(() => setSheetTab('scoreboard'), 100)
       setTimeout(() => setSheetTab('breakdown'),  200)
     } else {
-      // East lost — rotate seats: [S, W, N, E]
+      // East lost (or draw) — rotate seats: [S, W, N, E]
       const newSeatOrder = [
         seatOrder[1],
         seatOrder[2],

@@ -1,5 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react'
 import { MAX_FAN } from '../../utils/scoring'
+import Tooltip from '../Tooltip'
 import EndGamePanel from './EndGamePanel'
 import { StandingsList, RoundHistory } from './ResultsPanel'
 import './BottomSheet.css'
@@ -90,6 +91,7 @@ function BreakdownContent({
           />
           Draw / No winner
         </label>
+        <Tooltip text="No winner this round. Seats rotate as normal — the next player in sequence becomes East." />
       </div>
 
       {/* Winner, win type, discarder (hidden on draw) */}

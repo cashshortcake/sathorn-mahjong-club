@@ -23,6 +23,13 @@ const MODAL_CONTENT = {
     confirm: 'Confirm & End Game',
     confirmDanger: false,
   },
+  endGame: {
+    title: 'End game?',
+    body: 'This will end the game now and show final results. You can still edit past rounds after.',
+    cancel: 'Keep playing',
+    confirm: 'End Game',
+    confirmDanger: false,
+  },
 }
 
 export default function ConfirmationModal({ modal, onCancel, onConfirm }) {

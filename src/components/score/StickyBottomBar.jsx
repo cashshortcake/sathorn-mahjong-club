@@ -1,10 +1,8 @@
 import './StickyBottomBar.css'
 
-export default function StickyBottomBar({ fanResult, round, currentWind, isEndGame, minimumFan, onExpand }) {
+export default function StickyBottomBar({ fanResult, round, totalRounds, isEndGame, minimumFan, onExpand }) {
   const { total } = fanResult
   const effectiveMin = minimumFan ?? 3
-
-  const roundLabel = `${currentWind ?? 'East'} · R${round}`
 
   return (
     <div className="sbb-bar" role="button" tabIndex={0} onClick={onExpand} onKeyDown={e => e.key === 'Enter' && onExpand()}>
@@ -18,7 +16,9 @@ export default function StickyBottomBar({ fanResult, round, currentWind, isEndGa
         )}
       </div>
       <div className="sbb-right">
-        {!isEndGame && <span className="sbb-round-label">{roundLabel}</span>}
+        {!isEndGame && (
+          <span className="sbb-round-label">R{round}/{totalRounds}</span>
+        )}
         <span className="sbb-expand-pill">Expand ↑</span>
       </div>
     </div>

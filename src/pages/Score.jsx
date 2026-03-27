@@ -2,9 +2,11 @@ import { useState, useMemo } from 'react'
 import {
   INITIAL_SCORING,
   DEFAULT_GAME_SETTINGS,
+  INITIAL_BONUS_PAYOUTS,
   WIND_NAMES,
   calculateFan,
   calculatePayouts,
+  calculateBonusPayouts,
   validateCompatibility,
   getDefaultDiscarder,
 } from '../utils/scoring'
@@ -41,7 +43,7 @@ export default function Score() {
   // ── Players ──────────────────────────────────────────────────────────────────
   const [playerCount, setPlayerCount] = useState(4)
   const [playerNames, setPlayerNames] = useState({
-    1: 'Player 1', 2: 'Player 2', 3: 'Player 3', 4: 'Player 4',
+    1: '', 2: '', 3: '', 4: '',
   })
 
   // ── Game settings (locked at game start) ─────────────────────────────────────
@@ -57,7 +59,8 @@ export default function Score() {
   const [isEndGame,        setIsEndGame]        = useState(false)
 
   // ── Scoring ──────────────────────────────────────────────────────────────────
-  const [scoring, setScoring] = useState(INITIAL_SCORING)
+  const [scoring,      setScoring]      = useState(INITIAL_SCORING)
+  const [bonusPayouts, setBonusPayouts] = useState({ ...INITIAL_BONUS_PAYOUTS })
 
   // ── UI ───────────────────────────────────────────────────────────────────────
   const [modal,             setModal]             = useState(null)  // { type, data? }
@@ -67,15 +70,27 @@ export default function Score() {
   const [historyExpanded,   setHistoryExpanded]   = useState(false)
 
   // ─── Derived state ───────────────────────────────────────────────────────────
-  const currentWind = WIND_NAMES[windsCompleted] || 'East'
+  const currentWind  = WIND_NAMES[windsCompleted] || 'East'
+  const totalRounds  = (gameSettings.totalWinds ?? 1) * 4
 
-  // Players slice for current player count, enriched with current names
+  // Wind labels for each seat position (index into WIND_NAMES)
+  const WIND_SEAT_LABELS = ['East', 'South', 'West', 'North']
+
+  // Players slice for current player count, enriched with names + current wind
   const players = useMemo(() =>
-    PLAYER_META.slice(0, playerCount).map(m => ({
-      ...m,
-      name: playerNames[m.id] || `Player ${m.id}`,
-    })),
-    [playerCount, playerNames]
+    PLAYER_META.slice(0, playerCount).map(m => {
+      const seatIdx = seatOrder.indexOf(m.id)
+      const windLabel   = seatIdx >= 0 ? WIND_SEAT_LABELS[seatIdx] : ''
+      const windInitial = windLabel ? windLabel[0] : ''
+      return {
+        ...m,
+        name: playerNames[m.id] || `Player ${m.id}`,
+        windLabel,
+        windInitial,
+      }
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [playerCount, playerNames, seatOrder]
   )
 
   const scores = useMemo(() => {
@@ -99,7 +114,8 @@ export default function Score() {
     return scoring.discarderId || getDefaultDiscarder(players, scoring.winnerId)
   }, [scoring.isDraw, scoring.winType, scoring.discarderId, scoring.winnerId, players])
 
-  const currentPayouts = useMemo(() => {
+  // Fan-only payouts — null if not ready (draw, below min, no winner/type selected)
+  const currentFanPayouts = useMemo(() => {
     if (scoring.isDraw) return null
     if (!scoring.winnerId || !scoring.winType) return null
     if (fanResult.total < (gameSettings.minimumFan || 0) && gameSettings.minimumFan > 0) return null
@@ -120,6 +136,31 @@ export default function Score() {
     gameSettings.payoutMode, gameSettings.minimumFan,
     players,
   ])
+
+  // Bonus payouts — always computed, never zeroed on draw
+  const currentBonusResult = useMemo(() => {
+    const playerIds = players.map(p => p.id)
+    return calculateBonusPayouts(playerIds, bonusPayouts)
+  }, [players, bonusPayouts])
+
+  // Merged preview payouts: fan (0 on draw) + bonus (always)
+  // null only when neither fan nor bonus have any non-zero values
+  const currentPayouts = useMemo(() => {
+    const playerIds = players.map(p => p.id)
+    const hasBonus = Object.values(currentBonusResult).some(v => v !== 0)
+    if (!currentFanPayouts && !hasBonus) return null
+    const merged = {}
+    playerIds.forEach(id => {
+      merged[id] = (currentFanPayouts ? currentFanPayouts[id] || 0 : 0) + (currentBonusResult[id] || 0)
+    })
+    return merged
+  }, [players, currentFanPayouts, currentBonusResult])
+
+  // Whether any bonus payouts are non-zero (used by payout display to adjust draw messaging)
+  const hasBonusPayouts = useMemo(
+    () => Object.values(currentBonusResult).some(v => v !== 0),
+    [currentBonusResult]
+  )
 
   const canApply = useMemo(() => {
     if (isEndGame) return false
@@ -240,22 +281,13 @@ export default function Score() {
     const playerIds = players.map(p => p.id)
     const isDraw = scoring.isDraw
 
-    // ── Build round entry ────────────────────────────────────────────────────
-    let roundEntry
-    if (isDraw) {
-      roundEntry = {
-        round,
-        wind: currentWind,
-        selections: { ...scoring },
-        fan: 0,
-        cappedAt: null,
-        breakdown: [],
-        payouts: null,
-        discarderId: null,
-        isDraw: true,
-      }
-    } else {
-      const payoutsResult = calculatePayouts(
+    // Bonus payouts — always calculated, regardless of draw
+    const bonusResult = calculateBonusPayouts(playerIds, bonusPayouts)
+
+    // Fan payouts — zeroed on draw, calculated normally otherwise
+    let fanPayoutsResult = null
+    if (!isDraw) {
+      fanPayoutsResult = calculatePayouts(
         playerIds,
         scoring.winnerId,
         scoring.winType,
@@ -264,24 +296,42 @@ export default function Score() {
         gameSettings.payoutMode,
         gameSettings.minimumFan,
       )
-      if (!payoutsResult) {
+      if (!fanPayoutsResult) {
         showToast('Score calculation error — please try again.')
         return
       }
-      roundEntry = {
-        round,
-        wind: currentWind,
-        selections: { ...scoring },
-        fan: fanResult.total,
-        cappedAt: fanResult.cappedAt,
-        breakdown: fanResult.items,
-        payouts: payoutsResult,
-        discarderId: resolvedDiscarderId,
-        isDraw: false,
-      }
+    }
+
+    // Merge: fan (0 on draw) + bonus
+    const merged = {}
+    playerIds.forEach(id => {
+      merged[id] = (fanPayoutsResult ? fanPayoutsResult[id] || 0 : 0) + (bonusResult[id] || 0)
+    })
+    const sum = Object.values(merged).reduce((a, b) => a + b, 0)
+    if (sum !== 0) {
+      showToast('Score calculation error — please try again.')
+      return
+    }
+
+    // ── Build round entry ────────────────────────────────────────────────────
+    const roundEntry = {
+      round,
+      wind: currentWind,
+      seatSnapshot: [...seatOrder],
+      selections: { ...scoring },
+      bonusPayoutsSnapshot: { ...bonusPayouts },
+      fan: isDraw ? 0 : fanResult.total,
+      cappedAt: isDraw ? null : fanResult.cappedAt,
+      breakdown: isDraw ? [] : fanResult.items,
+      fanPayouts: fanPayoutsResult ?? {},
+      bonusPayoutsResult: bonusResult,
+      payouts: merged,        // combined total used for score accumulation
+      discarderId: isDraw ? null : resolvedDiscarderId,
+      isDraw,
     }
 
     setHistory(prev => [...prev, roundEntry])
+    setBonusPayouts({ ...INITIAL_BONUS_PAYOUTS })
     setModal(null)
 
     // ── Wind / linjang / rotation logic ──────────────────────────────────────
@@ -294,6 +344,7 @@ export default function Score() {
       // Linjang: East wins — stays as East, just increment round
       setRound(r => r + 1)
       setScoring({ ...INITIAL_SCORING, winnerId: currentEastId })
+      setBonusPayouts({ ...INITIAL_BONUS_PAYOUTS })
       setSheetOpen(false)
       setTimeout(() => setSheetTab('scoreboard'), 100)
       setTimeout(() => setSheetTab('breakdown'),  200)
@@ -386,10 +437,22 @@ export default function Score() {
     setScreen('setup')
   }
 
+  function handleEndGame() {
+    setModal({ type: 'endGame' })
+  }
+
+  function doEndGame() {
+    setIsEndGame(true)
+    setSheetOpen(true)  // mobile: auto-open end game sheet
+    setModal(null)
+  }
+
   function handleModalConfirm() {
     if (!modal) return
     if (modal.type === 'finalRound') {
       doApplyRound()
+    } else if (modal.type === 'endGame') {
+      doEndGame()
     } else if (modal.type === 'editRound') {
       doEditRound(modal.data.roundIdx)
     } else if (modal.type === 'playerCountChange') {
@@ -433,6 +496,7 @@ export default function Score() {
         <ScoringScreen
           players={players}
           round={round}
+          totalRounds={totalRounds}
           currentWind={currentWind}
           windsCompleted={windsCompleted}
           history={history}
@@ -448,10 +512,14 @@ export default function Score() {
           sheetOpen={sheetOpen}
           sheetTab={sheetTab}
           historyExpanded={historyExpanded}
+          bonusPayouts={bonusPayouts}
+          hasBonusPayouts={hasBonusPayouts}
+          onBonusChange={updates => setBonusPayouts(prev => ({ ...prev, ...updates }))}
           onChange={handleScoringChange}
           onApply={handleApply}
           onEditRound={handleEditRound}
           onEditPlayers={handleEditPlayers}
+          onEndGame={handleEndGame}
           onSheetOpen={() => setSheetOpen(true)}
           onSheetClose={() => setSheetOpen(false)}
           onSheetTab={setSheetTab}

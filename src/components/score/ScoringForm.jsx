@@ -6,6 +6,7 @@ import {
   SPECIAL_HANDS,
 } from '../../utils/scoring'
 import Tooltip from '../Tooltip'
+import StepperCounter from '../StepperCounter'
 import './ScoringForm.css'
 
 // ─── Fan pill ─────────────────────────────────────────────────────────────────
@@ -122,23 +123,12 @@ function FlowerCounter({ flowers, seatFlower, noFlowersConfirmed, onChange }) {
 
   return (
     <div className="sf-flower-wrap">
-      <div className="sf-flower-counter">
-        <button
-          className="sf-counter-btn"
-          type="button"
-          disabled={flowers === 0}
-          onClick={() => onChange({ flowers: flowers - 1, seatFlower: false, noFlowersConfirmed: false })}
-          aria-label="Decrease flowers"
-        >−</button>
-        <span className="sf-counter-val">{flowers}</span>
-        <button
-          className="sf-counter-btn"
-          type="button"
-          disabled={flowers === 8}
-          onClick={() => onChange({ flowers: flowers + 1, seatFlower: false, noFlowersConfirmed: false })}
-          aria-label="Increase flowers"
-        >+</button>
-      </div>
+      <StepperCounter
+        value={flowers}
+        min={0}
+        max={8}
+        onChange={val => onChange({ flowers: val, seatFlower: false, noFlowersConfirmed: false })}
+      />
 
       {isNoFlowers && (
         <label className="sf-option sf-seat-flower">

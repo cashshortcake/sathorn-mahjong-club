@@ -1,10 +1,13 @@
+import { useState } from 'react'
 import Tooltip from '../Tooltip'
+import StepperCounter from '../StepperCounter'
 import './ResultsPanel.css'
 import { MAX_FAN } from '../../utils/scoring'
 
 // ─── Fan Breakdown Panel ──────────────────────────────────────────────────────
-function FanBreakdownPanel({ fanResult }) {
-  const { items, cappedAt } = fanResult
+function FanBreakdownPanel({ fanResult, minimumFan }) {
+  const { items, cappedAt, total } = fanResult
+  const showMinBanner = minimumFan > 0 && total > 0 && total < minimumFan
 
   if (items.length === 0) {
     return (
@@ -33,7 +36,16 @@ function FanBreakdownPanel({ fanResult }) {
     rows.push(<MaxFanBanner key="banner-end" />)
   }
 
-  return <div className="rp-breakdown">{rows}</div>
+  return (
+    <>
+      <div className="rp-breakdown">{rows}</div>
+      {showMinBanner && (
+        <div className="rp-min-fan-banner">
+          ⚠️ Minimum {minimumFan} fan required to win
+        </div>
+      )}
+    </>
+  )
 }
 
 function MaxFanBanner() {
@@ -59,7 +71,7 @@ function DrawToggle({ isDraw, disabled, onChange }) {
         />
         Draw / No winner
       </label>
-      <Tooltip text="No winner this round. Seats rotate as normal — the next player in sequence becomes East." />
+      <Tooltip text="No one wins this round. The round is logged and the counter advances, but no chips change hands." />
     </div>
   )
 }
@@ -150,6 +162,99 @@ function PayoutSummary({ players, payouts }) {
   )
 }
 
+// ─── Bonus Payouts Section ────────────────────────────────────────────────────
+export function BonusPayoutsSection({ players, bonusPayouts, disabled, onChange }) {
+  const [open, setOpen] = useState(false)
+  const { kongCounts = {} } = bonusPayouts
+
+  const playerCount = players.length
+
+  // Preview: "+X (N players × 10)"
+  function kongPreview(pid) {
+    const kongs = kongCounts[pid] || 0
+    if (kongs === 0) return null
+    const earn = kongs * 10 * (playerCount - 1)
+    return `+${earn} (${playerCount - 1} players × ${kongs * 10})`
+  }
+
+  return (
+    <div className="rp-bonus-section">
+      <button
+        className="rp-bonus-toggle"
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+      >
+        <span className="rp-bonus-toggle-left">
+          <span className="rp-bonus-label">Bonus Payout</span>
+          {!open && (
+            <span className="rp-bonus-sub">House rules — does not affect fan</span>
+          )}
+        </span>
+        <span className={`sf-chevron ${open ? 'open' : ''}`}>∨</span>
+      </button>
+
+      {open && (
+        <div className="rp-bonus-body">
+          {/* Declared Kong */}
+          <div className="rp-bonus-sub-header">
+            <span className="rp-bonus-sub-label">DECLARED KONG</span>
+            <Tooltip text="When you declare an open Kong during the round, each other player pays you 10 chips. Counts per Kong." />
+          </div>
+          {players.map(p => {
+            const kongs = kongCounts[p.id] || 0
+            const preview = kongPreview(p.id)
+            return (
+              <div key={p.id} className="rp-bonus-player-row">
+                <span className="rp-bonus-player-name">{p.name}</span>
+                <StepperCounter
+                  value={kongs}
+                  min={0}
+                  disabled={disabled}
+                  onChange={val => onChange({
+                    kongCounts: { ...kongCounts, [p.id]: val },
+                  })}
+                />
+                {preview && (
+                  <span className="rp-bonus-preview">{preview}</span>
+                )}
+              </div>
+            )
+          })}
+
+          {/* Animal Combos */}
+          <div className="rp-bonus-sub-header" style={{ marginTop: '0.75rem' }}>
+            <span className="rp-bonus-sub-label">ANIMAL COMBOS</span>
+            <Tooltip text="If one player holds both Cat + Mouse, or both Chicken + Centipede, they collect 10 chips from each other player per combo." />
+          </div>
+          {[
+            { key: 'catMouseHolder',         label: 'Cat + Mouse' },
+            { key: 'chickenCentipedeHolder', label: 'Chicken + Centipede' },
+          ].map(({ key, label }) => {
+            const currentHolder = bonusPayouts[key]
+            return (
+              <div key={key} className="rp-bonus-combo-row">
+                <span className="rp-bonus-combo-label">{label}</span>
+                <select
+                  className="rp-select rp-bonus-select"
+                  value={currentHolder ?? ''}
+                  disabled={disabled}
+                  onChange={e => onChange({ [key]: e.target.value ? Number(e.target.value) : null })}
+                >
+                  <option value="">None</option>
+                  {players.map(p => (
+                    <option key={p.id} value={p.id}>{p.name}</option>
+                  ))}
+                </select>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Standings List ───────────────────────────────────────────────────────────
 export function StandingsList({ players, scores }) {
   const sorted = [...players].sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0))
@@ -196,12 +301,11 @@ export function RoundHistory({ history, players, expanded, onToggle, onEdit }) {
             const winner = entry.isDraw
               ? null
               : players.find(p => p.id === entry.selections?.winnerId)
-            const windLabel = entry.wind ? entry.wind[0] : 'E'  // first letter
+            const windUpper = entry.wind ? entry.wind.toUpperCase() : 'EAST'
             return (
               <div key={idx} className="rp-history-row">
                 <span className="rp-history-wind-round">
-                  <span className="rp-history-wind-badge">{windLabel}</span>
-                  R{entry.round}
+                  R{entry.round} · {windUpper}
                 </span>
                 <span className="rp-history-winner">
                   {entry.isDraw ? (
@@ -230,13 +334,8 @@ export function RoundHistory({ history, players, expanded, onToggle, onEdit }) {
 }
 
 // ─── Apply Button ─────────────────────────────────────────────────────────────
-export function ApplyButton({ canApply, disabledReason, round, isDraw, onApply }) {
-  let label
-  if (isDraw) {
-    label = `Record Draw (R${round})`
-  } else {
-    label = `Apply Round ${round}`
-  }
+export function ApplyButton({ canApply, round, isDraw, onApply, onEndGame }) {
+  const label = isDraw ? `Record Draw (R${round})` : `Apply Round ${round}`
   return (
     <div className="rp-apply-wrap">
       <button
@@ -247,8 +346,14 @@ export function ApplyButton({ canApply, disabledReason, round, isDraw, onApply }
       >
         {label}
       </button>
-      {!canApply && disabledReason && (
-        <p className="rp-apply-reason">{disabledReason}</p>
+      {onEndGame && (
+        <button
+          className="rp-end-game-link"
+          type="button"
+          onClick={onEndGame}
+        >
+          End game
+        </button>
       )}
     </div>
   )
@@ -261,19 +366,22 @@ export default function ResultsPanel({
   scoring,
   fanResult,
   currentPayouts,
+  bonusPayouts,
+  hasBonusPayouts,
   resolvedDiscarderId,
   round,
   currentWind,
   history,
   isEndGame,
   canApply,
-  applyDisabledReason,
   gameSettings,
   historyExpanded,
   onChange,
+  onBonusChange,
   onApply,
   onEditRound,
   onHistoryToggle,
+  onEndGame,
 }) {
   const minimumFan = gameSettings?.minimumFan ?? 3
   const isBelowMin = minimumFan > 0 && fanResult.total < minimumFan
@@ -288,7 +396,7 @@ export default function ResultsPanel({
           <span className="rp-section-label">Fan Breakdown</span>
           <span className="rp-fan-section-round">{currentWind} · R{round}</span>
         </div>
-        <FanBreakdownPanel fanResult={fanResult} />
+        <FanBreakdownPanel fanResult={fanResult} minimumFan={minimumFan} />
         <div className="rp-divider" />
         <div className="rp-fan-total-row">
           <span className="rp-fan-total-label">Total</span>
@@ -333,30 +441,39 @@ export default function ResultsPanel({
         </>
       )}
 
-      {/* ── Payout summary ── */}
-      {!isDraw && (
-        <>
-          <div className="rp-divider" />
-          <div className="rp-section-label">Payout</div>
-          <PayoutSummary players={players} payouts={currentPayouts} />
-        </>
+      {/* ── Payout (receipt layout: bonus items above final totals) ── */}
+      <div className="rp-divider" />
+      <div className="rp-section-label">Payout</div>
+
+      {/* Bonus Payouts — line items */}
+      {!isEndGame && bonusPayouts && (
+        <BonusPayoutsSection
+          players={players}
+          bonusPayouts={bonusPayouts}
+          disabled={isEndGame}
+          onChange={onBonusChange}
+        />
       )}
 
-      {/* ── Min fan banner — dynamic, hidden when minimumFan === 0 ── */}
-      {!isEndGame && !isDraw && minimumFan > 0 && isBelowMin && (
-        <div className="rp-min-fan-banner">
-          ⚠️ Minimum {minimumFan} fan required to win
-        </div>
+      {/* Final totals */}
+      {isDraw ? (
+        hasBonusPayouts ? (
+          <PayoutSummary players={players} payouts={currentPayouts} />
+        ) : (
+          <div className="rp-draw-payout-label">Draw — no chips exchanged</div>
+        )
+      ) : (
+        <PayoutSummary players={players} payouts={currentPayouts} />
       )}
 
       {/* ── Apply button ── */}
       {!isEndGame && (
         <ApplyButton
           canApply={canApply}
-          disabledReason={applyDisabledReason}
           round={round}
           isDraw={isDraw}
           onApply={onApply}
+          onEndGame={onEndGame}
         />
       )}
 

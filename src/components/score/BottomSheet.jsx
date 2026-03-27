@@ -2,7 +2,7 @@ import { useRef, useEffect, useCallback } from 'react'
 import { MAX_FAN } from '../../utils/scoring'
 import Tooltip from '../Tooltip'
 import EndGamePanel from './EndGamePanel'
-import { StandingsList, RoundHistory } from './ResultsPanel'
+import { StandingsList, RoundHistory, BonusPayoutsSection } from './ResultsPanel'
 import './BottomSheet.css'
 
 // ─── Fan Breakdown (inline, used inside Breakdown tab) ────────────────────────
@@ -20,15 +20,18 @@ function BreakdownContent({
   scoring,
   fanResult,
   currentPayouts,
+  bonusPayouts,
+  hasBonusPayouts,
   resolvedDiscarderId,
   round,
   currentWind,
   isEndGame,
   canApply,
-  applyDisabledReason,
   gameSettings,
   onChange,
+  onBonusChange,
   onApply,
+  onEndGame,
 }) {
   const { items, cappedAt, total } = fanResult
   const minimumFan  = gameSettings?.minimumFan ?? 3
@@ -77,6 +80,11 @@ function BreakdownContent({
             {total} Fan
           </span>
         </div>
+        {minimumFan > 0 && total > 0 && total < minimumFan && (
+          <div className="rp-min-fan-banner">
+            ⚠️ Minimum {minimumFan} fan required to win
+          </div>
+        )}
       </div>
 
       {/* Draw toggle */}
@@ -91,7 +99,7 @@ function BreakdownContent({
           />
           Draw / No winner
         </label>
-        <Tooltip text="No winner this round. Seats rotate as normal — the next player in sequence becomes East." />
+        <Tooltip text="No one wins this round. The round is logged and the counter advances, but no chips change hands." />
       </div>
 
       {/* Winner, win type, discarder (hidden on draw) */}
@@ -147,37 +155,58 @@ function BreakdownContent({
         </>
       )}
 
-      {!isDraw && (
-        <>
-          <div className="rp-divider" />
-          <div className="rp-section-label">Payout</div>
-          {currentPayouts
-            ? (
-              <div className="rp-payout">
-                {players.map(p => {
-                  const delta = currentPayouts[p.id] || 0
-                  return (
-                    <div key={p.id} className="rp-payout-row">
-                      <span className="rp-payout-dot" style={{ background: p.color }} />
-                      <span className="rp-payout-name">{p.name}</span>
-                      <span className={`rp-payout-val ${delta > 0 ? 'pos' : delta < 0 ? 'neg' : ''}`}>
-                        {delta > 0 ? `+${delta}` : delta}
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
-            )
-            : null
-          }
+      <div className="rp-divider" />
+      <div className="rp-section-label">Payout</div>
 
-          {/* Min fan banner */}
-          {!isEndGame && minimumFan > 0 && isBelowMin && (
-            <div className="rp-min-fan-banner">
-              ⚠️ Minimum {minimumFan} fan required to win
+      {/* Bonus Payouts — line items */}
+      {!isEndGame && bonusPayouts && (
+        <BonusPayoutsSection
+          players={players}
+          bonusPayouts={bonusPayouts}
+          disabled={isEndGame}
+          onChange={onBonusChange}
+        />
+      )}
+
+      {/* Final totals */}
+      {isDraw ? (
+        hasBonusPayouts ? (
+          currentPayouts && (
+            <div className="rp-payout">
+              {players.map(p => {
+                const delta = currentPayouts[p.id] || 0
+                return (
+                  <div key={p.id} className="rp-payout-row">
+                    <span className="rp-payout-dot" style={{ background: p.color }} />
+                    <span className="rp-payout-name">{p.name}</span>
+                    <span className={`rp-payout-val ${delta > 0 ? 'pos' : delta < 0 ? 'neg' : ''}`}>
+                      {delta > 0 ? `+${delta}` : delta}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
-          )}
-        </>
+          )
+        ) : (
+          <div className="rp-draw-payout-label">Draw — no chips exchanged</div>
+        )
+      ) : (
+        currentPayouts ? (
+          <div className="rp-payout">
+            {players.map(p => {
+              const delta = currentPayouts[p.id] || 0
+              return (
+                <div key={p.id} className="rp-payout-row">
+                  <span className="rp-payout-dot" style={{ background: p.color }} />
+                  <span className="rp-payout-name">{p.name}</span>
+                  <span className={`rp-payout-val ${delta > 0 ? 'pos' : delta < 0 ? 'neg' : ''}`}>
+                    {delta > 0 ? `+${delta}` : delta}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+        ) : null
       )}
 
       {/* Apply button */}
@@ -191,8 +220,14 @@ function BreakdownContent({
           >
             {applyLabel}
           </button>
-          {!canApply && applyDisabledReason && (
-            <p className="rp-apply-reason">{applyDisabledReason}</p>
+          {onEndGame && (
+            <button
+              className="rp-end-game-link"
+              type="button"
+              onClick={onEndGame}
+            >
+              End game
+            </button>
           )}
         </div>
       )}
@@ -334,10 +369,13 @@ export default function BottomSheet({
                   currentWind={sharedResultsProps.currentWind}
                   isEndGame={sharedResultsProps.isEndGame}
                   canApply={sharedResultsProps.canApply}
-                  applyDisabledReason={sharedResultsProps.applyDisabledReason}
                   gameSettings={sharedResultsProps.gameSettings}
+                  bonusPayouts={sharedResultsProps.bonusPayouts}
+                  hasBonusPayouts={sharedResultsProps.hasBonusPayouts}
                   onChange={sharedResultsProps.onChange}
+                  onBonusChange={sharedResultsProps.onBonusChange}
                   onApply={sharedResultsProps.onApply}
+                  onEndGame={sharedResultsProps.onEndGame}
                 />
               )}
               {tab === 'scoreboard' && (

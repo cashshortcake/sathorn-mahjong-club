@@ -206,7 +206,7 @@ export default function PlayerSetup({
               <PlayerNameInput
                 key={player.id}
                 player={player}
-                value={playerNames[player.id] || `Player ${player.id}`}
+                value={playerNames[player.id]}
                 onChange={name => onNameChange(player.id, name)}
               />
             ))}

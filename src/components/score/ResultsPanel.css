@@ -235,6 +235,14 @@
 .rp-payout-val.pos { color: #4F8568; }
 .rp-payout-val.neg { color: #F5511C; }
 
+.rp-draw-payout-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-style: italic;
+  color: #8B897F;
+  padding: 0.25rem 0;
+}
+
 /* ── Min fan banner ── */
 .rp-min-fan-banner {
   background: #EBB2B9;
@@ -290,6 +298,24 @@
   font-style: italic;
 }
 
+.rp-end-game-link {
+  background: none;
+  border: none;
+  padding: 0.4rem 0.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #C4420F;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+  letter-spacing: 0.01em;
+}
+
+.rp-end-game-link:hover {
+  color: #20201e44;
+}
+
 /* ── Standings ── */
 .rp-standings {
   display: flex;
@@ -328,6 +354,7 @@
   font-size: 9px;
   color: #F5511C;
 }
+
 
 .rp-standing-score {
   font-weight: 500;
@@ -456,25 +483,125 @@
   pointer-events: none;
 }
 
-/* ── Wind badge in history row ── */
+/* ── Round + wind label in history row ── */
 .rp-history-wind-round {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-weight: 600;
-  color: #8B897F;
-  flex-shrink: 0;
-  width: 32px;
-}
-
-.rp-history-wind-badge {
   font-family: 'Inter', sans-serif;
   font-size: 10px;
   font-weight: 700;
+  letter-spacing: 0.04em;
   color: #8B897F;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .rp-history-draw-label {
   font-style: italic;
   color: #8B897F;
+}
+
+/* ── Bonus Payouts Section ── */
+.rp-bonus-section {
+  border: 1px solid #D5D0C6;
+  border-radius: 6px;
+  margin-top: 0rem;
+  overflow: hidden;
+}
+
+.rp-bonus-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #EDEAE0;
+  border: none;
+  padding: 0.5rem 0.625rem;
+  cursor: pointer;
+  text-align: left;
+  gap: 0.5rem;
+}
+
+.rp-bonus-toggle:hover {
+  background: #E3DFD4;
+}
+
+.rp-bonus-toggle-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.rp-bonus-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #20201E;
+}
+
+.rp-bonus-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: #8B897F;
+}
+
+.rp-bonus-body {
+  padding: 0.625rem 0.625rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.rp-bonus-sub-header {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.1rem;
+}
+
+.rp-bonus-sub-label {
+  font-family: 'Inter', sans-serif;
+  flex: 1;
+  font-size: 11px;
+  font-weight: 600;
+  color: #4F8568;
+}
+
+.rp-bonus-player-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.rp-bonus-player-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  min-width: 60px;
+  flex: 1;
+  color: #20201E;
+}
+
+.rp-bonus-preview {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: #4F8568;
+  font-weight: 500;
+}
+
+.rp-bonus-combo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rp-bonus-combo-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  flex: 1;
+  color: #20201E;
+}
+
+.rp-bonus-select {
+  max-width: 110px;
 }

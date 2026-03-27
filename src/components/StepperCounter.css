@@ -1,0 +1,44 @@
+/* ── StepperCounter ───────────────────────────────────────────────────────── */
+.sc-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.sc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #F5511C;
+  background: transparent;
+  color: #F5511C;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.sc-btn:hover:not(:disabled) {
+  background: #4F8568;
+  color: #F5F0EB;
+}
+
+.sc-btn:disabled {
+  border-color: #BFBFBA;
+  color: #BFBFBA;
+  cursor: not-allowed;
+}
+
+.sc-val {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-width: 1.5ch;
+  text-align: center;
+  color: #20201E;
+}

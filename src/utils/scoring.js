@@ -245,6 +245,53 @@ const PAYOUT_DISCARD_ALL = {
   12: 256,
 }
 
+// ─── Bonus Payouts ────────────────────────────────────────────────────────────
+export const INITIAL_BONUS_PAYOUTS = {
+  kongCounts: {},            // { [playerId]: number }
+  catMouseHolder: null,      // playerId or null
+  chickenCentipedeHolder: null,  // playerId or null
+}
+
+/**
+ * Calculate bonus payouts (Kong declarations + Animal Combos).
+ * Returns { [playerId]: delta } — zero-sum.
+ * Bonus payouts are always calculated regardless of draw status.
+ * The caller is responsible for zeroing fan payouts on a draw.
+ *
+ * @param {number[]} playerIds
+ * @param {{ kongCounts, catMouseHolder, chickenCentipedeHolder }} bonusPayouts
+ */
+export function calculateBonusPayouts(playerIds, bonusPayouts) {
+  const result = {}
+  playerIds.forEach(id => { result[id] = 0 })
+
+  const { kongCounts = {}, catMouseHolder, chickenCentipedeHolder } = bonusPayouts
+  const count = playerIds.length
+
+  // Kong bonus: 10 chips from each other player per declared Kong
+  playerIds.forEach(pid => {
+    const kongs = kongCounts[pid] || 0
+    if (kongs > 0) {
+      result[pid] += kongs * 10 * (count - 1)
+      playerIds.forEach(other => {
+        if (other !== pid) result[other] -= kongs * 10
+      })
+    }
+  })
+
+  // Animal combos: 10 chips from each other player per combo held
+  for (const holder of [catMouseHolder, chickenCentipedeHolder]) {
+    if (holder != null && playerIds.includes(holder)) {
+      result[holder] += 10 * (count - 1)
+      playerIds.forEach(other => {
+        if (other !== holder) result[other] -= 10
+      })
+    }
+  }
+
+  return result
+}
+
 /**
  * Returns the default discarder — the next player after the winner in sequence.
  */

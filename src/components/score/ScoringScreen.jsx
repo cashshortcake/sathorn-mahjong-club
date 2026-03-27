@@ -5,10 +5,36 @@ import BottomSheet    from './BottomSheet'
 import EndGamePanel   from './EndGamePanel'
 import './ScoringScreen.css'
 
-function ScoringTopBar({ players, round, currentWind, isEndGame, onEditPlayers }) {
+import windEastSvg  from '../../assets/tiles/wind-east.svg'
+import windSouthSvg from '../../assets/tiles/wind-south.svg'
+import windWestSvg  from '../../assets/tiles/wind-west.svg'
+import windNorthSvg from '../../assets/tiles/wind-north.svg'
+
+const WIND_TILES = {
+  East:  windEastSvg,
+  South: windSouthSvg,
+  West:  windWestSvg,
+  North: windNorthSvg,
+}
+
+function PrevailingWindBadge({ wind }) {
+  return (
+    <div className="ss-prevailing-wind">
+      <span className="ss-prevailing-wind-label">{wind.toUpperCase()}</span>
+      <img
+        className="ss-prevailing-wind-tile"
+        src={WIND_TILES[wind] || WIND_TILES.East}
+        alt={wind}
+        aria-hidden
+      />
+    </div>
+  )
+}
+
+function ScoringTopBar({ players, round, totalRounds, currentWind, isEndGame, onEditPlayers }) {
   const windRoundLabel = isEndGame
-    ? `GAME OVER · ${currentWind} · Round ${round}`
-    : `${currentWind} Wind · Round ${round}`
+    ? `GAME OVER · Round ${round}`
+    : `Round ${round} of ${totalRounds}`
 
   return (
     <div className="ss-topbar">
@@ -21,8 +47,12 @@ function ScoringTopBar({ players, round, currentWind, isEndGame, onEditPlayers }
         <span className={`ss-round-tag ss-round-tag--mobile ${isEndGame ? 'endgame' : ''}`}>
           {isEndGame
             ? 'GAME OVER'
-            : `${currentWind} · R${round} · ${players.length} Players`}
+            : `R${round}/${totalRounds} · ${players.length} Players`}
         </span>
+        {/* Prevailing wind badge — desktop only */}
+        {!isEndGame && (
+          <PrevailingWindBadge wind={currentWind} />
+        )}
         {/* Player chips — hidden on mobile */}
         <div className="ss-player-chips">
           {players.map(p => (
@@ -43,13 +73,15 @@ function ScoringTopBar({ players, round, currentWind, isEndGame, onEditPlayers }
           ))}
         </div>
       </div>
-      <button
-        className="ss-edit-players"
-        type="button"
-        onClick={onEditPlayers}
-      >
-        ✏ Edit
-      </button>
+      <div className="ss-topbar-actions">
+        <button
+          className="ss-edit-players"
+          type="button"
+          onClick={onEditPlayers}
+        >
+          ✏ Edit
+        </button>
+      </div>
     </div>
   )
 }
@@ -57,6 +89,7 @@ function ScoringTopBar({ players, round, currentWind, isEndGame, onEditPlayers }
 export default function ScoringScreen({
   players,
   round,
+  totalRounds,
   currentWind,
   history,
   scores,
@@ -68,13 +101,17 @@ export default function ScoringScreen({
   canApply,
   applyDisabledReason,
   gameSettings,
+  bonusPayouts,
+  hasBonusPayouts,
   sheetOpen,
   sheetTab,
   historyExpanded,
   onChange,
+  onBonusChange,
   onApply,
   onEditRound,
   onEditPlayers,
+  onEndGame,
   onSheetOpen,
   onSheetClose,
   onSheetTab,
@@ -87,6 +124,8 @@ export default function ScoringScreen({
     scoring,
     fanResult,
     currentPayouts,
+    bonusPayouts,
+    hasBonusPayouts,
     resolvedDiscarderId,
     round,
     currentWind,
@@ -97,9 +136,11 @@ export default function ScoringScreen({
     gameSettings,
     historyExpanded,
     onChange,
+    onBonusChange,
     onApply,
     onEditRound,
     onHistoryToggle,
+    onEndGame,
   }
 
   return (
@@ -107,6 +148,7 @@ export default function ScoringScreen({
       <ScoringTopBar
         players={players}
         round={round}
+        totalRounds={totalRounds}
         currentWind={currentWind}
         isEndGame={isEndGame}
         onEditPlayers={onEditPlayers}
@@ -145,7 +187,7 @@ export default function ScoringScreen({
       <StickyBottomBar
         fanResult={fanResult}
         round={round}
-        currentWind={currentWind}
+        totalRounds={totalRounds}
         isEndGame={isEndGame}
         minimumFan={gameSettings?.minimumFan ?? 3}
         onExpand={onSheetOpen}

@@ -1,23 +1,8 @@
 import Tooltip from '../Tooltip'
+import InputField from '../ui/InputField'
+import Dropdown from '../ui/Dropdown'
+import ToggleButtonGroup from '../ui/ToggleButtonGroup'
 import './PlayerSetup.css'
-
-// ─── Segmented Toggle ─────────────────────────────────────────────────────────
-function SegmentedToggle({ options, value, onChange }) {
-  return (
-    <div className="ps-toggle">
-      {options.map(opt => (
-        <button
-          key={opt.value}
-          className={`ps-toggle-btn ${value === opt.value ? 'active' : ''}`}
-          onClick={() => onChange(opt.value)}
-          type="button"
-        >
-          {opt.label}
-        </button>
-      ))}
-    </div>
-  )
-}
 
 // ─── Player Name Input ────────────────────────────────────────────────────────
 function PlayerNameInput({ player, value, onChange }) {
@@ -36,8 +21,7 @@ function PlayerNameInput({ player, value, onChange }) {
         alt={player.windSeat}
         aria-hidden
       />
-      <input
-        type="text"
+      <InputField
         className="ps-name-input"
         value={value}
         placeholder={`Player ${player.id}`}
@@ -68,7 +52,7 @@ function GameSettingsPanel({ settings, onChange }) {
             <p>If East wins, they stay as East (<em>linjang</em>) and the round count continues.</p>
           </Tooltip>
         </div>
-        <SegmentedToggle
+        <ToggleButtonGroup
           options={[
             { value: 1, label: '1 Wind'  },
             { value: 2, label: '2 Winds' },
@@ -91,7 +75,7 @@ function GameSettingsPanel({ settings, onChange }) {
             <p>Self Draw is always equal pay regardless of this setting.</p>
           </Tooltip>
         </div>
-        <SegmentedToggle
+        <ToggleButtonGroup
           options={[
             { value: 'discarderPaysMore', label: 'Pays More' },
             { value: 'discarderPaysAll',  label: 'Pays All'  },
@@ -114,7 +98,7 @@ function GameSettingsPanel({ settings, onChange }) {
             </ul>
           </Tooltip>
         </div>
-        <SegmentedToggle
+        <ToggleButtonGroup
           options={[
             { value: 0, label: '0' },
             { value: 1, label: '1' },
@@ -136,16 +120,17 @@ function GameSettingsPanel({ settings, onChange }) {
           </Tooltip>
         </div>
         <div className="ps-multiplier-row">
-          <select
+          <Dropdown
             className="ps-currency-select"
             value={settings.currency}
-            onChange={e => onChange({ currency: e.target.value })}
-          >
-            <option value="฿">฿</option>
-            <option value="$">$</option>
-            <option value="RM">RM</option>
-          </select>
-          <input
+            options={[
+              { value: '฿',  label: '฿'  },
+              { value: '$',  label: '$'  },
+              { value: 'RM', label: 'RM' },
+            ]}
+            onChange={val => onChange({ currency: val })}
+          />
+          <InputField
             type="number"
             className="ps-multiplier-input"
             value={settings.multiplier}
@@ -188,7 +173,7 @@ export default function PlayerSetup({
         {/* Player count toggle */}
         <div className="ps-section">
           <label className="ps-section-label">Number of players</label>
-          <SegmentedToggle
+          <ToggleButtonGroup
             options={[
               { value: 3, label: '3 Players' },
               { value: 4, label: '4 Players' },

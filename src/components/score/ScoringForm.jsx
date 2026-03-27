@@ -7,6 +7,8 @@ import {
 } from '../../utils/scoring'
 import Tooltip from '../Tooltip'
 import StepperCounter from '../StepperCounter'
+import Checkbox from '../ui/Checkbox'
+import Radio from '../ui/Radio'
 import './ScoringForm.css'
 
 // ─── Fan pill ─────────────────────────────────────────────────────────────────
@@ -25,9 +27,7 @@ const InfoTooltip = ({ text }) => <Tooltip text={text} />
 function RadioOption({ item, selected, disabled, strikethrough, onChange }) {
   return (
     <label className={`sf-option ${disabled ? 'disabled' : ''} ${strikethrough ? 'struck' : ''}`}>
-      <input
-        type="radio"
-        className="sf-radio"
+      <Radio
         checked={selected}
         disabled={disabled}
         onChange={() => onChange(selected ? null : item.id)}
@@ -44,12 +44,10 @@ function RadioOption({ item, selected, disabled, strikethrough, onChange }) {
 function CheckboxOption({ item, checked, disabled, strikethrough, onChange }) {
   return (
     <label className={`sf-option ${disabled ? 'disabled' : ''} ${strikethrough ? 'struck' : ''}`}>
-      <input
-        type="checkbox"
-        className="sf-checkbox"
+      <Checkbox
         checked={checked}
         disabled={disabled}
-        onChange={e => onChange(item.id, e.target.checked)}
+        onChange={val => onChange(item.id, val)}
       />
       <span className="sf-option-label">{item.label}</span>
       <InfoTooltip text={item.info} />
@@ -127,12 +125,10 @@ function FlowersAndSeasonsSection({ flowers, seatFlower, seasons, seatSeason, no
 
       {/* No flowers or seasons checkbox */}
       <label className={`sf-option ${noBonusDisabled ? 'disabled' : ''}`}>
-        <input
-          type="checkbox"
-          className="sf-checkbox"
+        <Checkbox
           checked={noBonus && !noBonusDisabled}
           disabled={noBonusDisabled}
-          onChange={e => onChange({ noBonus: e.target.checked })}
+          onChange={val => onChange({ noBonus: val })}
         />
         <span className="sf-option-label">No flowers or seasons</span>
         <FanPill fan={1} />
@@ -154,11 +150,9 @@ function FlowersAndSeasonsSection({ flowers, seatFlower, seasons, seatSeason, no
         )}
         {flowers >= 1 && flowers <= 3 && (
           <label className="sf-option sf-bonus-seat-check">
-            <input
-              type="checkbox"
-              className="sf-checkbox"
+            <Checkbox
               checked={seatFlower}
-              onChange={e => onChange({ seatFlower: e.target.checked })}
+              onChange={val => onChange({ seatFlower: val })}
             />
             <span className="sf-option-label">Includes seat flower</span>
             <FanPill fan={1} />
@@ -182,11 +176,9 @@ function FlowersAndSeasonsSection({ flowers, seatFlower, seasons, seatSeason, no
         )}
         {seasons >= 1 && seasons <= 3 && (
           <label className="sf-option sf-bonus-seat-check">
-            <input
-              type="checkbox"
-              className="sf-checkbox"
+            <Checkbox
               checked={seatSeason}
-              onChange={e => onChange({ seatSeason: e.target.checked })}
+              onChange={val => onChange({ seatSeason: val })}
             />
             <span className="sf-option-label">Includes seat season</span>
             <FanPill fan={1} />

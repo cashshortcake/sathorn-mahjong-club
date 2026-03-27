@@ -3,6 +3,9 @@ import { MAX_FAN } from '../../utils/scoring'
 import Tooltip from '../Tooltip'
 import EndGamePanel from './EndGamePanel'
 import { StandingsList, RoundHistory, BonusPayoutsSection } from './ResultsPanel'
+import Checkbox from '../ui/Checkbox'
+import Dropdown from '../ui/Dropdown'
+import ToggleButtonGroup from '../ui/ToggleButtonGroup'
 import './BottomSheet.css'
 
 // ─── Fan Breakdown (inline, used inside Breakdown tab) ────────────────────────
@@ -90,12 +93,10 @@ function BreakdownContent({
       {/* Draw toggle */}
       <div className="rp-draw-row">
         <label className="rp-draw-label">
-          <input
-            type="checkbox"
-            className="rp-draw-check"
+          <Checkbox
             checked={isDraw}
             disabled={isEndGame}
-            onChange={e => onChange({ isDraw: e.target.checked })}
+            onChange={val => onChange({ isDraw: val })}
           />
           Draw / No winner
         </label>
@@ -107,49 +108,39 @@ function BreakdownContent({
         <>
           <div className="rp-field">
             <label className="rp-field-label">Winner</label>
-            <select
-              className="rp-select"
+            <Dropdown
+              fullWidth
               value={scoring.winnerId ?? players[0]?.id ?? ''}
+              options={players.map(p => ({ value: p.id, label: p.name }))}
               disabled={isEndGame || isBelowMin}
-              onChange={e => onChange({ winnerId: e.target.value ? Number(e.target.value) : null, discarderId: null })}
-            >
-              {players.map(p => (
-                <option key={p.id} value={p.id}>{p.name}</option>
-              ))}
-            </select>
+              onChange={val => onChange({ winnerId: val ? Number(val) : null, discarderId: null })}
+            />
           </div>
 
           <div className="rp-field">
             <label className="rp-field-label">Win type</label>
-            <div className="rp-toggle">
-              <button
-                type="button"
-                className={`rp-toggle-btn ${scoring.winType === 'selfDraw' ? 'active' : ''}`}
-                disabled={isEndGame || isBelowMin}
-                onClick={() => onChange({ winType: 'selfDraw', discarderId: null })}
-              >Self Draw</button>
-              <button
-                type="button"
-                className={`rp-toggle-btn ${scoring.winType === 'discardWin' ? 'active' : ''}`}
-                disabled={isEndGame || isBelowMin}
-                onClick={() => onChange({ winType: 'discardWin', discarderId: null })}
-              >Discard Win</button>
-            </div>
+            <ToggleButtonGroup
+              fullWidth
+              options={[
+                { value: 'selfDraw',    label: 'Self Draw'    },
+                { value: 'discardWin', label: 'Discard Win' },
+              ]}
+              value={scoring.winType}
+              disabled={isEndGame || isBelowMin}
+              onChange={val => onChange({ winType: val, discarderId: null })}
+            />
           </div>
 
           {scoring.winType === 'discardWin' && scoring.winnerId && (
             <div className="rp-field">
               <label className="rp-field-label">Who discarded?</label>
-              <select
-                className="rp-select"
+              <Dropdown
+                fullWidth
                 value={resolvedDiscarderId || ''}
+                options={players.filter(p => p.id !== scoring.winnerId).map(p => ({ value: p.id, label: p.name }))}
                 disabled={isEndGame}
-                onChange={e => onChange({ discarderId: e.target.value ? Number(e.target.value) : null })}
-              >
-                {players.filter(p => p.id !== scoring.winnerId).map(p => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
-                ))}
-              </select>
+                onChange={val => onChange({ discarderId: val ? Number(val) : null })}
+              />
             </div>
           )}
         </>

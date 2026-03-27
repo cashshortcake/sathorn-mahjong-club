@@ -1,0 +1,62 @@
+/* ── Checkbox ────────────────────────────────────────────────────────────────── */
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wrapper.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* The custom visual box */
+.box {
+  position: relative;
+  width: 0.8rem;
+  height: 0.8rem;
+  flex-shrink: 0;
+  border-radius: 2px;
+  border: 0.5px solid rgba(31, 30, 29, 0.30);
+  background: #E6E1D7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.box.checked {
+  border: 0.5px solid #4F8568;
+  background: #4F8568;
+}
+
+.box.disabledBox {
+  opacity: 0.5;
+}
+
+/* Native input — visually hidden, but accessible + positioned to cover the box */
+.nativeInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.nativeInput:disabled {
+  cursor: not-allowed;
+}
+
+/* Label text (only rendered when label prop is passed) */
+.label {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: #20201E;
+  line-height: 1.3;
+}

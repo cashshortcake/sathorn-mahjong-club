@@ -1,0 +1,82 @@
+/* ── Dropdown ────────────────────────────────────────────────────────────────── */
+.wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  width: 181px;
+  border-radius: 4px;
+  border: 1px solid rgba(31, 30, 29, 0.30);
+  background: #E6E1D7;
+  box-sizing: border-box;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+
+.wrap:focus-within {
+  border: 0.5px solid rgba(31, 30, 29, 0.40);
+  box-shadow: 0 0 0 2px #FFF, 0 0 0 3.5px rgba(50, 102, 173, 0.50);
+}
+
+.select {
+  width: 100%;
+  height: 100%;
+  padding: 0 30px 0 12px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: #20201E;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.select option {
+  background: #E6E1D7;
+  color: #20201E;
+}
+
+.select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.chevron {
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
+  font-size: 13px;
+  color: #73726C;
+  line-height: 1;
+}
+
+/* ── Full-width variant ── */
+.fullWidth {
+  width: 100%;
+}
+
+/* ── Dark variant ── */
+.dark {
+  background: #4B4A4A;
+  border-color: rgba(255, 255, 255, 0.20);
+}
+
+.dark .select {
+  color: #F8F8F8;
+}
+
+.dark .select option {
+  background: #4B4A4A;
+  color: #F8F8F8;
+}
+
+.dark .select:disabled {
+  background: #2D2D2B;
+  color: #8B897F;
+  opacity: 1;
+}
+
+.dark .chevron {
+  color: #8B897F;
+}

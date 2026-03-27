@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import Tooltip from '../Tooltip'
 import StepperCounter from '../StepperCounter'
+import Checkbox from '../ui/Checkbox'
+import Dropdown from '../ui/Dropdown'
+import ToggleButtonGroup from '../ui/ToggleButtonGroup'
 import './ResultsPanel.css'
 import { MAX_FAN } from '../../utils/scoring'
 
@@ -62,12 +65,10 @@ function DrawToggle({ isDraw, disabled, onChange }) {
   return (
     <div className="rp-draw-row">
       <label className="rp-draw-label">
-        <input
-          type="checkbox"
-          className="rp-draw-check"
+        <Checkbox
           checked={isDraw}
           disabled={disabled}
-          onChange={e => onChange(e.target.checked)}
+          onChange={onChange}
         />
         Draw / No winner
       </label>
@@ -81,16 +82,13 @@ function WinnerSelector({ players, winnerId, disabled, onChange }) {
   return (
     <div className="rp-field">
       <label className="rp-field-label">Winner</label>
-      <select
-        className="rp-select"
+      <Dropdown
+        fullWidth
         value={winnerId ?? players[0]?.id ?? ''}
+        options={players.map(p => ({ value: p.id, label: p.name }))}
         disabled={disabled}
-        onChange={e => onChange(e.target.value ? Number(e.target.value) : null)}
-      >
-        {players.map(p => (
-          <option key={p.id} value={p.id}>{p.name}</option>
-        ))}
-      </select>
+        onChange={val => onChange(val ? Number(val) : null)}
+      />
     </div>
   )
 }
@@ -100,40 +98,33 @@ function WinTypeToggle({ winType, disabled, onChange }) {
   return (
     <div className="rp-field">
       <label className="rp-field-label">Win type</label>
-      <div className="rp-toggle">
-        <button
-          type="button"
-          className={`rp-toggle-btn ${winType === 'selfDraw' ? 'active' : ''}`}
-          disabled={disabled}
-          onClick={() => onChange('selfDraw')}
-        >Self Draw</button>
-        <button
-          type="button"
-          className={`rp-toggle-btn ${winType === 'discardWin' ? 'active' : ''}`}
-          disabled={disabled}
-          onClick={() => onChange('discardWin')}
-        >Discard Win</button>
-      </div>
+      <ToggleButtonGroup
+        fullWidth
+        options={[
+          { value: 'selfDraw',    label: 'Self Draw'    },
+          { value: 'discardWin', label: 'Discard Win' },
+        ]}
+        value={winType}
+        disabled={disabled}
+        onChange={onChange}
+      />
     </div>
   )
 }
 
 // ─── Discarder Selector ───────────────────────────────────────────────────────
 function DiscarderSelector({ players, winnerId, discarderId, disabled, onChange }) {
-  const options = players.filter(p => p.id !== winnerId)
+  const opts = players.filter(p => p.id !== winnerId)
   return (
     <div className="rp-field">
       <label className="rp-field-label">Who discarded?</label>
-      <select
-        className="rp-select"
+      <Dropdown
+        fullWidth
         value={discarderId || ''}
+        options={opts.map(p => ({ value: p.id, label: p.name }))}
         disabled={disabled}
-        onChange={e => onChange(e.target.value ? Number(e.target.value) : null)}
-      >
-        {options.map(p => (
-          <option key={p.id} value={p.id}>{p.name}</option>
-        ))}
-      </select>
+        onChange={val => onChange(val ? Number(val) : null)}
+      />
     </div>
   )
 }
@@ -235,17 +226,14 @@ export function BonusPayoutsSection({ players, bonusPayouts, disabled, onChange 
             return (
               <div key={key} className="rp-bonus-combo-row">
                 <span className="rp-bonus-combo-label">{label}</span>
-                <select
-                  className="rp-select rp-bonus-select"
+                <Dropdown
+                  fullWidth
                   value={currentHolder ?? ''}
+                  options={players.map(p => ({ value: p.id, label: p.name }))}
+                  placeholder="None"
                   disabled={disabled}
-                  onChange={e => onChange({ [key]: e.target.value ? Number(e.target.value) : null })}
-                >
-                  <option value="">None</option>
-                  {players.map(p => (
-                    <option key={p.id} value={p.id}>{p.name}</option>
-                  ))}
-                </select>
+                  onChange={val => onChange({ [key]: val ? Number(val) : null })}
+                />
               </div>
             )
           })}

@@ -356,6 +356,7 @@
 }
 
 
+
 .rp-standing-score {
   font-weight: 500;
   color: #4F8568;
@@ -483,15 +484,15 @@
   pointer-events: none;
 }
 
-/* ── Round + wind label in history row ── */
+/* ── Round label in history row (R1 ·) ── */
 .rp-history-wind-round {
   font-family: 'Inter', sans-serif;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   color: #8B897F;
   flex-shrink: 0;
-  white-space: nowrap;
+  width: 28px;
 }
 
 .rp-history-draw-label {

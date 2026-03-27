@@ -265,10 +265,10 @@ export function StandingsList({ players, scores }) {
           key={p.id}
           className={`rp-standing-row ${i === 0 ? 'leading' : ''}`}
         >
-          {/* Wind player icons have baked-in colour — no filter */}
+          {/* Icon reflects current seat wind, not fixed player identity */}
           <img
             className="rp-standing-icon"
-            src={p.icon}
+            src={p.seatIcon}
             alt=""
             aria-hidden
           />
@@ -301,12 +301,9 @@ export function RoundHistory({ history, players, expanded, onToggle, onEdit }) {
             const winner = entry.isDraw
               ? null
               : players.find(p => p.id === entry.selections?.winnerId)
-            const windUpper = entry.wind ? entry.wind.toUpperCase() : 'EAST'
             return (
               <div key={idx} className="rp-history-row">
-                <span className="rp-history-wind-round">
-                  R{entry.round} · {windUpper}
-                </span>
+                <span className="rp-history-wind-round">R{entry.round} ·</span>
                 <span className="rp-history-winner">
                   {entry.isDraw ? (
                     <span className="rp-history-draw-label">Draw</span>

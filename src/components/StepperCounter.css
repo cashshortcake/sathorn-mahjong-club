@@ -9,14 +9,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   border: 1px solid #F5511C;
   background: transparent;
   color: #F5511C;
-  font-size: 13px;
-  line-height: 1;
+  font-size: 11px;
+  line-height: 0.5;
   cursor: pointer;
   padding: 0;
   transition: background 0.15s, color 0.15s;
@@ -24,7 +24,7 @@
 }
 
 .sc-btn:hover:not(:disabled) {
-  background: #4F8568;
+  background: #F5511C;
   color: #F5F0EB;
 }
 

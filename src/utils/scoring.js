@@ -60,7 +60,9 @@ export const INITIAL_SCORING = {
   winningConditions: [],
   flowers: 0,
   seatFlower: false,
-  noFlowersConfirmed: false,  // user must check a box to claim the No Flowers bonus
+  seasons: 0,
+  seatSeason: false,
+  noBonus: false,             // user confirms no flowers or seasons (+1)
   winnerId: 1,                // default to Player 1 (East)
   winType: 'selfDraw',        // default to Self Draw
   discarderId: null,
@@ -135,13 +137,21 @@ export function calculateFan(scoring) {
   }
 
   // ── 4. Flowers & Seasons ──────────────────────────────────────────────────
-  // No Flowers bonus only applies when the user has explicitly confirmed via checkbox.
-  if (scoring.flowers === 0 && scoring.noFlowersConfirmed) {
-    addItem('No Flowers', 1, 'flowers')
-  } else if (scoring.flowers === 8) {
-    addItem('All Flowers', 2, 'flowers')
-  } else if (scoring.flowers >= 1 && scoring.flowers <= 7 && scoring.seatFlower) {
-    addItem('Seat Flower', 1, 'flowers')
+  const { flowers, seatFlower, seasons, seatSeason, noBonus } = scoring
+
+  if (noBonus && flowers === 0 && seasons === 0) {
+    addItem('No flowers or seasons', 1, 'flowers')
+  } else {
+    if (flowers === 4) {
+      addItem('All flowers', 2, 'flowers')
+    } else if (flowers > 0 && seatFlower) {
+      addItem('Seat flower', 1, 'flowers')
+    }
+    if (seasons === 4) {
+      addItem('All seasons', 2, 'seasons')
+    } else if (seasons > 0 && seatSeason) {
+      addItem('Seat season', 1, 'seasons')
+    }
   }
 
   const total = Math.min(runningTotal, MAX_FAN)

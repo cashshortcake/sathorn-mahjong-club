@@ -17,6 +17,8 @@ const WIND_TILES = {
   North: windNorthSvg,
 }
 
+const WIND_ORDER = ['East', 'South', 'West', 'North']
+
 function PrevailingWindBadge({ wind }) {
   return (
     <div className="ss-prevailing-wind">
@@ -53,24 +55,26 @@ function ScoringTopBar({ players, round, totalRounds, currentWind, isEndGame, on
         {!isEndGame && (
           <PrevailingWindBadge wind={currentWind} />
         )}
-        {/* Player chips — hidden on mobile */}
+        {/* Player chips — hidden on mobile, ordered East→South→West→North */}
         <div className="ss-player-chips">
-          {players.map(p => (
-            <span
-              key={p.id}
-              className="ss-player-chip"
-              style={{ borderColor: p.color }}
-            >
-              {/* Wind player icons have baked-in colour — no filter */}
-              <img
-                className="ss-player-chip-icon"
-                src={p.icon}
-                alt=""
-                aria-hidden
-              />
-              {p.name}
-            </span>
-          ))}
+          {[...players]
+            .sort((a, b) => WIND_ORDER.indexOf(a.windLabel) - WIND_ORDER.indexOf(b.windLabel))
+            .map(p => (
+              <span
+                key={p.id}
+                className="ss-player-chip"
+                style={{ borderColor: p.color }}
+              >
+                {/* Icon reflects current seat wind, not fixed player identity */}
+                <img
+                  className="ss-player-chip-icon"
+                  src={p.seatIcon}
+                  alt=""
+                  aria-hidden
+                />
+                {p.name}
+              </span>
+            ))}
         </div>
       </div>
       <div className="ss-topbar-actions">

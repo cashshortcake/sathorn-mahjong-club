@@ -59,12 +59,15 @@ function CheckboxOption({ item, checked, disabled, strikethrough, onChange }) {
 }
 
 // ─── Section Card ─────────────────────────────────────────────────────────────
-function SectionCard({ title, subtitle, disabled, children }) {
+function SectionCard({ title, tooltip, subtitle, disabled, children }) {
   return (
     <div className={`sf-section-card ${disabled ? 'sf-section-disabled' : ''}`}>
       <div className="sf-section-head">
         <div>
-          <div className="sf-section-title">{title}</div>
+          <div className="sf-section-title-row">
+            <span className="sf-section-title">{title}</span>
+            {tooltip && <InfoTooltip text={tooltip} />}
+          </div>
           {subtitle && <div className="sf-section-sub">{subtitle}</div>}
         </div>
       </div>
@@ -115,50 +118,82 @@ function CollapseSection({ dot, title, badge, disabled, children }) {
   )
 }
 
-// ─── Flower Counter (Section D) ───────────────────────────────────────────────
-function FlowerCounter({ flowers, seatFlower, noFlowersConfirmed, onChange }) {
-  const isNoFlowers = flowers === 0
-  const isAllFlowers = flowers === 8
-  const showSeatFlower = flowers >= 1 && flowers <= 7
+// ─── Flowers & Seasons Section (Section D) ────────────────────────────────────
+function FlowersAndSeasonsSection({ flowers, seatFlower, seasons, seatSeason, noBonus, onChange }) {
+  const noBonusDisabled = flowers > 0 || seasons > 0
 
   return (
-    <div className="sf-flower-wrap">
-      <StepperCounter
-        value={flowers}
-        min={0}
-        max={8}
-        onChange={val => onChange({ flowers: val, seatFlower: false, noFlowersConfirmed: false })}
-      />
+    <div className="sf-bonus-wrap">
 
-      {isNoFlowers && (
-        <label className="sf-option sf-seat-flower">
-          <input
-            type="checkbox"
-            className="sf-checkbox"
-            checked={noFlowersConfirmed}
-            onChange={e => onChange({ noFlowersConfirmed: e.target.checked })}
+      {/* No flowers or seasons checkbox */}
+      <label className={`sf-option ${noBonusDisabled ? 'disabled' : ''}`}>
+        <input
+          type="checkbox"
+          className="sf-checkbox"
+          checked={noBonus && !noBonusDisabled}
+          disabled={noBonusDisabled}
+          onChange={e => onChange({ noBonus: e.target.checked })}
+        />
+        <span className="sf-option-label">No flowers or seasons</span>
+        <FanPill fan={1} />
+      </label>
+
+      {/* Flowers counter */}
+      <div className="sf-bonus-counter-group">
+        <div className="sf-bonus-counter-row">
+          <span className="sf-bonus-counter-label">Flowers</span>
+          <StepperCounter
+            value={flowers}
+            min={0}
+            max={4}
+            onChange={val => onChange({ flowers: val, seatFlower: false, noBonus: false })}
           />
-          <span className="sf-option-label">No Flowers</span>
-          <FanPill fan={1} />
-        </label>
-      )}
-      {isAllFlowers && (
-        <span className="sf-flower-auto">
-          All Flowers <FanPill fan={2} />
-        </span>
-      )}
-      {showSeatFlower && (
-        <label className="sf-option sf-seat-flower">
-          <input
-            type="checkbox"
-            className="sf-checkbox"
-            checked={seatFlower}
-            onChange={e => onChange({ seatFlower: e.target.checked })}
+        </div>
+        {flowers === 4 && (
+          <span className="sf-flower-auto">All flowers <FanPill fan={2} /></span>
+        )}
+        {flowers >= 1 && flowers <= 3 && (
+          <label className="sf-option sf-bonus-seat-check">
+            <input
+              type="checkbox"
+              className="sf-checkbox"
+              checked={seatFlower}
+              onChange={e => onChange({ seatFlower: e.target.checked })}
+            />
+            <span className="sf-option-label">Includes seat flower</span>
+            <FanPill fan={1} />
+          </label>
+        )}
+      </div>
+
+      {/* Seasons counter */}
+      <div className="sf-bonus-counter-group">
+        <div className="sf-bonus-counter-row">
+          <span className="sf-bonus-counter-label">Seasons</span>
+          <StepperCounter
+            value={seasons}
+            min={0}
+            max={4}
+            onChange={val => onChange({ seasons: val, seatSeason: false, noBonus: false })}
           />
-          <span className="sf-option-label">Includes seat flower</span>
-          <FanPill fan={1} />
-        </label>
-      )}
+        </div>
+        {seasons === 4 && (
+          <span className="sf-flower-auto">All seasons <FanPill fan={2} /></span>
+        )}
+        {seasons >= 1 && seasons <= 3 && (
+          <label className="sf-option sf-bonus-seat-check">
+            <input
+              type="checkbox"
+              className="sf-checkbox"
+              checked={seatSeason}
+              onChange={e => onChange({ seatSeason: e.target.checked })}
+            />
+            <span className="sf-option-label">Includes seat season</span>
+            <FanPill fan={1} />
+          </label>
+        )}
+      </div>
+
     </div>
   )
 }
@@ -256,15 +291,16 @@ export default function ScoringForm({ scoring, isEndGame, onChange }) {
 
       {/* ── Section D: Flowers & Seasons ── */}
       <SectionCard
-        dot="#80CAAF"
         title="Flowers & Seasons"
-        subtitle="Count of flower tiles held"
+        tooltip="Flower and Season tiles are linked to your seat wind. Tile 1 = East, Tile 2 = South, Tile 3 = West, Tile 4 = North."
         disabled={isEndGame}
       >
-        <FlowerCounter
+        <FlowersAndSeasonsSection
           flowers={scoring.flowers}
           seatFlower={scoring.seatFlower}
-          noFlowersConfirmed={scoring.noFlowersConfirmed}
+          seasons={scoring.seasons}
+          seatSeason={scoring.seatSeason}
+          noBonus={scoring.noBonus}
           onChange={updates => onChange(updates)}
         />
       </SectionCard>

@@ -207,53 +207,39 @@
   opacity: 0.5;
 }
 
-/* ── Flower counter ── */
-.sf-flower-wrap {
+/* ── Section title row (title + tooltip inline) ── */
+.sf-section-title-row {
+  display: flex;
+  align-items: space-between;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+/* ── Flowers & Seasons section ── */
+.sf-bonus-wrap {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.sf-flower-counter {
+.sf-bonus-counter-group {
   display: flex;
-  align-items: center;
-  gap: 0;
-  width: fit-content;
-  border: 1.5px solid #c8b89a;
-  border-radius: 100px;
-  overflow: hidden;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.sf-counter-btn {
-  width: 36px;
-  height: 36px;
-  font-size: 18px;
-  font-weight: 400;
-  background: #E2DDD3;
-  border: none;
-  cursor: pointer;
-  color: #20201E;
-  transition: background 0.15s;
-  line-height: 1;
+.sf-bonus-counter-row {
+  display: flex;
+  align-items: space-between;
+  gap: 0.75rem;
 }
 
-.sf-counter-btn:hover:not(:disabled) {
-  background: #d4cfc5;
-}
-
-.sf-counter-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.sf-counter-val {
-  min-width: 36px;
-  text-align: center;
+.sf-bonus-counter-label {
   font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
+  flex: 1;
+  font-size: 13.5px;
   color: #20201E;
-  padding: 0 0.25rem;
+  min-width: 52px;
 }
 
 .sf-flower-auto {
@@ -266,6 +252,7 @@
   gap: 0.4rem;
 }
 
-.sf-seat-flower {
-  margin-top: 0.25rem;
+.sf-bonus-seat-check {
+  margin-left: 0;
+  padding-left: 0;
 }

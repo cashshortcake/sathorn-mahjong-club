@@ -26,6 +26,15 @@ import './Score.css'
 // ─── Player config ────────────────────────────────────────────────────────────
 // Wind seat order: East (id 1), South (id 2), West (id 3), North (id 4)
 // icon colours are baked into the SVG — no CSS filter needed
+
+// Maps current seat wind → the correct player icon SVG
+const WIND_SEAT_ICONS = {
+  East:  eastIcon,
+  South: southIcon,
+  West:  westIcon,
+  North: northIcon,
+}
+
 const PLAYER_META = [
   { id: 1, color: '#80CAAF', icon: eastIcon,  windSeat: 'East',  windInitial: 'E', defaultName: 'East'  },
   { id: 2, color: '#F5511C', icon: southIcon, windSeat: 'South', windInitial: 'S', defaultName: 'South' },
@@ -87,6 +96,7 @@ export default function Score() {
         name: playerNames[m.id] || `Player ${m.id}`,
         windLabel,
         windInitial,
+        seatIcon: WIND_SEAT_ICONS[windLabel] || m.icon,
       }
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps

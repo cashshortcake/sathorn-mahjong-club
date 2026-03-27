@@ -11,6 +11,7 @@ import styles from './Dropdown.module.css'
  *   disabled    {bool}
  *   dark        {bool}                dark panel variant (#4B4A4A bg)
  *   fullWidth   {bool}                makes wrapper + select 100% wide
+ *   style       {object}              inline styles forwarded to the wrapper (e.g. { width: '60px' })
  *   className   {string}              extra class for layout overrides
  */
 export default function Dropdown({
@@ -21,6 +22,7 @@ export default function Dropdown({
   disabled,
   dark = false,
   fullWidth = false,
+  style,
   className = '',
 }) {
   const wrapClass = [
@@ -31,7 +33,7 @@ export default function Dropdown({
   ].filter(Boolean).join(' ')
 
   return (
-    <div className={wrapClass}>
+    <div className={wrapClass} style={style}>
       <select
         className={styles.select}
         value={value ?? ''}

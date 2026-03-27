@@ -121,7 +121,7 @@ function GameSettingsPanel({ settings, onChange }) {
         </div>
         <div className="ps-multiplier-row">
           <Dropdown
-            className="ps-currency-select"
+            style={{ width: '60px' }}
             value={settings.currency}
             options={[
               { value: '฿',  label: '฿'  },

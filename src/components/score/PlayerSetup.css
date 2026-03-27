@@ -102,20 +102,8 @@
 }
 
 .ps-name-input {
-  flex: 1;
-  font-family: 'Inter', sans-serif;
+  flex: 1;        /* override InputField's fixed width — fill available space */
   font-size: 14px;
-  padding: 0.45rem 0.7rem;
-  border: 1.5px solid #c8b89a;
-  background: #E2DDD3;
-  color: #20201E;
-  border-radius: 2px;
-  outline: none;
-  transition: border-color 0.15s;
-}
-
-.ps-name-input:focus {
-  border-color: #4F8568;
 }
 
 /* ── Actions ── */
@@ -129,6 +117,7 @@
   width: 100%;
   padding: 0.5rem;
   background: #4F8568;
+  border: none;
   color: #F8F8F8;
   font-family: 'Inter', sans-serif;
   font-size: 15px;
@@ -188,20 +177,8 @@
 }
 
 .ps-multiplier-input {
-  font-family: 'Inter', sans-serif;
   font-size: 14px;
-  padding: 0.45rem 0.7rem;
-  border: 1.5px solid #c8b89a;
-  background: #E2DDD3;
-  color: #20201E;
-  border-radius: 2px;
-  outline: none;
-  width: 80px;
-  transition: border-color 0.15s;
-}
-
-.ps-multiplier-input:focus {
-  border-color: #4F8568;
+  width: 80px;    /* override InputField's fixed 181px width */
 }
 
 .ps-multiplier-label {
